@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#f7f3ee">
+<title>Meal Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f7f3ee;--cream2:#ede8e1;--cream3:#e2dbd2;
+  --green:#3a6b4a;--green-light:#eaf1ec;
+  --amber:#c8873a;--amber-light:#fdf0e3;
+  --red-light:#fdecea;--red:#c0504a;
+  --blue-light:#e8f0fb;--blue:#3a5fa0;
+  --purple-light:#eeedfe;--purple:#3c3489;
+  --teal-light:#e1f5ee;--teal:#0f6e56;
+  --text:#2a2520;--text2:#6b5f55;--text3:#9c8f84;
+  --border:rgba(42,37,32,0.1);--shadow:0 2px 12px rgba(42,37,32,0.08);
+  --r:12px;--rl:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;background:var(--cream);}
+body{font-family:'DM Sans',sans-serif;color:var(--text);max-width:430px;margin:0 auto;}
+
+/* NAV */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#fff;border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom,0);}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0 7px;cursor:pointer;color:var(--text3);font-size:9px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;border:none;background:none;transition:color .15s;}
+.nav-btn.active{color:var(--green);}
+.nav-icon{font-size:19px;line-height:1;}
+
+/* SCREENS */
+.screen{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:calc(100% - 56px);overflow-y:auto;padding:0 0 24px;display:none;background:var(--cream);}
+.screen.active{display:block;}
+
+/* EDIT TOGGLE */
+.edit-toggle-bar{display:flex;align-items:center;justify-content:flex-end;padding:8px 20px 0;}
+.edit-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;font-weight:500;color:var(--text3);background:none;border:1px solid var(--border);border-radius:20px;padding:5px 11px;font-family:'DM Sans',sans-serif;}
+.edit-toggle.active{color:var(--amber);border-color:var(--amber);background:var(--amber-light);}
+.toggle-dot{width:5px;height:5px;border-radius:50%;background:var(--cream3);}
+.edit-toggle.active .toggle-dot{background:var(--amber);}
+
+/* HOME */
+.home-header{padding:44px 20px 20px;background:var(--green);position:relative;overflow:hidden;}
+.home-header::after{content:'';position:absolute;bottom:-30px;left:-20px;right:-20px;height:60px;background:var(--cream);border-radius:50% 50% 0 0/30px 30px 0 0;}
+.home-greeting{font-size:12px;color:rgba(255,255,255,.7);margin-bottom:3px;letter-spacing:.04em;}
+.home-title{font-family:'Playfair Display',serif;font-size:26px;color:#fff;font-weight:500;line-height:1.2;}
+.week-badge-home{display:inline-flex;align-items:center;gap:6px;margin-top:10px;background:rgba(255,255,255,.18);border-radius:20px;padding:4px 11px;font-size:12px;color:rgba(255,255,255,.9);font-weight:500;}
+.home-body{padding:32px 20px 0;}
+.section-label{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:9px;}
+
+/* PLAN WINDOW CARD */
+.plan-window-card{background:#fff;border-radius:var(--rl);border:1px solid var(--border);padding:13px 15px;box-shadow:var(--shadow);margin-bottom:14px;}
+.pw-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:11px;}
+.pw-title{font-size:13px;font-weight:500;color:var(--text);}
+.pw-range{font-size:12px;color:var(--text3);margin-top:1px;}
+.pw-edit-btn{font-size:12px;font-weight:500;color:var(--amber);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.pw-days-row{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
+.pw-days-row::-webkit-scrollbar{display:none;}
+.pw-day-pill{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 9px;border-radius:10px;border:1px solid var(--border);background:var(--cream);cursor:pointer;min-width:42px;}
+.pw-day-pill.today{border-color:var(--green);background:var(--green-light);}
+.pw-day-pill.weekend{background:var(--cream2);}
+.pw-day-pill.today .pw-pill-dow,.pw-day-pill.today .pw-pill-num{color:var(--green);}
+.pw-pill-dow{font-size:9px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;}
+.pw-pill-num{font-size:14px;font-weight:500;color:var(--text2);}
+.pw-pill-dots{display:flex;gap:2px;}
+.pw-dot{width:4px;height:4px;border-radius:50%;}
+.pw-pill-out{font-size:9px;color:var(--text3);font-style:italic;}
+
+/* TODAY CARD */
+.today-card{background:#fff;border-radius:var(--rl);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow);}
+.today-day-label{padding:13px 15px 0;font-size:13px;font-weight:500;color:var(--text2);}
+.meal-row{display:flex;align-items:center;gap:10px;padding:10px 15px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;}
+.meal-row:last-child{border-bottom:none;}
+.meal-row:active{background:var(--cream);}
+.meal-type-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.meal-row-content{flex:1;min-width:0;}
+.meal-row-type{font-size:10px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;}
+.meal-row-name{font-size:13px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px;}
+.meal-row-tag{font-size:10px;font-weight:500;padding:2px 6px;border-radius:10px;flex-shrink:0;}
+.tag-prepped{background:var(--green-light);color:var(--green);}
+.tag-cook{background:var(--amber-light);color:var(--amber);}
+.tag-salmon{background:var(--red-light);color:var(--red);}
+.tag-chicken{background:var(--amber-light);color:var(--amber);}
+.tag-shrimp{background:var(--blue-light);color:var(--blue);}
+.tag-custom{background:var(--teal-light);color:var(--teal);}
+.tag-out{background:var(--cream2);color:var(--text3);}
+.open-icon,.edit-icon{font-size:13px;color:var(--text3);flex-shrink:0;}
+.edit-icon{color:var(--amber);}
+.cook-icon{font-size:14px;color:var(--green);flex-shrink:0;}
+
+/* WEEK SWITCHER */
+.week-switcher{margin-top:14px;background:#fff;border-radius:var(--rl);border:1px solid var(--border);padding:13px 15px;box-shadow:var(--shadow);}
+.ws-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
+.ws-title-wrap{flex:1;}
+.ws-title{font-size:13px;font-weight:500;color:var(--text);}
+.ws-sub{font-size:12px;color:var(--text3);margin-top:2px;}
+.ws-title-input{font-size:13px;font-weight:500;color:var(--text);border:none;border-bottom:1px solid var(--amber);background:transparent;font-family:'DM Sans',sans-serif;width:100%;outline:none;padding:2px 0;}
+.ws-sub-input{font-size:12px;color:var(--text2);border:none;border-bottom:1px dashed var(--cream3);background:transparent;font-family:'DM Sans',sans-serif;width:100%;outline:none;padding:2px 0;margin-top:3px;}
+.ws-next-btn{background:var(--green);color:#fff;border:none;border-radius:20px;padding:5px 12px;font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;flex-shrink:0;margin-left:10px;}
+.week-dots{display:flex;gap:5px;}
+.week-pip{width:7px;height:7px;border-radius:50%;background:var(--cream3);transition:background .2s;}
+.week-pip.active{background:var(--green);}
+.prep-reminder{margin-top:12px;background:var(--purple-light);border-radius:var(--r);padding:10px 13px;display:none;gap:9px;align-items:flex-start;}
+.prep-reminder.show{display:flex;}
+.prep-text{font-size:13px;color:var(--purple);line-height:1.4;}
+.prep-text strong{font-weight:500;}
+
+/* DATE EDITOR */
+.date-editor{background:#fff;border-radius:var(--rl);border:1px solid var(--amber);padding:13px 15px;box-shadow:var(--shadow);margin-bottom:14px;}
+.de-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:11px;}
+.de-row{display:flex;align-items:center;gap:9px;margin-bottom:9px;}
+.de-label{font-size:12px;color:var(--text3);width:60px;flex-shrink:0;}
+.de-input{flex:1;font-size:13px;color:var(--text);border:1px solid var(--border);border-radius:var(--r);padding:7px 10px;font-family:'DM Sans',sans-serif;background:#fff;outline:none;}
+.de-input:focus{border-color:var(--green);}
+.de-actions{display:flex;gap:8px;margin-top:4px;}
+.de-btn{flex:1;padding:9px;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;border:1px solid var(--border);}
+.de-btn.primary{background:var(--green);color:#fff;border-color:var(--green);}
+.de-btn.secondary{background:#fff;color:var(--text2);}
+
+/* PLAN SCREEN (list + calendar toggle) */
+.plan-header{padding:44px 20px 8px;}
+.plan-header-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:500;color:var(--text);}
+.plan-header-sub{font-size:13px;color:var(--text3);margin-top:3px;}
+.view-toggle{display:flex;gap:6px;padding:10px 20px 4px;}
+.vt-btn{flex:1;padding:8px;border-radius:var(--r);font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;border:1px solid var(--border);background:#fff;color:var(--text2);transition:all .15s;}
+.vt-btn.active{background:var(--green);color:#fff;border-color:var(--green);}
+
+/* LIST VIEW */
+.day-tabs{display:flex;gap:5px;padding:10px 20px 12px;overflow-x:auto;scrollbar-width:none;}
+.day-tabs::-webkit-scrollbar{display:none;}
+.day-tab{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 11px;border-radius:var(--r);border:1px solid var(--border);background:#fff;cursor:pointer;transition:all .15s;min-width:48px;}
+.day-tab.active{background:var(--green);border-color:var(--green);}
+.day-tab.is-today:not(.active){border-color:var(--green);}
+.day-tab.is-weekend{background:var(--cream2);}
+.day-tab.active .day-tab-dow,.day-tab.active .day-tab-date{color:rgba(255,255,255,.9);}
+.day-tab-dow{font-size:10px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;}
+.day-tab.is-today:not(.active) .day-tab-dow{color:var(--green);}
+.day-tab-date{font-size:15px;font-weight:500;color:var(--text);}
+.day-detail{padding:0 20px;}
+.day-detail-card{background:#fff;border-radius:var(--rl);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow);}
+.recipe-link-row{display:flex;align-items:center;gap:11px;padding:13px 15px;border-bottom:1px solid var(--border);cursor:pointer;text-decoration:none;transition:background .1s;}
+.recipe-link-row:last-child{border-bottom:none;}
+.recipe-link-row:active{background:var(--cream);}
+.rr-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.b-icon{background:var(--cream2);}
+.l-icon-p{background:var(--green-light);}
+.l-icon-c{background:var(--amber-light);}
+.d-icon-c{background:var(--amber-light);}
+.d-icon-s{background:var(--red-light);}
+.d-icon-sh{background:var(--blue-light);}
+.d-icon-cu{background:var(--teal-light);}
+.out-icon{background:var(--cream2);}
+.rr-body{flex:1;min-width:0;}
+.rr-label{font-size:10px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;}
+.rr-name{font-size:13px;color:var(--text);margin-top:1px;line-height:1.3;}
+.rr-meta{font-size:11px;color:var(--text3);margin-top:2px;}
+.rr-arrow{font-size:13px;color:var(--text3);flex-shrink:0;}
+.prep-night-banner{margin:10px 0 0;background:var(--purple-light);border-radius:var(--r);padding:9px 13px;font-size:13px;color:var(--purple);line-height:1.4;}
+.prep-night-banner strong{font-weight:500;}
+.edit-meal-row{display:flex;align-items:center;gap:11px;padding:13px 15px;border-bottom:1px solid var(--border);background:var(--amber-light);}
+.edit-meal-row:last-child{border-bottom:none;}
+.edit-rr-label{font-size:10px;font-weight:500;color:var(--amber);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;}
+.edit-save-btn{background:var(--amber);color:#fff;border:none;border-radius:8px;padding:5px 9px;font-size:11px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;flex-shrink:0;}
+.no-plan-msg{padding:30px 20px;text-align:center;font-size:13px;color:var(--text3);line-height:1.6;}
+
+/* CALENDAR VIEW */
+.cal-wrap{padding:0 20px;}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:0 2px;}
+.cal-month{font-family:'Playfair Display',serif;font-size:17px;font-weight:500;color:var(--text);}
+.cal-nav-btn{background:none;border:1px solid var(--border);border-radius:8px;padding:5px 10px;cursor:pointer;color:var(--text2);font-size:13px;font-family:'DM Sans',sans-serif;}
+.cal-dow-row{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:4px;}
+.cal-dow{font-size:10px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;text-align:center;padding:3px 0;}
+.cal-dow.weekend-col{color:var(--amber);}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.cal-cell{border-radius:8px;padding:5px 4px;min-height:56px;background:#fff;border:1px solid var(--border);position:relative;cursor:pointer;transition:border-color .12s;}
+.cal-cell:active{background:var(--cream);}
+.cal-cell.empty{background:transparent;border-color:transparent;cursor:default;}
+.cal-cell.today{border:1.5px solid var(--green);}
+.cal-cell.in-plan{background:#fff;}
+.cal-cell.weekend-cell{background:var(--cream2);}
+.cal-cell.out-day{opacity:.6;}
+.cal-cell.active-cell{border:1.5px solid var(--amber);}
+.cal-num{font-size:11px;font-weight:500;color:var(--text3);margin-bottom:3px;}
+.cal-cell.today .cal-num{color:var(--green);}
+.cal-dots{display:flex;flex-direction:column;gap:2px;}
+.cal-dot-row{display:flex;gap:2px;align-items:center;}
+.cal-dot{width:4px;height:4px;border-radius:50%;}
+.cal-meal-name{font-size:8px;color:var(--text3);line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-left:2px;}
+.cal-out-label{font-size:8px;color:var(--text3);font-style:italic;margin-top:2px;}
+.cal-detail-panel{background:var(--cream);border-top:1px solid var(--border);padding:14px 20px;display:none;margin-top:10px;}
+.cal-detail-panel.show{display:block;}
+.cal-detail-date{font-size:12px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;}
+
+/* GROCERY */
+.grocery-header{padding:44px 20px 8px;}
+.grocery-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:500;color:var(--text);}
+.grocery-sub{font-size:13px;color:var(--text3);margin-top:3px;}
+.grocery-actions{display:flex;gap:7px;padding:11px 20px 9px;}
+.g-btn{flex:1;background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:8px 12px;font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;font-family:'DM Sans',sans-serif;}
+.g-btn:active{background:var(--cream2);}
+.g-btn.primary{background:var(--green);color:#fff;border-color:var(--green);}
+.grocery-section{padding:0 20px 13px;}
+.grocery-section-hd{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px;padding:0 2px;}
+.grocery-list{background:#fff;border-radius:var(--rl);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow);}
+.grocery-item{display:flex;align-items:flex-start;gap:11px;padding:11px 15px;border-bottom:1px solid var(--border);}
+.grocery-item:last-child{border-bottom:none;}
+.grocery-item-cz{display:flex;align-items:flex-start;gap:11px;flex:1;cursor:pointer;}
+.grocery-item-cz:active{opacity:.7;}
+.grocery-check{width:19px;height:19px;border-radius:6px;border:1.5px solid var(--cream3);background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;margin-top:1px;}
+.grocery-check.checked{background:var(--green);border-color:var(--green);}
+.check-mark{color:#fff;font-size:11px;opacity:0;transition:opacity .1s;}
+.grocery-check.checked .check-mark{opacity:1;}
+.grocery-item.checked-item .grocery-item-text{color:var(--text3);text-decoration:line-through;}
+.grocery-item-tw{flex:1;}
+.grocery-item-text{font-size:14px;color:var(--text);line-height:1.3;}
+.grocery-item-note{font-size:11px;color:var(--text3);margin-top:2px;line-height:1.3;}
+.grocery-item-name-input,.grocery-item-note-input{width:100%;border:none;background:transparent;font-family:'DM Sans',sans-serif;outline:none;}
+.grocery-item-name-input{font-size:14px;color:var(--text);border-bottom:1px solid var(--amber);padding:1px 0;}
+.grocery-item-note-input{font-size:11px;color:var(--text2);border-bottom:1px dashed var(--cream3);padding:2px 0;margin-top:3px;}
+.delete-item-btn{font-size:15px;color:var(--text3);cursor:pointer;flex-shrink:0;background:none;border:none;margin-top:1px;}
+.delete-item-btn:active{color:var(--red);}
+.add-item-row{display:flex;gap:7px;padding:9px 15px;border-top:1px solid var(--border);background:var(--cream);}
+.add-item-input{flex:1;font-size:13px;color:var(--text);border:none;border-bottom:1px solid var(--amber);background:transparent;font-family:'DM Sans',sans-serif;outline:none;padding:3px 0;}
+.add-item-submit{background:var(--amber);color:#fff;border:none;border-radius:8px;padding:5px 11px;font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.progress-bar-wrap{margin:0 20px 5px;background:var(--cream2);border-radius:10px;height:5px;overflow:hidden;}
+.progress-bar{height:100%;background:var(--green);border-radius:10px;transition:width .3s;}
+.progress-label{padding:0 20px 9px;font-size:12px;color:var(--text3);}
+.progress-label span{color:var(--green);font-weight:500;}
+
+/* RECIPES SCREEN */
+.recipes-header{padding:44px 20px 8px;}
+.recipes-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:500;color:var(--text);}
+.recipes-sub{font-size:13px;color:var(--text3);margin-top:3px;}
+.recipes-filter-row{display:flex;gap:6px;padding:10px 20px 6px;overflow-x:auto;scrollbar-width:none;}
+.recipes-filter-row::-webkit-scrollbar{display:none;}
+.filter-pill{flex-shrink:0;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--text2);font-family:'DM Sans',sans-serif;transition:all .15s;}
+.filter-pill.active{background:var(--green);color:#fff;border-color:var(--green);}
+.add-recipe-btn{margin:0 20px 12px;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--green);color:#fff;border:none;border-radius:var(--rl);padding:12px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;width:calc(100% - 40px);}
+.recipe-cards{padding:0 20px;}
+.recipe-card{background:#fff;border-radius:var(--rl);border:1px solid var(--border);padding:13px 15px;margin-bottom:10px;box-shadow:var(--shadow);}
+.rc-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;}
+.rc-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.rc-body{flex:1;min-width:0;}
+.rc-name{font-size:14px;font-weight:500;color:var(--text);line-height:1.3;}
+.rc-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px;}
+.rc-tag{font-size:10px;font-weight:500;padding:2px 7px;border-radius:10px;}
+.rc-meta{font-size:12px;color:var(--text3);margin-top:5px;line-height:1.4;}
+.rc-actions{display:flex;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.rc-link{flex:1;text-align:center;font-size:12px;font-weight:500;color:var(--blue);background:var(--blue-light);border:none;border-radius:8px;padding:7px;cursor:pointer;text-decoration:none;display:block;font-family:'DM Sans',sans-serif;}
+.rc-cook{flex:1;text-align:center;font-size:12px;font-weight:500;color:var(--green);background:var(--green-light);border:none;border-radius:8px;padding:7px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.rc-delete{font-size:12px;font-weight:500;color:var(--text3);background:var(--cream2);border:none;border-radius:8px;padding:7px 12px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+
+/* ADD RECIPE FORM */
+.add-recipe-form{background:#fff;border-radius:var(--rl);border:1px solid var(--amber);padding:14px 15px;margin:0 20px 14px;box-shadow:var(--shadow);}
+.arf-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:12px;}
+.arf-row{margin-bottom:10px;}
+.arf-label{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
+.arf-input,.arf-select,.arf-textarea{width:100%;font-size:13px;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-family:'DM Sans',sans-serif;background:#fff;outline:none;}
+.arf-input:focus,.arf-select:focus{border-color:var(--green);}
+.arf-row-2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.arf-actions{display:flex;gap:8px;margin-top:4px;}
+.arf-btn{flex:1;padding:9px;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;border:1px solid var(--border);}
+.arf-btn.primary{background:var(--green);color:#fff;border-color:var(--green);}
+.arf-btn.secondary{background:#fff;color:var(--text2);}
+.arf-note{font-size:11px;color:var(--text3);margin-top:8px;line-height:1.5;padding:8px 10px;background:var(--teal-light);border-radius:8px;color:var(--teal);}
+
+/* MODAL (swap) */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(42,37,32,.4);z-index:200;display:flex;align-items:flex-end;justify-content:center;}
+.modal-overlay.hidden{display:none;}
+.modal{background:#fff;border-radius:var(--rl) var(--rl) 0 0;padding:18px;width:100%;max-width:430px;max-height:80vh;overflow-y:auto;}
+.modal-handle{width:34px;height:4px;background:var(--cream3);border-radius:2px;margin:0 auto 14px;}
+.modal-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:500;color:var(--text);margin-bottom:12px;}
+.modal-option{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--border);cursor:pointer;}
+.modal-option:last-child{border-bottom:none;}
+.modal-option:active{opacity:.7;}
+.mo-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.mo-name{font-size:13px;color:var(--text);}
+.mo-meta{font-size:11px;color:var(--text3);margin-top:1px;}
+.mo-check{font-size:13px;color:var(--green);margin-left:auto;opacity:0;}
+.mo-check.visible{opacity:1;}
+.mo-custom-badge{font-size:9px;font-weight:500;background:var(--teal-light);color:var(--teal);padding:1px 5px;border-radius:6px;margin-left:5px;}
+.modal-cancel{width:100%;padding:11px;background:var(--cream2);border:none;border-radius:var(--r);font-size:14px;font-weight:500;color:var(--text2);cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:12px;}
+
+/* COOK MODE */
+.cook-overlay{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:100%;background:var(--cream);z-index:300;overflow-y:auto;display:none;}
+.cook-overlay.show{display:block;}
+.cook-header{position:sticky;top:0;background:var(--cream);padding:16px 20px 12px;display:flex;align-items:flex-start;gap:10px;border-bottom:1px solid var(--border);z-index:2;}
+.cook-close-btn{background:#fff;border:1px solid var(--border);border-radius:50%;width:32px;height:32px;flex-shrink:0;font-size:15px;color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.cook-header-body{flex:1;min-width:0;}
+.cook-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:500;color:var(--text);line-height:1.25;}
+.cook-source{font-size:11px;color:var(--text3);margin-top:3px;}
+.cook-meta-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+.cook-meta-pill{font-size:10px;font-weight:500;padding:3px 8px;border-radius:10px;background:var(--cream2);color:var(--text2);}
+.cook-adapt-note{margin:12px 20px 0;background:var(--teal-light);color:var(--teal);border-radius:var(--r);padding:9px 12px;font-size:12px;line-height:1.5;}
+.cook-body{padding:16px 20px 30px;}
+.cook-section-title{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin:18px 0 9px;}
+.cook-section-title:first-child{margin-top:0;}
+.cook-ing-list{background:#fff;border-radius:var(--rl);border:1px solid var(--border);box-shadow:var(--shadow);overflow:hidden;}
+.cook-ing-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);cursor:pointer;}
+.cook-ing-row:last-child{border-bottom:none;}
+.cook-ing-check{width:18px;height:18px;border-radius:6px;border:1.5px solid var(--cream3);background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.cook-ing-check.checked{background:var(--green);border-color:var(--green);}
+.cook-ing-check .check-mark{color:#fff;font-size:10px;opacity:0;}
+.cook-ing-check.checked .check-mark{opacity:1;}
+.cook-ing-amt{font-size:13px;font-weight:500;color:var(--text2);width:64px;flex-shrink:0;}
+.cook-ing-name{font-size:13px;color:var(--text);flex:1;}
+.cook-ing-row.done .cook-ing-name{color:var(--text3);text-decoration:line-through;}
+.cook-steps{display:flex;flex-direction:column;gap:9px;}
+.cook-step{background:#fff;border-radius:var(--rl);border:1px solid var(--border);box-shadow:var(--shadow);padding:13px 14px;display:flex;gap:11px;cursor:pointer;}
+.cook-step-num{width:24px;height:24px;border-radius:50%;background:var(--green-light);color:var(--green);font-size:12px;font-weight:500;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.cook-step.done .cook-step-num{background:var(--green);color:#fff;}
+.cook-step-body{flex:1;min-width:0;}
+.cook-step-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:2px;}
+.cook-step.done .cook-step-title{color:var(--text3);text-decoration:line-through;}
+.cook-step-content{font-size:12.5px;color:var(--text2);line-height:1.5;}
+.cook-step-timer{display:inline-block;margin-top:6px;font-size:11px;font-weight:500;color:var(--amber);background:var(--amber-light);padding:2px 8px;border-radius:10px;}
+.cook-original-link{display:block;text-align:center;margin-top:20px;font-size:12px;font-weight:500;color:var(--blue);text-decoration:none;padding:10px;}
+</style>
+</head>
+<body>
+
+<div id="screen-home" class="screen active">
+  <div class="home-header">
+    <div class="home-greeting" id="home-greeting">Good morning</div>
+    <div class="home-title">Let's plan<br>your meals.</div>
+    <div class="week-badge-home"><span style="width:7px;height:7px;border-radius:50%;background:#fff;display:inline-block"></span> <span id="home-week-label">Week A</span></div>
+  </div>
+  <div class="edit-toggle-bar">
+    <button class="edit-toggle" id="edit-toggle-home" onclick="toggleEdit('home')"><div class="toggle-dot"></div> Edit</button>
+  </div>
+  <div class="home-body">
+    <div id="date-editor-home"></div>
+    <div class="section-label" style="display:flex;justify-content:space-between;align-items:center">
+      <span>Your plan</span>
+    </div>
+    <div id="plan-window-display"></div>
+    <div id="today-section"></div>
+    <div class="week-switcher">
+      <div class="ws-top">
+        <div class="ws-title-wrap" id="ws-title-wrap"></div>
+        <button class="ws-next-btn" onclick="advanceWeek()">Next →</button>
+      </div>
+      <div class="week-dots"><div class="week-pip" id="pip-0"></div><div class="week-pip" id="pip-1"></div><div class="week-pip" id="pip-2"></div></div>
+    </div>
+    <div class="prep-reminder" id="prep-reminder"><div style="font-size:15px;flex-shrink:0">🌙</div><div class="prep-text" id="prep-text"></div></div>
+  </div>
+</div>
+
+<div id="screen-plan" class="screen">
+  <div class="plan-header">
+    <div class="plan-header-title" id="plan-header-title">My plan</div>
+    <div class="plan-header-sub" id="plan-header-sub"></div>
+  </div>
+  <div class="edit-toggle-bar">
+    <button class="edit-toggle" id="edit-toggle-plan" onclick="toggleEdit('plan')"><div class="toggle-dot"></div> Edit</button>
+  </div>
+  <div class="view-toggle">
+    <button class="vt-btn active" id="vt-list" onclick="setPlanView('list')">📋 List</button>
+    <button class="vt-btn" id="vt-cal" onclick="setPlanView('cal')">📅 Calendar</button>
+  </div>
+  <div id="plan-list-view">
+    <div class="day-tabs" id="day-tabs"></div>
+    <div class="day-detail" id="day-detail"></div>
+  </div>
+  <div id="plan-cal-view" style="display:none;padding:10px 0 0;">
+    <div class="cal-wrap">
+      <div class="cal-nav">
+        <button class="cal-nav-btn" onclick="calChangeMonth(-1)">‹</button>
+        <div class="cal-month" id="cal-month-label"></div>
+        <button class="cal-nav-btn" onclick="calChangeMonth(1)">›</button>
+      </div>
+      <div class="cal-dow-row">
+        <div class="cal-dow weekend-col">Su</div><div class="cal-dow">Mo</div><div class="cal-dow">Tu</div>
+        <div class="cal-dow">We</div><div class="cal-dow">Th</div><div class="cal-dow">Fr</div><div class="cal-dow weekend-col">Sa</div>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+    </div>
+    <div class="cal-detail-panel" id="cal-detail-panel">
+      <div class="cal-detail-date" id="cal-detail-date"></div>
+      <div id="cal-detail-content"></div>
+    </div>
+  </div>
+</div>
+
+<div id="screen-grocery" class="screen">
+  <div class="grocery-header">
+    <div class="grocery-title">Groceries</div>
+    <div class="grocery-sub" id="grocery-sub"></div>
+  </div>
+  <div class="edit-toggle-bar">
+    <button class="edit-toggle" id="edit-toggle-grocery" onclick="toggleEdit('grocery')"><div class="toggle-dot"></div> Edit</button>
+  </div>
+  <div class="grocery-actions">
+    <button class="g-btn" onclick="resetGroceries()">Reset checks</button>
+    <button class="g-btn primary" onclick="advanceWeekFromGrocery()">Next week type</button>
+  </div>
+  <div class="progress-label"><span id="progress-text">0 of 0</span> items checked</div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar" style="width:0%"></div></div>
+  <div id="grocery-sections"></div>
+</div>
+
+<div id="screen-recipes" class="screen">
+  <div class="recipes-header">
+    <div class="recipes-title">Recipes</div>
+    <div class="recipes-sub">Your options pool — built-in + your own</div>
+  </div>
+  <div class="recipes-filter-row">
+    <button class="filter-pill active" onclick="setRecipeFilter('all')">All</button>
+    <button class="filter-pill" onclick="setRecipeFilter('breakfast')">Breakfast</button>
+    <button class="filter-pill" onclick="setRecipeFilter('lunch')">Lunch</button>
+    <button class="filter-pill" onclick="setRecipeFilter('dinner')">Dinner</button>
+    <button class="filter-pill" onclick="setRecipeFilter('custom')">My additions</button>
+  </div>
+  <div id="add-recipe-form-wrap"></div>
+  <button class="add-recipe-btn" onclick="toggleAddRecipeForm()">+ Add a recipe</button>
+  <div class="recipe-cards" id="recipe-cards"></div>
+</div>
+
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="showScreen('home')" id="nav-home"><div class="nav-icon">🏠</div><div>Home</div></button>
+  <button class="nav-btn" onclick="showScreen('plan')" id="nav-plan"><div class="nav-icon">📋</div><div>My plan</div></button>
+  <button class="nav-btn" onclick="showScreen('grocery')" id="nav-grocery"><div class="nav-icon">🛒</div><div>Shop</div></button>
+  <button class="nav-btn" onclick="showScreen('recipes')" id="nav-recipes"><div class="nav-icon">📖</div><div>Recipes</div></button>
+</nav>
+
+<div class="modal-overlay hidden" id="modal-overlay" onclick="closeModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modal-title">Swap meal</div>
+    <div id="modal-options"></div>
+    <button class="modal-cancel" onclick="closeModal()">Cancel</button>
+  </div>
+</div>
+
+<<<<<<< HEAD
+<div class="cook-overlay" id="cook-overlay">
+  <div class="cook-header">
+    <button class="cook-close-btn" onclick="closeCookMode()">✕</button>
+    <div class="cook-header-body">
+      <div class="cook-title" id="cook-title">Recipe</div>
+      <div class="cook-source" id="cook-source"></div>
+      <div class="cook-meta-row" id="cook-meta-row"></div>
+    </div>
+  </div>
+  <div class="cook-adapt-note" id="cook-adapt-note" style="display:none"></div>
+  <div class="cook-body">
+    <div class="cook-section-title">Ingredients — tap to check off</div>
+    <div class="cook-ing-list" id="cook-ing-list"></div>
+    <div class="cook-section-title">Steps</div>
+    <div class="cook-steps" id="cook-steps"></div>
+    <a class="cook-original-link" id="cook-original-link" href="#" target="_blank">Open original recipe online ↗</a>
+  </div>
+</div>
+
+<script>
+// ─── BUILT-IN MEALS (all screened against hard-nos: no peanut, cilantro, bell pepper,
+// olives, honey mustard, spicy ingredients; dressings are not vinegar-forward) ─────
+const BUILTIN_MEALS={
+  b4:{id:'b4',name:'Blackberry Raspberry Parfait',protein:'~22g',fiber:'~7g',note:'Cold breakfast · 5 min',url:'#',type:'breakfast',ptype:'veg',prep:false,
+    ingredients:[{amt:'1 cup',name:'Greek yogurt'},{amt:'1/2 cup',name:'blackberries'},{amt:'1/2 cup',name:'raspberries'},{amt:'1/4 cup',name:'granola'},{amt:'1 tsp',name:'honey (optional drizzle)'}],
+    steps:[
+      {title:'Layer the base',content:'Spoon a third of the Greek yogurt into a jar or bowl.'},
+      {title:'Add berries',content:'Scatter a layer of blackberries and raspberries over the yogurt.'},
+      {title:'Repeat layers',content:'Repeat yogurt and berry layers until the jar is full, finishing with berries on top.'},
+      {title:'Finish',content:'Top with granola and a light drizzle of honey if you want extra sweetness. Eat right away or chill until morning.'}
+    ],
+    grocery:[{s:'Dairy & oats',i:'Greek yogurt',n:'Breakfast'},{s:'Produce',i:'Blackberries',n:'Breakfast'},{s:'Produce',i:'Raspberries',n:'Breakfast'},{s:'Pantry',i:'Granola',n:'Breakfast topping'}]},
+
+  l2:{id:'l2',name:'Chicken Tzatziki Bowls',protein:'~34g',fiber:'~6g',note:'Prepped ahead · Skinnytaste',url:'https://www.skinnytaste.com/chicken-tzatziki-bowls/',type:'lunch',prep:true,ptype:'chicken',
+    adapt:'Olives and red pepper flakes removed from the original recipe.',
+    ingredients:[{amt:'1 lb',name:'chicken thighs, boneless skinless'},{amt:'1/4 cup',name:'Greek yogurt (for marinade)'},{amt:'1 tbsp',name:'olive oil'},{amt:'1/2 tbsp',name:'red wine vinegar'},{amt:'2 cloves',name:'garlic, minced'},{amt:'1/2 tsp',name:'dried oregano'},{amt:'1/2 tsp',name:'ground turmeric'},{amt:'3/4 tsp',name:'kosher salt'},{amt:'1 cup',name:'quinoa, dry'},{amt:'1 cup',name:'cherry tomatoes, halved'},{amt:'3',name:'Persian cucumbers'},{amt:'1/4',name:'red onion, thinly sliced'},{amt:'1 cup',name:'Greek yogurt (for tzatziki)'},{amt:'1/3 cup',name:'feta, crumbled'},{amt:'1 tbsp',name:'fresh dill (for tzatziki)'}],
+    steps:[
+      {title:'Marinate the chicken',content:'Whisk 1/4 cup yogurt, olive oil, vinegar, garlic, oregano, turmeric, and salt. Add chicken and coat well. Marinate 20 min–2 hrs in the fridge.',timerSeconds:1200},
+      {title:'Cook the quinoa',content:'Cook quinoa according to package directions, then set aside to cool slightly.',timerSeconds:900},
+      {title:'Make the tzatziki',content:'Grate one cucumber, squeeze out excess liquid, and mix with 1 cup yogurt, a pinch of garlic, dill, and a little salt.'},
+      {title:'Cook the chicken',content:'Pan-sear or grill the marinated chicken over medium-high heat, about 6–7 minutes per side, until cooked through and lightly charred.',timerSeconds:780},
+      {title:'Assemble bowls',content:'Divide quinoa between bowls. Top with sliced chicken, tomatoes, remaining cucumber (chopped), red onion, tzatziki, and feta.'}
+    ],
+    grocery:[{s:'Proteins',i:'Chicken thighs',n:'Tzatziki bowls'},{s:'Produce',i:'Persian cucumbers',n:'Tzatziki + topping'},{s:'Produce',i:'Cherry tomatoes',n:'Tzatziki bowls'},{s:'Produce',i:'Red onion',n:'Tzatziki bowls'},{s:'Produce',i:'Fresh dill',n:'Tzatziki'},{s:'Dairy & oats',i:'Greek yogurt (large tub)',n:'Marinade + tzatziki'},{s:'Dairy & oats',i:'Feta cheese',n:'Tzatziki bowls'},{s:'Pantry',i:'Quinoa',n:'Tzatziki bowls'}]},
+
+  l3:{id:'l3',name:'Soy Glazed Chicken Rice Bowl',protein:'~38g',fiber:'~3g',note:'Prepped ahead · Tiffy Cooks · 20 min',url:'https://tiffycooks.com/soy-glazed-chicken-20-minutes-only/',type:'lunch',prep:true,ptype:'chicken',
+    ingredients:[{amt:'1 lb',name:'chicken thighs, boneless skin-on'},{amt:'2 tbsp',name:'cornstarch'},{amt:'3 tbsp',name:'soy sauce'},{amt:'1/2 tsp',name:'five-spice powder'},{amt:'2 cloves',name:'garlic, minced'},{amt:'1 tbsp',name:'honey'},{amt:'2 cups',name:'cooked rice'},{amt:'2',name:'scallions, sliced'}],
+    steps:[
+      {title:'Prep the chicken',content:'Pat chicken dry and coat both sides with a thin layer of cornstarch.'},
+      {title:'Pan-fry',content:'Heat a little oil in a pan and cook chicken skin-side down first, without a lid, until golden and crisp. Flip and cook through, about 5–6 min per side.',timerSeconds:660},
+      {title:'Make the glaze',content:'Mix soy sauce, five-spice powder, garlic, and honey in a small bowl.'},
+      {title:'Glaze the chicken',content:'Pour the glaze into the same pan and simmer 1 minute, spooning it over the chicken until well coated.',timerSeconds:60},
+      {title:'Serve',content:'Slice the chicken and serve over rice, spooning extra sauce on top and finishing with scallions.'}
+    ],
+    grocery:[{s:'Proteins',i:'Chicken thighs',n:'Soy glazed chicken'},{s:'Produce',i:'Scallions',n:'Multiple meals'},{s:'Pantry',i:'Five-spice powder',n:'Soy glazed chicken'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'}]},
+
+  l4:{id:'l4',name:'Oyakodon',protein:'~35g',fiber:'~2g',note:'Cook at lunch · Tiffy Cooks · 15 min',url:'https://tiffycooks.com/',type:'lunch',prep:false,ptype:'chicken',
+    ingredients:[{amt:'1/2 lb',name:'chicken thigh, thinly sliced'},{amt:'1/2',name:'onion, sliced'},{amt:'1/3 cup',name:'dashi or chicken stock'},{amt:'2 tbsp',name:'soy sauce'},{amt:'1 tbsp',name:'mirin'},{amt:'1 tsp',name:'sugar'},{amt:'2',name:'eggs, beaten'},{amt:'1 cup',name:'cooked rice'},{amt:'1',name:'scallion, sliced'}],
+    steps:[
+      {title:'Simmer the onion',content:'In a small skillet, combine dashi, soy sauce, mirin, and sugar with the sliced onion. Simmer 3 minutes until onion softens.',timerSeconds:180},
+      {title:'Cook the chicken',content:'Add sliced chicken to the pan and simmer until just cooked through, about 5 minutes.',timerSeconds:300},
+      {title:'Add the egg',content:'Pour the beaten eggs evenly over the chicken and onion. Cover and cook until just set but still a little soft, 1–2 minutes.',timerSeconds:90},
+      {title:'Serve',content:'Slide the chicken-and-egg mixture on top of a bowl of hot rice. Garnish with scallion.'}
+    ],
+    grocery:[{s:'Proteins',i:'Chicken thigh',n:'Oyakodon'},{s:'Produce',i:'Onion',n:'Oyakodon'},{s:'Produce',i:'Scallions',n:'Multiple meals'},{s:'Dairy & oats',i:'Eggs',n:'Oyakodon'},{s:'Pantry',i:'Mirin',n:'Oyakodon'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'}]},
+
+  l5:{id:'l5',name:'Greek Chicken Orzo Salad',protein:'~36g',fiber:'~4g',note:'Cook fresh · Half Baked Harvest · 25 min',url:'https://www.halfbakedharvest.com/',type:'lunch',prep:false,ptype:'chicken',
+    adapt:'No olives, no roasted red peppers.',
+    ingredients:[{amt:'1 cup',name:'orzo, dry'},{amt:'1 lb',name:'chicken breast'},{amt:'1 cup',name:'cherry tomatoes, halved'},{amt:'1',name:'cucumber, diced'},{amt:'1/4',name:'red onion, thinly sliced'},{amt:'1/2 cup',name:'feta, crumbled'},{amt:'1',name:'lemon, juiced'},{amt:'3 tbsp',name:'olive oil'},{amt:'1 tsp',name:'dried oregano'},{amt:'1 clove',name:'garlic, minced'}],
+    steps:[
+      {title:'Cook the orzo',content:'Boil orzo according to package directions, drain, and let cool.',timerSeconds:600},
+      {title:'Cook the chicken',content:'Season chicken breast with salt, pepper, and a little oregano. Pan-sear in olive oil over medium-high heat, about 6 min per side, until cooked through, then slice.',timerSeconds:720},
+      {title:'Make the dressing',content:'Whisk lemon juice, olive oil, garlic, and remaining oregano with a pinch of salt and pepper.'},
+      {title:'Toss the salad',content:'Combine orzo, chicken, tomatoes, cucumber, red onion, and feta in a bowl. Pour dressing over and toss well.'}
+    ],
+    grocery:[{s:'Proteins',i:'Chicken breast',n:'Greek orzo salad'},{s:'Produce',i:'Cherry tomatoes',n:'Greek orzo salad'},{s:'Produce',i:'Cucumber',n:'Greek orzo salad'},{s:'Produce',i:'Red onion',n:'Greek orzo salad'},{s:'Produce',i:'Lemon',n:'Greek orzo salad'},{s:'Dairy & oats',i:'Feta cheese',n:'Greek orzo salad'},{s:'Pantry',i:'Orzo pasta',n:'Greek orzo salad'}]},
+
+  l6:{id:'l6',name:'Caesar Chicken Pasta Salad',protein:'~32g',fiber:'~3g',note:'Prepped ahead · Healthful Blondie',url:'https://healthfulblondie.com/',type:'lunch',prep:true,ptype:'chicken',
+    ingredients:[{amt:'8 oz',name:'short pasta (rotini or penne)'},{amt:'1 lb',name:'chicken breast, cooked and diced'},{amt:'3 cups',name:'romaine, chopped'},{amt:'1/3 cup',name:'parmesan, grated'},{amt:'1/3 cup',name:'mayonnaise'},{amt:'1',name:'lemon, juiced'},{amt:'1 clove',name:'garlic, minced'},{amt:'1/2 tsp',name:'dijon mustard'},{amt:'1/2 cup',name:'croutons'}],
+    steps:[
+      {title:'Cook the pasta',content:'Boil pasta according to package directions, drain, and cool.',timerSeconds:600},
+      {title:'Cook the chicken',content:'Season and pan-sear or bake chicken breast until cooked through, then dice.',timerSeconds:720},
+      {title:'Make the dressing',content:'Whisk mayonnaise, lemon juice, garlic, dijon, and half the parmesan together until smooth.'},
+      {title:'Toss it all together',content:'Combine pasta, chicken, chopped romaine, and dressing in a large bowl. Toss well, top with remaining parmesan and croutons just before eating.'}
+    ],
+    grocery:[{s:'Proteins',i:'Chicken breast',n:'Caesar pasta salad'},{s:'Produce',i:'Romaine lettuce',n:'Caesar pasta salad'},{s:'Produce',i:'Lemon',n:'Caesar pasta salad'},{s:'Dairy & oats',i:'Parmesan',n:'Caesar pasta salad'},{s:'Pantry',i:'Short pasta',n:'Caesar pasta salad'},{s:'Pantry',i:'Croutons',n:'Caesar pasta salad'}]},
+
+  l7:{id:'l7',name:'Lemon Tahini Quinoa Salad',protein:'~18g',fiber:'~9g',note:'Prepped ahead · plant-based · ~15 min · adapted from Marianna\u2019s Pantry',url:'https://mariannaspantry.com/',type:'lunch',prep:true,ptype:'veg',
+    adapt:'Original honey-mustard-balsamic dressing swapped for a lemon-tahini dressing. Dried apricots stand in for peaches when they\u2019re out of season. Source URL unverified — worth double-checking against the original before your next grocery run.',
+    ingredients:[{amt:'1 cup',name:'quinoa, dry'},{amt:'1 can (15oz)',name:'chickpeas, drained and rinsed'},{amt:'2 cups',name:'baby spinach'},{amt:'1/3 cup',name:'dried apricots, chopped'},{amt:'1/3 cup',name:'feta, crumbled'},{amt:'3 tbsp',name:'tahini'},{amt:'1',name:'lemon, juiced and zested'},{amt:'2 tbsp',name:'olive oil'},{amt:'1 clove',name:'garlic, minced'},{amt:'2-3 tbsp',name:'water, to thin dressing'}],
+    steps:[
+      {title:'Cook the quinoa',content:'Rinse and cook quinoa according to package directions, then let it cool.',timerSeconds:900},
+      {title:'Make the dressing',content:'Whisk tahini, lemon juice and zest, olive oil, and garlic together, adding water a tablespoon at a time until smooth and pourable.'},
+      {title:'Combine',content:'In a large bowl, toss quinoa, chickpeas, spinach, and dried apricots together.'},
+      {title:'Dress and top',content:'Pour dressing over and toss to coat. Top with feta before serving. Keeps well in the fridge for meal prep.'}
+    ],
+    grocery:[{s:'Produce',i:'Baby spinach',n:'Quinoa salad'},{s:'Pantry',i:'Quinoa',n:'Quinoa salad'},{s:'Pantry',i:'Chickpeas, canned',n:'Quinoa salad'},{s:'Pantry',i:'Dried apricots',n:'Quinoa salad'},{s:'Pantry',i:'Tahini',n:'Quinoa salad dressing'},{s:'Produce',i:'Lemon',n:'Quinoa salad dressing'},{s:'Dairy & oats',i:'Feta cheese',n:'Quinoa salad'}]},
+
+  l8:{id:'l8',name:'Smoky Corn & Chicken Salad',protein:'~28g',fiber:'~4g',note:'Cook at lunch or prep ahead · ~40 min · adapted from Tiffy Cooks',url:'https://tiffycooks.com/tex-mex-inspired-creamy-corn-chicken-salad/',type:'lunch',prep:true,ptype:'chicken',
+    adapt:'Jalapeño, cilantro, and chili powder removed. Mild taco seasoning and smoked paprika used in place of the heat.',
+    ingredients:[{amt:'1 lb',name:'chicken breast'},{amt:'1 tbsp',name:'mild taco seasoning'},{amt:'2 cups',name:'corn kernels (fresh or frozen)'},{amt:'1/2 tsp',name:'smoked paprika'},{amt:'1',name:'cucumber, diced'},{amt:'1/4',name:'red onion, diced'},{amt:'1/3 cup',name:'mayonnaise'},{amt:'1',name:'lemon, juiced'},{amt:'1 clove',name:'garlic, minced'}],
+    steps:[
+      {title:'Season and cook the chicken',content:'Coat chicken with mild taco seasoning and pan-sear over medium-high heat until golden and cooked through, about 6–7 min per side, then dice.',timerSeconds:780},
+      {title:'Char the corn',content:'In the same pan, sauté corn with smoked paprika for a few minutes until lightly charred and fragrant.',timerSeconds:240},
+      {title:'Make the dressing',content:'Whisk mayonnaise, lemon juice, and garlic together.'},
+      {title:'Combine',content:'Toss chicken, corn, cucumber, and red onion together, then fold in the dressing. Serve warm or chilled — keeps 3–4 days in the fridge.'}
+    ],
+    grocery:[{s:'Proteins',i:'Chicken breast',n:'Smoky corn salad'},{s:'Produce',i:'Corn (fresh or frozen)',n:'Smoky corn salad'},{s:'Produce',i:'Cucumber',n:'Smoky corn salad'},{s:'Produce',i:'Red onion',n:'Smoky corn salad'},{s:'Produce',i:'Lemon',n:'Smoky corn salad'},{s:'Pantry',i:'Mild taco seasoning',n:'Smoky corn salad'},{s:'Pantry',i:'Mayonnaise',n:'Smoky corn salad'}]},
+
+  d1:{id:'d1',name:'Teriyaki Salmon Bowl',protein:'~40g',fiber:'~6g',note:"Your pick ★ · Marianna's Pantry",url:'https://mariannaspantry.com/teriyaki-salmon-bowls/',type:'dinner',ptype:'salmon',
+    ingredients:[{amt:'1',name:'salmon fillet (~1 lb)'},{amt:'3 tbsp',name:'soy sauce'},{amt:'2 tbsp',name:'honey'},{amt:'2 cloves',name:'garlic, minced'},{amt:'1 tsp',name:'fresh ginger, grated'},{amt:'1 tsp',name:'sesame oil'},{amt:'2 cups',name:'cooked rice'},{amt:'1',name:'cucumber, sliced'},{amt:'1 cup',name:'edamame, shelled'},{amt:'2',name:'scallions, sliced'},{amt:'1 tsp',name:'sesame seeds'}],
+    steps:[
+      {title:'Make the sauce',content:'Whisk soy sauce, honey, garlic, ginger, and sesame oil together.'},
+      {title:'Marinate the salmon',content:'Pour half the sauce over the salmon and let it sit for 10 minutes.',timerSeconds:600},
+      {title:'Cook the salmon',content:'Bake at 400°F for 12–15 minutes, or pan-sear about 4 minutes per side, basting with marinade, until flaky.',timerSeconds:780},
+      {title:'Reduce remaining sauce',content:'Simmer the reserved sauce in a small pot for 1–2 minutes until slightly thickened.',timerSeconds:90},
+      {title:'Assemble',content:'Build bowls with rice, salmon, cucumber, and edamame. Drizzle with sauce and garnish with scallions and sesame seeds.'}
+    ],
+    grocery:[{s:'Proteins',i:'Salmon fillet',n:'Teriyaki salmon bowl'},{s:'Produce',i:'Cucumber',n:'Teriyaki salmon bowl'},{s:'Produce',i:'Scallions',n:'Multiple meals'},{s:'Frozen',i:'Edamame',n:'Teriyaki salmon bowl'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'},{s:'Pantry',i:'Honey',n:'Teriyaki sauce'}]},
+
+  d2:{id:'d2',name:'Miso Salmon Bowl',protein:'~35g',fiber:'~7g',note:'Oven or broiler · feastingathome',url:'https://www.feastingathome.com/miso-salmon-bowls/',type:'dinner',ptype:'salmon',
+    ingredients:[{amt:'1',name:'salmon fillet (~1 lb)'},{amt:'2 tbsp',name:'miso paste'},{amt:'1 tbsp',name:'mirin'},{amt:'1 tbsp',name:'soy sauce'},{amt:'2 cups',name:'cooked rice'},{amt:'1',name:'avocado, sliced'},{amt:'1 cup',name:'edamame, shelled'},{amt:'1 cup',name:'red cabbage, shredded'},{amt:'1 cup',name:'mushrooms, sliced'},{amt:'2',name:'scallions, sliced'}],
+    steps:[
+      {title:'Make the glaze',content:'Whisk miso paste, mirin, and soy sauce into a smooth glaze.'},
+      {title:'Marinate',content:'Coat the salmon in the glaze and let sit at least 15 minutes.',timerSeconds:900},
+      {title:'Cook the salmon',content:'Broil or bake at 425°F for 8–10 minutes until the top caramelizes and the salmon flakes easily.',timerSeconds:600},
+      {title:'Sauté mushrooms',content:'While the salmon cooks, sauté mushrooms in a little oil until golden, about 5 minutes.',timerSeconds:300},
+      {title:'Assemble',content:'Build bowls with rice, salmon, avocado, edamame, cabbage, and mushrooms. Garnish with scallions.'}
+    ],
+    grocery:[{s:'Proteins',i:'Salmon fillet',n:'Miso salmon bowl'},{s:'Produce',i:'Avocado',n:'Miso salmon bowl'},{s:'Produce',i:'Mushrooms',n:'Miso salmon bowl'},{s:'Produce',i:'Red cabbage or coleslaw bag',n:'Miso salmon bowl'},{s:'Produce',i:'Scallions',n:'Multiple meals'},{s:'Frozen',i:'Edamame',n:'Miso salmon bowl'},{s:'Pantry',i:'Miso paste',n:'Miso glaze'},{s:'Pantry',i:'Mirin',n:'Miso glaze'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'}]},
+
+  d3:{id:'d3',name:'One-Pot Lemon-Dill Miso Butter Salmon Rice',protein:'~37g',fiber:'~3g',note:'One pot · Tiffy Cooks · 20 min',url:'https://tiffycooks.com/',type:'dinner',ptype:'salmon',
+    ingredients:[{amt:'1',name:'salmon fillet (~1 lb)'},{amt:'1 cup',name:'rice, rinsed'},{amt:'1 3/4 cups',name:'chicken or vegetable stock'},{amt:'1 tbsp',name:'miso paste'},{amt:'2 cloves',name:'garlic, minced'},{amt:'2 tbsp',name:'butter'},{amt:'1',name:'lemon, juiced'},{amt:'2 tbsp',name:'fresh dill, chopped'}],
+    steps:[
+      {title:'Start the rice',content:'In a pot, whisk stock with miso and garlic. Add rinsed rice and bring to a simmer.',timerSeconds:120},
+      {title:'Add the salmon',content:'Nestle the salmon fillet on top of the rice. Cover and cook on low until rice is tender and salmon is cooked through, about 18 minutes.',timerSeconds:1080},
+      {title:'Finish',content:'Remove from heat. Stir in butter and lemon juice, gently flaking the salmon into the rice. Sprinkle with fresh dill before serving.'}
+    ],
+    grocery:[{s:'Proteins',i:'Salmon fillet',n:'One-pot miso butter salmon rice'},{s:'Produce',i:'Lemon',n:'One-pot miso butter salmon rice'},{s:'Produce',i:'Fresh dill',n:'One-pot miso butter salmon rice'},{s:'Pantry',i:'Miso paste',n:'One-pot miso butter salmon rice'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'}]},
+
+  d4:{id:'d4',name:'Teriyaki Chicken Bowl',protein:'~37g',fiber:'~5g',note:'One pan · 25 min',url:'https://wholesomemadeeasy.com/teriyaki-chicken-and-rice-bowls/',type:'dinner',ptype:'chicken',
+    ingredients:[{amt:'1 lb',name:'chicken breast, cubed'},{amt:'3 tbsp',name:'soy sauce'},{amt:'2 tbsp',name:'honey'},{amt:'2 cloves',name:'garlic, minced'},{amt:'1 tsp',name:'fresh ginger, grated'},{amt:'1 tsp',name:'cornstarch (optional, to thicken)'},{amt:'2 cups',name:'broccoli florets'},{amt:'2 cups',name:'cooked rice'},{amt:'1',name:'avocado, sliced'},{amt:'1 tsp',name:'sesame seeds'}],
+    steps:[
+      {title:'Cook the chicken',content:'Cook cubed chicken in a hot pan with a little oil until browned and cooked through, 7–8 minutes.',timerSeconds:480},
+      {title:'Make the sauce',content:'Whisk soy sauce, honey, garlic, and ginger together.'},
+      {title:'Glaze',content:'Pour sauce over the chicken and simmer until glazed and slightly thickened, adding a cornstarch slurry if you want it thicker.',timerSeconds:180},
+      {title:'Steam the broccoli',content:'Steam or microwave broccoli until just tender, about 4 minutes.',timerSeconds:240},
+      {title:'Assemble',content:'Serve chicken over rice with broccoli and avocado, finished with sesame seeds.'}
+    ],
+    grocery:[{s:'Proteins',i:'Chicken breast',n:'Teriyaki chicken bowl'},{s:'Produce',i:'Broccoli',n:'Teriyaki chicken bowl'},{s:'Produce',i:'Avocado',n:'Teriyaki chicken bowl'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'},{s:'Pantry',i:'Honey',n:'Teriyaki sauce'}]},
+
+  d5:{id:'d5',name:'Thai Basil Chicken',protein:'~38g',fiber:'~5g',note:'Week A — basil only, no cilantro',url:'https://onehappybite.com/thai-basil-chicken-stir-fry-high-protein-asian-recipe/',type:'dinner',ptype:'chicken',
+    adapt:'Basil only — no cilantro, no chili heat.',
+    ingredients:[{amt:'1 lb',name:'ground chicken'},{amt:'3 cloves',name:'garlic, minced'},{amt:'1 cup',name:'fresh basil leaves'},{amt:'2 tbsp',name:'soy sauce'},{amt:'1 tbsp',name:'oyster sauce'},{amt:'1 tsp',name:'fish sauce'},{amt:'1 tsp',name:'sugar'},{amt:'2 cups',name:'cooked rice'},{amt:'1',name:'egg (optional, fried)'}],
+    steps:[
+      {title:'Sauté the garlic',content:'Heat oil in a wok or large pan and sauté garlic until fragrant, about 30 seconds.',timerSeconds:30},
+      {title:'Cook the chicken',content:'Add ground chicken, breaking it up as it cooks, until browned through, about 5–6 minutes.',timerSeconds:360},
+      {title:'Season',content:'Stir in soy sauce, oyster sauce, fish sauce, and sugar. Stir-fry another 2 minutes.',timerSeconds:120},
+      {title:'Finish with basil',content:'Remove from heat and stir in basil leaves until just wilted.'},
+      {title:'Serve',content:'Serve over rice, topped with a fried egg if you like.'}
+    ],
+    grocery:[{s:'Proteins',i:'Ground chicken',n:'Thai basil chicken'},{s:'Produce',i:'Fresh basil',n:'Thai basil chicken'},{s:'Pantry',i:'Oyster sauce',n:'Thai basil chicken'},{s:'Pantry',i:'Fish sauce',n:'Thai basil chicken'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'},{s:'Dairy & oats',i:'Eggs',n:'Optional topping'}]},
+
+  d6:{id:'d6',name:'Sesame Teriyaki Chicken',protein:'~40g',fiber:'~5g',note:'One pan · 20 min · no bell pepper',url:'https://www.halfbakedharvest.com/sesame-teriyaki-chicken/',type:'dinner',ptype:'chicken',
+    adapt:'No bell peppers. Cucumber salad kept mild — no chili.',
+    ingredients:[{amt:'1 lb',name:'chicken breast, cubed'},{amt:'3 tbsp',name:'soy sauce'},{amt:'1 tbsp',name:'sesame oil'},{amt:'2 cloves',name:'garlic, minced'},{amt:'1 tsp',name:'fresh ginger, grated'},{amt:'1 tbsp',name:'honey'},{amt:'1 tsp',name:'sesame seeds'},{amt:'1',name:'cucumber, sliced'},{amt:'1 tsp',name:'rice vinegar'},{amt:'2 cups',name:'cooked rice'}],
+    steps:[
+      {title:'Cook the chicken',content:'Season chicken and pan-sear in a hot pan until browned and cooked through, about 7 minutes.',timerSeconds:420},
+      {title:'Make the glaze',content:'Whisk soy sauce, sesame oil, garlic, ginger, and honey together.'},
+      {title:'Glaze the chicken',content:'Pour glaze over chicken and simmer until sticky and coating the chicken, about 2 minutes.',timerSeconds:120},
+      {title:'Quick cucumber salad',content:'Toss sliced cucumber with a splash of rice vinegar and sesame oil.'},
+      {title:'Serve',content:'Serve chicken over rice with the cucumber salad on the side, finished with sesame seeds.'}
+    ],
+    grocery:[{s:'Proteins',i:'Chicken breast',n:'Sesame teriyaki chicken'},{s:'Produce',i:'Cucumber',n:'Sesame teriyaki chicken'},{s:'Pantry',i:'Sesame seeds',n:'Sesame teriyaki chicken'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'}]},
+
+  d7:{id:'d7',name:'Sheet Pan Garlic Parmesan Chicken & Potatoes',protein:'~36g',fiber:'~4g',note:'One sheet pan · 40 min',url:'#',type:'dinner',ptype:'chicken',
+    ingredients:[{amt:'1 lb',name:'chicken thighs or breast'},{amt:'1 lb',name:'baby potatoes, halved'},{amt:'3 tbsp',name:'olive oil'},{amt:'3 cloves',name:'garlic, minced'},{amt:'1 tsp',name:'dried oregano'},{amt:'1/3 cup',name:'parmesan, grated'},{amt:'to taste',name:'salt and pepper'}],
+    steps:[
+      {title:'Roast the potatoes',content:'Toss potatoes with half the olive oil, garlic, oregano, salt, and pepper. Spread on a sheet pan and roast at 425°F for 15 minutes.',timerSeconds:900},
+      {title:'Add the chicken',content:'Season the chicken with remaining oil, garlic, and herbs. Add to the sheet pan and roast another 20–25 minutes until chicken is cooked through and potatoes are tender.',timerSeconds:1350},
+      {title:'Finish',content:'Sprinkle parmesan over everything in the last 5 minutes of roasting.',timerSeconds:300}
+    ],
+    grocery:[{s:'Proteins',i:'Chicken thighs or breast',n:'Sheet pan chicken & potatoes'},{s:'Produce',i:'Baby potatoes',n:'Sheet pan chicken & potatoes'},{s:'Dairy & oats',i:'Parmesan',n:'Sheet pan chicken & potatoes'}]},
+
+  d9:{id:'d9',name:'Honey Garlic Glazed Chicken Rice Bowl',protein:'~41g',fiber:'~2g',note:'Quick · ~30 min · Tiffy Cooks',url:'https://tiffycooks.com/honey-garlic-glazed-chicken-rice-bowl/',type:'dinner',ptype:'chicken',
+    ingredients:[{amt:'1 lb',name:'chicken thighs'},{amt:'3 tbsp',name:'soy sauce'},{amt:'2 tbsp',name:'chicken stock'},{amt:'2 tbsp',name:'honey'},{amt:'1/2 tsp',name:'black pepper'},{amt:'2 cloves',name:'garlic, minced'},{amt:'1 tsp',name:'cornstarch'},{amt:'2',name:'scallions, sliced (whites and greens separated)'},{amt:'2 cups',name:'cooked rice'}],
+    steps:[
+      {title:'Make the sauce',content:'Whisk soy sauce, chicken stock, honey, black pepper, garlic, and cornstarch until smooth. Set aside.'},
+      {title:'Infuse the oil',content:'Heat oil in a skillet over medium heat. Add the white parts of the scallion and cook 1–2 minutes until fragrant, then remove and discard.',timerSeconds:90},
+      {title:'Cook the chicken',content:'Add chicken to the pan in a single layer and sear 5–7 minutes, stirring occasionally, until golden and cooked through.',timerSeconds:360},
+      {title:'Glaze',content:'Stir the sauce again and pour into the pan. Simmer on high 2 minutes, stirring, until thickened and coating the chicken.',timerSeconds:120},
+      {title:'Serve',content:'Spoon over rice and top with the scallion greens. Good with a side of broccoli or cucumber salad.'}
+    ],
+    grocery:[{s:'Proteins',i:'Chicken thighs',n:'Honey garlic chicken bowl'},{s:'Produce',i:'Scallions',n:'Multiple meals'},{s:'Pantry',i:'Honey',n:'Honey garlic chicken bowl'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'}]},
+
+  d10:{id:'d10',name:'Crispy Rice Salmon Sushi Salad',protein:'~27g',fiber:'~3g',note:'~38 min · also works as prepped lunch, keeps ~4 days · adapted from avocadoskillet.com',url:'https://avocadoskillet.com/crispy-rice-salmon-sushi-salad-with-spicy-mayo-dressing/',type:'dinner',ptype:'salmon',
+    adapt:'Cilantro removed. Dressing kept mild — no sriracha or chili crunch, just seasoned mayo.',
+    ingredients:[{amt:'1',name:'salmon fillet (~1 lb)'},{amt:'3 cups',name:'cooked rice, cooled (day-old is best)'},{amt:'2 tbsp',name:'soy sauce'},{amt:'1 tbsp',name:'sesame oil'},{amt:'1',name:'cucumber, diced'},{amt:'1',name:'avocado, diced'},{amt:'1/3 cup',name:'mayonnaise'},{amt:'1 tsp',name:'rice vinegar'},{amt:'2',name:'scallions, sliced'},{amt:'1 tsp',name:'sesame seeds'}],
+    steps:[
+      {title:'Crisp the rice',content:'Toss cooled rice with soy sauce and sesame oil. Spread in a thin layer on a lined baking sheet and bake at 425°F for 15–20 minutes until crisp, tossing halfway.',timerSeconds:1050},
+      {title:'Cook the salmon',content:'Season and bake or pan-sear the salmon until cooked through and flaky, then break into large pieces.',timerSeconds:720},
+      {title:'Make the dressing',content:'Whisk mayonnaise and rice vinegar together with a small splash of soy sauce — kept mild, no heat.'},
+      {title:'Assemble',content:'Combine crispy rice, salmon, cucumber, and avocado in a bowl. Drizzle with dressing and top with scallions and sesame seeds.'},
+      {title:'Storage note',content:'Eats well cold — this one doubles nicely as next-day lunch, and keeps about 4 days in the fridge.'}
+    ],
+    grocery:[{s:'Proteins',i:'Salmon fillet',n:'Crispy rice salmon salad'},{s:'Produce',i:'Cucumber',n:'Crispy rice salmon salad'},{s:'Produce',i:'Avocado',n:'Crispy rice salmon salad'},{s:'Produce',i:'Scallions',n:'Multiple meals'},{s:'Pantry',i:'Mayonnaise',n:'Crispy rice salmon salad'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'}]},
+
+  d11:{id:'d11',name:'Blanket Dumplings',protein:'~24g',fiber:'~1g',note:'No-fold method · Week A · 25–30 min · adapted from iwashyoudry.com',url:'https://iwashyoudry.com/viral-blanket-dumplings-recipe/',type:'dinner',ptype:'chicken',
+    adapt:'All ground chicken instead of pork. Added ~1/2 tsp extra sesame oil to make up for chicken being leaner — don\u2019t overmix the filling or it gets tough.',
+    ingredients:[{amt:'1 lb',name:'ground chicken'},{amt:'2',name:'scallions, finely chopped'},{amt:'2 cloves',name:'garlic, minced'},{amt:'1 tsp',name:'fresh ginger, grated'},{amt:'2 tbsp',name:'soy sauce'},{amt:'1 tsp',name:'sugar'},{amt:'1.5 tsp',name:'sesame oil (extra vs. the pork version)'},{amt:'1/4 tsp',name:'white pepper'},{amt:'1/4 tsp',name:'salt'},{amt:'~24',name:'wonton or dumpling wrappers'},{amt:'as needed',name:'water, for steaming'},{amt:'2 tbsp',name:'soy sauce (for dipping sauce)'},{amt:'1 tsp',name:'rice vinegar (for dipping sauce)'}],
+    steps:[
+      {title:'Mix the filling',content:'Combine ground chicken, scallions, garlic, ginger, soy sauce, sugar, sesame oil, white pepper, and salt in a bowl. Mix by hand just until it comes together and feels a little sticky — don\u2019t overmix.'},
+      {title:'Form the balls',content:'Roll the mixture into about 24 small balls, roughly 1 heaping teaspoon each, and place on a plate.'},
+      {title:'Blanket each one',content:'Heat a lightly oiled nonstick pan over medium. Place the meatballs in the pan spaced apart, then drape one wrapper over each and gently squeeze around the base so it sticks like a little blanket.'},
+      {title:'Steam',content:'Add a splash of water to the pan, cover, and steam 6–8 minutes until the wrappers turn translucent and the filling is cooked through.',timerSeconds:420},
+      {title:'Crisp the bottoms',content:'Uncover and let the bottoms cook another 2–3 minutes until golden and crisp.',timerSeconds:150},
+      {title:'Serve',content:'Whisk soy sauce and rice vinegar for a simple dipping sauce. Serve with a side of cucumber or Asian slaw to round out the fiber.'}
+    ],
+    grocery:[{s:'Proteins',i:'Ground chicken',n:'Blanket dumplings'},{s:'Produce',i:'Scallions',n:'Multiple meals'},{s:'Pantry',i:'Wonton or dumpling wrappers',n:'Blanket dumplings'}]}
+};
+
+const WEEK_PATTERNS={
+  A:[{b:'b4',l:'l4',lPrep:false,d:'d6'},{b:'b4',l:'l8',lPrep:true,d:'d9'},{b:'b4',l:'l5',lPrep:false,d:'d5'},{b:'b4',l:'l7',lPrep:true,d:'d11'},{b:'b4',l:'l4',lPrep:false,d:'d4'},{b:'b4',l:'l8',lPrep:true,d:'d1'},{b:'b4',l:'l7',lPrep:true,d:'d11'}],
+  B:[{b:'b4',l:'l2',lPrep:true,d:'d6'},{b:'b4',l:'l3',lPrep:true,d:'d4'},{b:'b4',l:'l4',lPrep:false,d:'d2'},{b:'b4',l:'l6',lPrep:true,d:'d9'},{b:'b4',l:'l4',lPrep:false,d:'d7'},{b:'b4',l:'l2',lPrep:true,d:'d4'},{b:'b4',l:'l3',lPrep:true,d:'d2'}],
+  C:[{b:'b4',l:'l5',lPrep:false,d:'d1'},{b:'b4',l:'l2',lPrep:true,d:'d3'},{b:'b4',l:'l4',lPrep:false,d:'d2'},{b:'b4',l:'l5',lPrep:false,d:'d1'},{b:'b4',l:'l7',lPrep:true,d:'d3'},{b:'b4',l:'l2',lPrep:true,d:'d2'},{b:'b4',l:'l4',lPrep:false,d:'d1'}]
+=======
+<script>
+// ─── BUILT-IN MEALS ───────────────────────────────────────────────
+const BUILTIN_MEALS={
+  b4:{id:'b4',name:'Blackberry raspberry parfait',protein:'~20g',fiber:'~7g',note:'Prep jars ahead',url:'#',type:'breakfast',ptype:'veg',prep:false},
+  l2:{id:'l2',name:'Chicken tzatziki bowls',protein:'~38g',fiber:'~5g',note:'Prepped · no reheat needed',url:'https://www.skinnytaste.com/',type:'lunch',prep:true,ptype:'chicken'},
+  l3:{id:'l3',name:'Soy glazed chicken rice bowl',protein:'~35g',fiber:'~4g',note:'Prepped · reheats well',url:'https://tiffycooks.com/',type:'lunch',prep:true,ptype:'chicken'},
+  l4:{id:'l4',name:'Oyakodon',protein:'~32g',fiber:'~3g',note:'Cook at lunch · 15 min',url:'https://tiffycooks.com/',type:'lunch',prep:false,ptype:'chicken'},
+  l5:{id:'l5',name:'Greek chicken orzo salad',protein:'~30g',fiber:'~6g',note:'Prepped · no olives, no roasted red peppers',url:'https://www.halfbakedharvest.com/',type:'lunch',prep:true,ptype:'chicken'},
+  l6:{id:'l6',name:'Caesar chicken pasta salad',protein:'~34g',fiber:'~4g',note:'Prepped · eats cold or reheats quickly',url:'https://www.healthfulblondie.com/',type:'lunch',prep:true,ptype:'chicken'},
+  l7:{id:'l7',name:'Lemon Tahini Quinoa Salad',protein:'~18g',fiber:'~9g',note:'Prepped · ~15 min · plant-based',url:'https://mariannaspantry.com/',type:'lunch',prep:true,ptype:'veg'},
+  l8:{id:'l8',name:'Smoky Corn & Chicken Salad',protein:'~28g',fiber:'~4g',note:'Cook at lunch or prep ahead · ~40 min (20 min marinate)',url:'https://tiffycooks.com/tex-mex-inspired-creamy-corn-chicken-salad/',type:'lunch',prep:false,ptype:'chicken'},
+  d1:{id:'d1',name:"Marianna's teriyaki salmon bowl",protein:'~52g',fiber:'~6g',note:'Your pick ★',url:'https://mariannaspantry.com/teriyaki-salmon-bowls/',type:'dinner',ptype:'salmon'},
+  d2:{id:'d2',name:'Miso salmon bowl',protein:'~35g',fiber:'~9g',note:'Air fryer or oven',url:'https://www.feastingathome.com/miso-salmon-bowls/',type:'dinner',ptype:'salmon'},
+  d3:{id:'d3',name:'One-pot lemon-dill miso butter salmon rice',protein:'~35g',fiber:'~4g',note:'One pot · 30 min',url:'https://tiffycooks.com/',type:'dinner',ptype:'salmon'},
+  d4:{id:'d4',name:'Teriyaki chicken bowl',protein:'~37g',fiber:'~5g',note:'One pan · 25 min',url:'https://wholesomemadeeasy.com/teriyaki-chicken-and-rice-bowls/',type:'dinner',ptype:'chicken'},
+  d5:{id:'d5',name:'Thai basil chicken',protein:'~38g',fiber:'~5g',note:'Week A — basil only, no cilantro',url:'https://onehappybite.com/thai-basil-chicken-stir-fry-high-protein-asian-recipe/',type:'dinner',ptype:'chicken'},
+  d6:{id:'d6',name:'Sesame teriyaki chicken',protein:'~40g',fiber:'~5g',note:'One pan · 20 min · no bell peppers',url:'https://www.halfbakedharvest.com/sesame-teriyaki-chicken/',type:'dinner',ptype:'chicken'},
+  d8:{id:'d8',name:'Sheet Pan Garlic Parmesan Chicken & Potatoes',protein:'~40g',fiber:'~4g',note:'One pan · 40 min',url:'#',type:'dinner',ptype:'chicken'},
+  d9:{id:'d9',name:'Honey Garlic Glazed Chicken Rice Bowl',protein:'~41g',fiber:'~2g',note:'~30 min (15 min marinate)',url:'https://tiffycooks.com/honey-garlic-glazed-chicken-rice-bowl',type:'dinner',ptype:'chicken'}
+};
+
+const MEAL_INGREDIENTS={
+  l2:[{s:'Proteins',i:'Rotisserie chicken',n:'Tzatziki bowls'},{s:'Produce',i:'Cucumber',n:'Tzatziki bowls + tzatziki sauce'},{s:'Produce',i:'Tomato',n:'Tzatziki bowls'},{s:'Produce',i:'Red onion',n:'Tzatziki bowls'},{s:'Produce',i:'Fresh dill',n:'Tzatziki sauce, if homemade'},{s:'Produce',i:'Lemon',n:'Tzatziki sauce'},{s:'Dairy & oats',i:'Feta cheese',n:'Tzatziki bowls'},{s:'Dairy & oats',i:'Greek yogurt',n:'Tzatziki sauce, if homemade'},{s:'Pantry',i:'Store-bought tzatziki (optional)',n:'Skip if making from scratch'}],
+  l3:[{s:'Proteins',i:'Chicken thigh',n:'Soy glazed chicken rice bowl'},{s:'Produce',i:'Garlic',n:'Pantry staple'},{s:'Produce',i:'Fresh ginger',n:'Freeze it — lasts months'},{s:'Produce',i:'Scallions',n:'Multiple meals'},{s:'Pantry',i:'Soy sauce',n:'Pantry staple'},{s:'Pantry',i:'Sesame oil',n:'Pantry staple'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'}],
+  l4:[{s:'Proteins',i:'Chicken thigh',n:'Oyakodon'},{s:'Produce',i:'Onion',n:'Oyakodon'},{s:'Dairy & oats',i:'Eggs',n:'Oyakodon'},{s:'Pantry',i:'Soy sauce',n:'Pantry staple'},{s:'Pantry',i:'Mirin',n:'Oyakodon'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'}],
+  l5:[{s:'Proteins',i:'Chicken breast',n:'Greek chicken orzo salad'},{s:'Pantry',i:'Orzo pasta',n:'Greek chicken orzo salad'},{s:'Produce',i:'Cucumber',n:'Greek chicken orzo salad'},{s:'Produce',i:'Tomato',n:'Greek chicken orzo salad'},{s:'Produce',i:'Red onion',n:'Greek chicken orzo salad'},{s:'Dairy & oats',i:'Feta cheese',n:'Greek chicken orzo salad'},{s:'Produce',i:'Lemon',n:'Lemon-oregano dressing'},{s:'Pantry',i:'Dried oregano',n:'Lemon-oregano dressing'},{s:'Pantry',i:'Olive oil',n:'Pantry staple'}],
+  l6:[{s:'Proteins',i:'Chicken breast',n:'Caesar chicken pasta salad'},{s:'Pantry',i:'Pasta',n:'Caesar chicken pasta salad'},{s:'Dairy & oats',i:'Parmesan, grated',n:'Caesar chicken pasta salad'},{s:'Pantry',i:'Caesar dressing',n:'Non-vinegary style'}],
+  l7:[{s:'Pantry',i:'Quinoa',n:'Lemon tahini quinoa salad'},{s:'Frozen',i:'Fire-roasted corn',n:'Lemon tahini quinoa salad'},{s:'Frozen',i:'Edamame',n:'Lemon tahini quinoa salad'},{s:'Produce',i:'Cucumber',n:'Lemon tahini quinoa salad'},{s:'Produce',i:'Red onion',n:'Lemon tahini quinoa salad'},{s:'Produce',i:'Peaches (or dried apricots off-season)',n:'Lemon tahini quinoa salad'},{s:'Dairy & oats',i:'Feta cheese',n:'Lemon tahini quinoa salad'},{s:'Pantry',i:'Pistachios',n:'Lemon tahini quinoa salad'},{s:'Pantry',i:'Tahini',n:'Lemon tahini quinoa salad'},{s:'Produce',i:'Lemon',n:'Lemon tahini quinoa salad'},{s:'Pantry',i:'Olive oil',n:'Pantry staple'},{s:'Produce',i:'Garlic',n:'Pantry staple'}],
+  l8:[{s:'Proteins',i:'Chicken breast',n:'Smoky corn & chicken salad'},{s:'Pantry',i:'Mild taco seasoning',n:'For chicken rub and corn, no heat'},{s:'Pantry',i:'Olive oil',n:'Pantry staple'},{s:'Produce',i:'Corn (fresh or canned)',n:'Smoky corn & chicken salad'},{s:'Dairy & oats',i:'Butter',n:'Smoky corn & chicken salad'},{s:'Produce',i:'Cucumber',n:'Smoky corn & chicken salad'},{s:'Produce',i:'Red onion',n:'Smoky corn & chicken salad'},{s:'Produce',i:'Fresh parsley or chives',n:'Cilantro sub'},{s:'Dairy & oats',i:'Greek yogurt',n:'Smoky corn & chicken salad'},{s:'Produce',i:'Lemon',n:'Smoky corn & chicken salad'},{s:'Pantry',i:'Garlic powder',n:'Smoky corn & chicken salad'},{s:'Pantry',i:'Smoked paprika',n:'Smoky, not hot'}],
+  d1:[{s:'Proteins',i:'Salmon fillet',n:"Marianna's teriyaki bowl"},{s:'Produce',i:'Cucumber',n:'Teriyaki salmon bowl'},{s:'Produce',i:'Scallions',n:'All dinners'},{s:'Frozen',i:'Edamame',n:'Teriyaki salmon bowl'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag — all dinners'},{s:'Pantry',i:'Soy sauce',n:'Pantry staple'},{s:'Pantry',i:'Honey',n:'Teriyaki sauce'},{s:'Pantry',i:'Coconut sugar or brown sugar',n:'Teriyaki sauce'},{s:'Pantry',i:'Sesame oil',n:'Pantry staple'}],
+  d2:[{s:'Proteins',i:'Salmon fillet',n:'Miso salmon bowl'},{s:'Produce',i:'Avocado',n:'Buy firm, ripen by dinner'},{s:'Produce',i:'Scallions',n:'All dinners'},{s:'Frozen',i:'Edamame',n:'Miso salmon bowl'},{s:'Produce',i:'Cabbage or coleslaw bag',n:'Miso salmon bowl'},{s:'Produce',i:'Mushrooms (any)',n:'Miso salmon bowl'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'},{s:'Pantry',i:'Miso paste',n:'Miso glaze'},{s:'Pantry',i:'Mirin',n:'Miso marinade'},{s:'Pantry',i:'Soy sauce',n:'Pantry staple'},{s:'Pantry',i:'Sesame oil',n:'Pantry staple'}],
+  d3:[{s:'Proteins',i:'Salmon fillet',n:'Lemon-dill miso butter salmon rice'},{s:'Produce',i:'Fresh dill',n:'Lemon-dill miso butter salmon rice'},{s:'Produce',i:'Lemon',n:'Lemon-dill miso butter salmon rice'},{s:'Dairy & oats',i:'Butter',n:'Miso butter'},{s:'Pantry',i:'Miso paste',n:'Miso butter'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'},{s:'Produce',i:'Scallions',n:'All dinners'}],
+  d4:[{s:'Proteins',i:'Chicken breast',n:'Teriyaki chicken bowl'},{s:'Produce',i:'Broccoli',n:'Teriyaki chicken bowl'},{s:'Produce',i:'Avocado',n:'Teriyaki chicken bowl'},{s:'Produce',i:'Scallions',n:'All dinners'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'},{s:'Pantry',i:'Soy sauce',n:'Pantry staple'},{s:'Pantry',i:'Honey',n:'Teriyaki sauce'},{s:'Pantry',i:'Sesame oil',n:'Pantry staple'},{s:'Pantry',i:'Sesame seeds',n:'Garnish'}],
+  d5:[{s:'Proteins',i:'Ground chicken',n:'Thai basil chicken'},{s:'Produce',i:'Fresh basil',n:'Basil only — no cilantro'},{s:'Produce',i:'Garlic',n:'Pantry staple'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'},{s:'Pantry',i:'Oyster sauce',n:'Thai basil sauce'},{s:'Pantry',i:'Fish sauce',n:'Thai basil sauce'},{s:'Pantry',i:'Soy sauce',n:'Pantry staple'},{s:'Dairy & oats',i:'Egg',n:'Fried egg on top — optional'}],
+  d6:[{s:'Proteins',i:'Chicken breast',n:'Sesame teriyaki chicken'},{s:'Produce',i:'Broccoli',n:'Sesame teriyaki chicken — no bell peppers'},{s:'Produce',i:'Scallions',n:'All dinners'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'},{s:'Pantry',i:'Soy sauce',n:'Pantry staple'},{s:'Pantry',i:'Sesame oil',n:'Pantry staple'},{s:'Pantry',i:'Sesame seeds',n:'Sesame crumbs'},{s:'Produce',i:'Fresh ginger',n:'Freeze it — lasts months'}],
+  d8:[{s:'Proteins',i:'Chicken thighs or breast',n:'Sheet pan garlic parmesan chicken & potatoes'},{s:'Produce',i:'Baby potatoes',n:'Sheet pan garlic parmesan chicken & potatoes'},{s:'Produce',i:'Garlic',n:'Pantry staple'},{s:'Dairy & oats',i:'Parmesan, grated',n:'Sheet pan garlic parmesan chicken & potatoes'},{s:'Pantry',i:'Olive oil',n:'Pantry staple'},{s:'Pantry',i:'Italian seasoning',n:'Sheet pan garlic parmesan chicken & potatoes'}],
+  d9:[{s:'Proteins',i:'Chicken thighs',n:'Honey garlic glazed chicken rice bowl'},{s:'Pantry',i:'Soy sauce',n:'Pantry staple'},{s:'Pantry',i:'Oyster sauce',n:'Honey garlic glazed chicken rice bowl'},{s:'Pantry',i:'Honey',n:'Honey garlic glazed chicken rice bowl'},{s:'Produce',i:'Garlic',n:'Pantry staple'},{s:'Produce',i:'Scallions',n:'All dinners'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'},{s:'Produce',i:'Broccoli or cucumber',n:'Suggested side'}]
+};
+
+const WEEK_PATTERNS={
+  A:[{b:'b4',l:'l3',lPrep:true,d:'d5'},{b:'b4',l:'l4',lPrep:false,d:'d4'},{b:'b4',l:'l3',lPrep:true,d:'d6'},{b:'b4',l:'l4',lPrep:false,d:'d5'},{b:'b4',l:'l7',lPrep:true,d:'d9'},{b:'b4',l:'l4',lPrep:false,d:'d1'},{b:'b4',l:'l3',lPrep:true,d:'d2'}],
+  B:[{b:'b4',l:'l2',lPrep:true,d:'d6'},{b:'b4',l:'l4',lPrep:false,d:'d4'},{b:'b4',l:'l2',lPrep:true,d:'d8'},{b:'b4',l:'l4',lPrep:false,d:'d6'},{b:'b4',l:'l3',lPrep:true,d:'d9'},{b:'b4',l:'l2',lPrep:true,d:'d1'},{b:'b4',l:'l6',lPrep:true,d:'d2'}],
+  C:[{b:'b4',l:'l5',lPrep:true,d:'d1'},{b:'b4',l:'l4',lPrep:false,d:'d3'},{b:'b4',l:'l6',lPrep:true,d:'d2'},{b:'b4',l:'l4',lPrep:false,d:'d1'},{b:'b4',l:'l7',lPrep:true,d:'d3'},{b:'b4',l:'l5',lPrep:true,d:'d2'},{b:'b4',l:'l4',lPrep:false,d:'d1'}]
+>>>>>>> ec51a0746c7cf2eb2dc73c67f0e9231f284fc46a
+};
+
+const DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MONTHS_SHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+<<<<<<< HEAD
+// ─── BAKED-IN PLAN (Sun Aug 9 – Thu Aug 13, 2026, Week A) ─────────
+const BAKED_PLAN_VERSION='2026-08-08-v2';
+const BAKED_PLAN={
+  startDate:'2026-08-09',endDate:'2026-08-13',weekType:'A',
+  days:[
+    {date:'2026-08-09',b:'b4',l:'l7',lPrep:true,d:'d11',isOut:false,skipLunch:false,skipDinner:false},
+    {date:'2026-08-10',b:'b4',l:'l4',lPrep:false,d:'d6',isOut:false,skipLunch:false,skipDinner:false},
+    {date:'2026-08-11',b:'b4',l:'l8',lPrep:true,d:'d9',isOut:false,skipLunch:false,skipDinner:false},
+    {date:'2026-08-12',b:'b4',l:'l5',lPrep:false,d:'d5',isOut:false,skipLunch:false,skipDinner:false},
+    {date:'2026-08-13',b:'b4',l:'l4',lPrep:false,d:'d10',isOut:false,skipLunch:false,skipDinner:false}
+=======
+// ─── BAKED-IN PLAN (updates each time Claude regenerates the app) ─
+const BAKED_PLAN_VERSION='v2026-07-21-tue-fri';
+const BAKED_PLAN={
+  version:BAKED_PLAN_VERSION,
+  startDate:'2026-07-21',
+  endDate:'2026-07-26',
+  weekType:'B',
+  days:[
+    {date:'2026-07-21',b:'b4',l:'l4',lPrep:false,d:'d4',isOut:false,skipBreakfast:true,skipLunch:false,skipDinner:false},
+    {date:'2026-07-22',b:'b4',l:'l2',lPrep:true,d:'d8',isOut:false,skipLunch:false,skipDinner:false},
+    {date:'2026-07-23',b:'b4',l:'l4',lPrep:false,d:'d6',isOut:false,skipLunch:false,skipDinner:false},
+    {date:'2026-07-24',b:'b4',l:'l4',lPrep:true,d:'d6',isOut:false,skipLunch:false,skipDinner:true},
+    {date:'2026-07-25',b:'b4',l:'l4',lPrep:false,d:'d6',isOut:false,skipBreakfast:true,skipLunch:true,skipDinner:false},
+    {date:'2026-07-26',b:'b4',l:'l4',lPrep:false,d:'d6',isOut:false,skipBreakfast:true,skipLunch:true,skipDinner:false}
+>>>>>>> ec51a0746c7cf2eb2dc73c67f0e9231f284fc46a
+  ]
+};
+
+// ─── STATE ───────────────────────────────────────────────────────
+<<<<<<< HEAD
+let weekTypes=JSON.parse(localStorage.getItem('mealWeekTypes')||'null')||{A:{label:'Week A',sub:'Ground chicken focus'},B:{label:'Week B',sub:'Rotisserie chicken focus'},C:{label:'Week C',sub:'Salmon focus'}};
+let currentWeek=localStorage.getItem('mealPlanWeek')||BAKED_PLAN.weekType;
+let checkedItems=JSON.parse(localStorage.getItem('mealChecked')||'{}');
+let customGrocery=JSON.parse(localStorage.getItem('mealCustomGrocery')||'{}');
+let storedPlanVersion=localStorage.getItem('mealPlanVersion')||null;
+let plan;
+if(storedPlanVersion===BAKED_PLAN_VERSION){
+  plan=JSON.parse(localStorage.getItem('mealPlan')||'null');
+}
+if(!plan){
+  plan=JSON.parse(JSON.stringify(BAKED_PLAN));
+  currentWeek=BAKED_PLAN.weekType;
+  checkedItems={};
+  customGrocery={};
+}
+=======
+let weekTypes=JSON.parse(localStorage.getItem('mealWeekTypes')||'null')||{A:{label:'Week A',sub:'Ground chicken + fresh herbs'},B:{label:'Week B',sub:'Rotisserie chicken + cabbage'},C:{label:'Week C',sub:'Salmon focus'}};
+let savedPlan=JSON.parse(localStorage.getItem('mealPlan')||'null');
+let plan=(savedPlan&&savedPlan.version===BAKED_PLAN_VERSION)?savedPlan:JSON.parse(JSON.stringify(BAKED_PLAN));
+let currentWeek=(plan&&plan.weekType)?plan.weekType:(localStorage.getItem('mealPlanWeek')||'A');
+let checkedItems=JSON.parse(localStorage.getItem('mealChecked')||'{}');
+let customGrocery=JSON.parse(localStorage.getItem('mealCustomGrocery')||'{}');
+>>>>>>> ec51a0746c7cf2eb2dc73c67f0e9231f284fc46a
+let customRecipes=JSON.parse(localStorage.getItem('mealCustomRecipes')||'[]');
+let activeDay=0;
+let editMode={home:false,plan:false,grocery:false};
+let planView='list';
+let calYear=new Date().getFullYear();
+let calMonth=new Date().getMonth();
+let calActiveDate=null;
+let recipeFilter='all';
+let showAddRecipeForm=false;
+let showDateEditor=false;
+let modalContext=null;
+let cookState={ingredientsDone:{},stepsDone:{}};
+
+function save(){
+  localStorage.setItem('mealWeekTypes',JSON.stringify(weekTypes));
+  localStorage.setItem('mealPlanWeek',currentWeek);
+  localStorage.setItem('mealChecked',JSON.stringify(checkedItems));
+  localStorage.setItem('mealCustomGrocery',JSON.stringify(customGrocery));
+  localStorage.setItem('mealPlan',JSON.stringify(plan));
+  localStorage.setItem('mealPlanVersion',BAKED_PLAN_VERSION);
+  localStorage.setItem('mealCustomRecipes',JSON.stringify(customRecipes));
+}
+
+// ─── MEAL HELPERS ────────────────────────────────────────────────
+function getAllMeals(){
+  const all={...BUILTIN_MEALS};
+  customRecipes.forEach(r=>{all[r.id]=r;});
+  return all;
+}
+function getMeal(id){return getAllMeals()[id]||null;}
+function getMealGrocery(id){return getMeal(id)?.grocery||[];}
+
+function getDotColor(meal){
+  if(!meal) return '#ccc';
+  if(meal.type==='breakfast') return '#c8a96e';
+  if(meal.type==='lunch') return meal.prep?'#3a6b4a':'#c8873a';
+  if(meal.ptype==='salmon') return '#c0504a';
+  if(meal.ptype==='shrimp') return '#3a5fa0';
+  if(meal.isCustom) return '#0f6e56';
+  return '#c8873a';
+}
+function getEmoji(meal){
+  if(!meal) return '?';
+  if(meal.type==='breakfast') return '🥣';
+  if(meal.type==='lunch') return meal.prep?'❄️':'🔥';
+  if(meal.ptype==='salmon') return '🐟';
+  if(meal.ptype==='shrimp') return '🦐';
+  if(meal.isCustom) return '⭐';
+  return '🍗';
+}
+function getIconCls(meal){
+  if(!meal) return 'b-icon';
+  if(meal.type==='breakfast') return 'b-icon';
+  if(meal.type==='lunch') return meal.prep?'l-icon-p':'l-icon-c';
+  if(meal.ptype==='salmon') return 'd-icon-s';
+  if(meal.ptype==='shrimp') return 'd-icon-sh';
+  if(meal.isCustom) return 'd-icon-cu';
+  return 'd-icon-c';
+}
+function lunchTag(lPrep){return lPrep?'<span class="meal-row-tag tag-prepped">prepped</span>':'<span class="meal-row-tag tag-cook">cook</span>';}
+function dinnerTag(meal){
+  if(!meal) return '';
+  if(meal.isCustom) return '<span class="meal-row-tag tag-custom">custom</span>';
+  if(meal.ptype==='salmon') return '<span class="meal-row-tag tag-salmon">salmon</span>';
+  if(meal.ptype==='shrimp') return '<span class="meal-row-tag tag-shrimp">shrimp</span>';
+  return '<span class="meal-row-tag tag-chicken">chicken</span>';
+}
+
+// ─── DATE HELPERS ────────────────────────────────────────────────
+function dateStr(d){return d.toISOString().slice(0,10);}
+function parseDate(s){const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);}
+function addDays(d,n){const r=new Date(d);r.setDate(r.getDate()+n);return r;}
+function today(){return dateStr(new Date());}
+function isToday(s){return s===today();}
+function isWeekend(s){const d=parseDate(s).getDay();return d===0||d===6;}
+function formatShort(s){const d=parseDate(s);return MONTHS_SHORT[d.getMonth()]+' '+d.getDate();}
+function formatFull(s){const d=parseDate(s);return DOW[d.getDay()]+', '+MONTHS_SHORT[d.getMonth()]+' '+d.getDate();}
+
+// ─── PLAN BUILDING ───────────────────────────────────────────────
+function buildPlan(startStr,endStr,weekType){
+  const days=[];
+  let cur=parseDate(startStr);
+  const end=parseDate(endStr);
+  while(cur<=end){
+    const ds=dateStr(cur);
+    const dow=cur.getDay();
+    const pi=((dow-1)+7)%7;
+    const pat=WEEK_PATTERNS[weekType][pi];
+    const wknd=dow===0||dow===6;
+    days.push({date:ds,b:pat.b,l:pat.l,lPrep:pat.lPrep,d:pat.d,isOut:false,skipLunch:wknd,skipDinner:false});
+    cur=addDays(cur,1);
+  }
+  return{startDate:startStr,endDate:endStr,weekType,days};
+}
+
+function initPlanIfNeeded(){
+  if(!plan){
+    plan=buildPlan(today(),dateStr(addDays(new Date(),4)),currentWeek);
+    save();
+  }
+}
+
+// ─── GROCERY ────────────────────────────────────────────────────
+function derivedGroceryList(){
+  const mealIds=new Set();
+  (plan?.days||[]).forEach(day=>{
+    if(day.isOut) return;
+    mealIds.add(day.b);
+    if(!day.skipLunch) mealIds.add(day.l);
+    if(!day.skipDinner) mealIds.add(day.d);
+  });
+  const seen=new Map();
+  mealIds.forEach(id=>{getMealGrocery(id).forEach(ing=>{if(!seen.has(ing.i)) seen.set(ing.i,ing);});});
+  const sections={};
+  seen.forEach(ing=>{if(!sections[ing.s]) sections[ing.s]=[];sections[ing.s].push({item:ing.i,note:ing.n});});
+  const cKey=currentWeek+'_custom';
+  if(customGrocery[cKey]&&customGrocery[cKey].length){
+    if(!sections['My additions']) sections['My additions']=[];
+    customGrocery[cKey].forEach(ci=>sections['My additions'].push({item:ci.item,note:ci.note||''}));
+  }
+  return sections;
+}
+
+// ─── NAVIGATION ──────────────────────────────────────────────────
+function showScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  document.getElementById('nav-'+name).classList.add('active');
+}
+function toggleEdit(screen){
+  editMode[screen]=!editMode[screen];
+  document.getElementById('edit-toggle-'+screen).classList.toggle('active',editMode[screen]);
+  if(screen==='home') renderHome();
+  else if(screen==='plan'){renderPlanList();renderCalendar();}
+  else if(screen==='grocery') renderGrocery();
+}
+function setPlanView(v){
+  planView=v;
+  document.getElementById('vt-list').classList.toggle('active',v==='list');
+  document.getElementById('vt-cal').classList.toggle('active',v==='cal');
+  document.getElementById('plan-list-view').style.display=v==='list'?'block':'none';
+  document.getElementById('plan-cal-view').style.display=v==='cal'?'block':'none';
+  if(v==='cal') renderCalendar();
+}
+function advanceWeek(){
+  const order=['A','B','C'];
+  currentWeek=order[(order.indexOf(currentWeek)+1)%3];
+  if(plan){plan.weekType=currentWeek;plan.days=plan.days.map(day=>{const d=parseDate(day.date);const pi=((d.getDay()-1)+7)%7;const pat=WEEK_PATTERNS[currentWeek][pi];return{...day,b:pat.b,l:pat.l,lPrep:pat.lPrep,d:pat.d};});}
+  checkedItems={};customGrocery={};save();renderAll();
+}
+function advanceWeekFromGrocery(){advanceWeek();showScreen('grocery');}
+function resetGroceries(){checkedItems={};save();renderGrocery();}
+
+// ─── MODAL (swap picker) ─────────────────────────────────────────
+function openSwapModal(dayIdx,slot){
+  modalContext={dayIdx,slot};
+  const dp=plan.days[dayIdx];
+  const currentId=dp[slot];
+  const allMeals=getAllMeals();
+  const byType={b:Object.values(allMeals).filter(m=>m.type==='breakfast'),l:Object.values(allMeals).filter(m=>m.type==='lunch'),d:Object.values(allMeals).filter(m=>m.type==='dinner')};
+  const type=slot==='b'?'b':slot==='l'?'l':'d';
+  document.getElementById('modal-title').textContent=slot==='b'?'Swap breakfast':slot==='l'?'Swap lunch':'Swap dinner';
+  document.getElementById('modal-options').innerHTML=byType[type].map(m=>`
+    <div class="modal-option" onclick="selectSwap('${m.id}')">
+      <div class="rr-icon ${getIconCls(m)} mo-icon">${getEmoji(m)}</div>
+      <div style="flex:1;min-width:0">
+        <div class="mo-name">${m.name}${m.isCustom?'<span class="mo-custom-badge">custom</span>':''}</div>
+        <div class="mo-meta">${m.protein||''}${m.fiber?' · '+m.fiber+' fiber':''} · ${m.note||''}</div>
+      </div>
+      <div class="mo-check ${m.id===currentId?'visible':''}">✓</div>
+    </div>`).join('');
+  document.getElementById('modal-overlay').classList.remove('hidden');
+}
+function selectSwap(mealId){
+  if(!modalContext) return;
+  const dp=plan.days[modalContext.dayIdx];
+  dp[modalContext.slot]=mealId;
+  if(modalContext.slot==='l') dp.lPrep=getMeal(mealId)?.prep||false;
+  save();closeModal();
+  renderHome();renderPlanList();renderCalendar();renderGrocery();
+}
+function closeModal(){document.getElementById('modal-overlay').classList.add('hidden');modalContext=null;}
+
+// ─── COOK MODE ───────────────────────────────────────────────────
+function openCookMode(mealId){
+  const m=getMeal(mealId);
+  if(!m) return;
+  cookState={ingredientsDone:{},stepsDone:{}};
+  document.getElementById('cook-title').textContent=m.name;
+  document.getElementById('cook-source').textContent=m.note||'';
+  const metaRow=document.getElementById('cook-meta-row');
+  const pills=[];
+  if(m.protein) pills.push(m.protein+' protein');
+  if(m.fiber) pills.push(m.fiber+' fiber');
+  if(m.type==='lunch') pills.push(m.prep?'prepped ahead':'cook fresh');
+  metaRow.innerHTML=pills.map(p=>`<span class="cook-meta-pill">${p}</span>`).join('');
+  const adaptEl=document.getElementById('cook-adapt-note');
+  if(m.adapt){adaptEl.style.display='block';adaptEl.innerHTML='💡 <strong>Adapted for you:</strong> '+m.adapt;}
+  else{adaptEl.style.display='none';}
+  const ingList=m.ingredients||[];
+  document.getElementById('cook-ing-list').innerHTML=ingList.map((ing,i)=>`
+    <div class="cook-ing-row" id="cook-ing-${i}" onclick="toggleCookIngredient(${i})">
+      <div class="cook-ing-check"><span class="check-mark">✓</span></div>
+      <div class="cook-ing-amt">${ing.amt}</div>
+      <div class="cook-ing-name">${ing.name}</div>
+    </div>`).join('')||'<div style="padding:14px;font-size:13px;color:var(--text3)">No ingredient list yet.</div>';
+  const steps=m.steps||[];
+  document.getElementById('cook-steps').innerHTML=steps.map((st,i)=>`
+    <div class="cook-step" id="cook-step-${i}" onclick="toggleCookStep(${i})">
+      <div class="cook-step-num">${i+1}</div>
+      <div class="cook-step-body">
+        <div class="cook-step-title">${st.title}</div>
+        <div class="cook-step-content">${st.content}</div>
+        ${st.timerSeconds?`<div class="cook-step-timer">⏱ ${Math.round(st.timerSeconds/60)} min</div>`:''}
+      </div>
+    </div>`).join('')||'<div style="padding:14px;font-size:13px;color:var(--text3)">No steps yet.</div>';
+  const link=document.getElementById('cook-original-link');
+  if(m.url&&m.url!=='#'){link.style.display='block';link.href=m.url;}
+  else{link.style.display='none';}
+  document.getElementById('cook-overlay').classList.add('show');
+  document.getElementById('cook-overlay').scrollTop=0;
+}
+function toggleCookIngredient(i){
+  cookState.ingredientsDone[i]=!cookState.ingredientsDone[i];
+  const el=document.getElementById('cook-ing-'+i);
+  el.classList.toggle('done',!!cookState.ingredientsDone[i]);
+  el.querySelector('.cook-ing-check').classList.toggle('checked',!!cookState.ingredientsDone[i]);
+}
+function toggleCookStep(i){
+  cookState.stepsDone[i]=!cookState.stepsDone[i];
+  document.getElementById('cook-step-'+i).classList.toggle('done',!!cookState.stepsDone[i]);
+}
+function closeCookMode(){document.getElementById('cook-overlay').classList.remove('show');}
+
+// ─── DATE EDITOR ─────────────────────────────────────────────────
+function renderDateEditor(){
+  const el=document.getElementById('date-editor-home');
+  if(!showDateEditor){el.innerHTML='';return;}
+  const s=plan?plan.startDate:today();
+  const e=plan?plan.endDate:dateStr(addDays(new Date(),4));
+  el.innerHTML=`<div class="date-editor">
+    <div class="de-title">Set your planning window</div>
+    <div class="de-row"><span class="de-label">From</span><input class="de-input" type="date" id="de-start" value="${s}"></div>
+    <div class="de-row"><span class="de-label">Through</span><input class="de-input" type="date" id="de-end" value="${e}"></div>
+    <div class="de-actions">
+      <button class="de-btn secondary" onclick="cancelDateEdit()">Cancel</button>
+      <button class="de-btn primary" onclick="applyDateRange()">Set plan</button>
+    </div>
+  </div>`;
+}
+function applyDateRange(){
+  const s=document.getElementById('de-start').value,e=document.getElementById('de-end').value;
+  if(!s||!e||s>e) return;
+  plan=buildPlan(s,e,currentWeek);activeDay=0;showDateEditor=false;save();renderAll();
+}
+function cancelDateEdit(){showDateEditor=false;renderDateEditor();}
+function openDateEditor(){showDateEditor=true;renderDateEditor();}
+function jumpToDay(idx){activeDay=idx;showScreen('plan');setPlanView('list');renderPlanList();}
+
+// ─── HOME ────────────────────────────────────────────────────────
+function renderHome(){
+  initPlanIfNeeded();
+  const h=new Date().getHours();
+  document.getElementById('home-greeting').textContent=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
+  document.getElementById('home-week-label').textContent=weekTypes[currentWeek].label+' — '+weekTypes[currentWeek].sub;
+  ['A','B','C'].forEach((w,i)=>document.getElementById('pip-'+i).classList.toggle('active',w===currentWeek));
+  const wt=weekTypes[currentWeek];
+  const wsWrap=document.getElementById('ws-title-wrap');
+  if(editMode.home){
+    wsWrap.innerHTML=`<input class="ws-title-input" value="${wt.label}" onchange="weekTypes[currentWeek].label=this.value;save();document.getElementById('home-week-label').textContent=weekTypes[currentWeek].label+' — '+weekTypes[currentWeek].sub;">
+    <input class="ws-sub-input" value="${wt.sub}" onchange="weekTypes[currentWeek].sub=this.value;save();">`;
+  } else {
+    wsWrap.innerHTML=`<div class="ws-title">${wt.label}</div><div class="ws-sub">${wt.sub}</div>`;
+  }
+  renderDateEditor();
+  const pwEl=document.getElementById('plan-window-display');
+  if(!showDateEditor&&plan){
+    const s=formatShort(plan.startDate),e=formatShort(plan.endDate);
+    const rng=plan.startDate===plan.endDate?s:s+' – '+e;
+    const pills=plan.days.map((day,i)=>{
+      const d=parseDate(day.date);
+      const b=getMeal(day.b),l=getMeal(day.l),din=getMeal(day.d);
+      const wknd=isWeekend(day.date);
+      return`<div class="pw-day-pill ${isToday(day.date)?'today':''} ${wknd?'weekend':''}" onclick="jumpToDay(${i})">
+        <div class="pw-pill-dow">${DOW[d.getDay()]}</div>
+        <div class="pw-pill-num">${d.getDate()}</div>
+        ${day.isOut?'<div class="pw-pill-out">out</div>':
+          `<div class="pw-pill-dots">
+            <div class="pw-dot" style="background:${getDotColor(b)}"></div>
+            ${!day.skipLunch?`<div class="pw-dot" style="background:${getDotColor(l)}"></div>`:''}
+            ${!day.skipDinner?`<div class="pw-dot" style="background:${getDotColor(din)}"></div>`:''}
+          </div>`}
+      </div>`;
+    }).join('');
+    pwEl.innerHTML=`<div class="plan-window-card">
+      <div class="pw-top"><div><div class="pw-title">${rng}</div><div class="pw-range">${plan.days.length} day${plan.days.length!==1?'s':''} planned</div></div>
+      <button class="pw-edit-btn" onclick="openDateEditor()">Change →</button></div>
+      <div class="pw-days-row">${pills}</div>
+    </div>`;
+  } else if(!showDateEditor) {pwEl.innerHTML='';}
+  const todaySec=document.getElementById('today-section');
+  const tidx=plan.days.findIndex(d=>isToday(d.date));
+  const sidx=tidx>=0?tidx:0;
+  const dp=plan.days[sidx];
+  if(dp){
+    const b=getMeal(dp.b),l=getMeal(dp.l),d=getMeal(dp.d);
+    const lbl=tidx>=0?'Today':'Next: '+formatFull(dp.date);
+    if(dp.isOut){
+      todaySec.innerHTML=`<div class="section-label">${lbl}</div><div class="today-card"><div class="today-day-label" style="padding-bottom:14px">${formatFull(dp.date)} · <span style="color:var(--text3);font-weight:400">eating out</span></div></div>`;
+    } else {
+      const rows=[];
+      if(b) rows.push({slot:'b',meal:b,tag:'',isPrep:false});
+      if(!dp.skipLunch&&l) rows.push({slot:'l',meal:l,tag:lunchTag(dp.lPrep),isPrep:dp.lPrep});
+      if(!dp.skipDinner&&d) rows.push({slot:'d',meal:d,tag:dinnerTag(d)});
+      if(editMode.home){
+        todaySec.innerHTML=`<div class="section-label">${lbl} <span style="font-size:11px;color:var(--amber);font-weight:500">· tap ✎ to swap</span></div>
+        <div class="today-card"><div class="today-day-label">${formatFull(dp.date)}</div>
+        ${rows.map(r=>`<div class="meal-row" onclick="openSwapModal(${sidx},'${r.slot}')">
+          <div class="meal-type-dot" style="background:${getDotColor(r.meal)}"></div>
+          <div class="meal-row-content"><div class="meal-row-type">${r.slot==='b'?'Breakfast':r.slot==='l'?'Lunch':'Dinner'}</div><div class="meal-row-name">${r.meal.name}</div></div>
+          ${r.tag}<div class="edit-icon">✎</div></div>`).join('')}
+        </div>`;
+      } else {
+        todaySec.innerHTML=`<div class="section-label">${lbl}</div>
+        <div class="today-card"><div class="today-day-label">${formatFull(dp.date)}</div>
+        ${rows.map(r=>`<div class="meal-row" onclick="openCookMode('${r.meal.id}')">
+          <div class="meal-type-dot" style="background:${getDotColor(r.meal)}"></div>
+          <div class="meal-row-content"><div class="meal-row-type">${r.slot==='b'?'Breakfast':r.slot==='l'?'Lunch':'Dinner'}</div><div class="meal-row-name">${r.meal.name}</div></div>
+          ${r.tag}<div class="cook-icon">👨‍🍳</div></div>`).join('')}
+        </div>`;
+      }
+    }
+  }
+  const prepEl=document.getElementById('prep-reminder');
+  const ti=plan.days.findIndex(d=>isToday(d.date));
+  const nxt=ti>=0?plan.days[ti+1]:null;
+  if(nxt&&nxt.lPrep&&!nxt.isOut&&!nxt.skipLunch){
+    prepEl.classList.add('show');
+    document.getElementById('prep-text').innerHTML=`<strong>Prep tonight:</strong> Make 2 portions of ${getMeal(nxt.l)?.name||'tomorrow\'s lunch'} — ~20 min.`;
+  } else {prepEl.classList.remove('show');}
+}
+
+// ─── PLAN LIST VIEW ──────────────────────────────────────────────
+function renderPlanList(){
+  initPlanIfNeeded();
+  const wt=weekTypes[currentWeek];
+  document.getElementById('plan-header-title').textContent=wt.label;
+  const s=formatShort(plan.startDate),e=formatShort(plan.endDate);
+  document.getElementById('plan-header-sub').textContent=(plan.startDate===plan.endDate?s:s+' – '+e)+' · '+(editMode.plan?'tap Swap to change':'tap a meal to cook');
+  document.getElementById('day-tabs').innerHTML=plan.days.map((day,i)=>{
+    const d=parseDate(day.date);
+    const wknd=isWeekend(day.date);
+    return`<div class="day-tab ${i===activeDay?'active':''} ${isToday(day.date)&&i!==activeDay?'is-today':''} ${wknd&&i!==activeDay?'is-weekend':''}" onclick="selectDay(${i})">
+      <div class="day-tab-dow">${DOW[d.getDay()]}</div>
+      <div class="day-tab-date">${d.getDate()}</div>
+      <div class="day-tab-dot" style="background:${i===activeDay?'rgba(255,255,255,.5)':'var(--cream3)'}"></div>
+    </div>`;
+  }).join('');
+  renderDayDetail(activeDay);
+}
+function selectDay(idx){activeDay=idx;renderPlanList();}
+
+function renderDayDetail(idx){
+  if(!plan||!plan.days[idx]){document.getElementById('day-detail').innerHTML='';return;}
+  const dp=plan.days[idx];
+  const b=getMeal(dp.b),l=getMeal(dp.l),d=getMeal(dp.d);
+  const nxt=plan.days[idx+1];
+  const prepBanner=nxt&&nxt.lPrep&&!nxt.isOut&&!nxt.skipLunch?
+    `<div class="prep-night-banner">🌙 <strong>Prep tonight:</strong> Make 2 portions of ${getMeal(nxt.l)?.name||"tomorrow's lunch"} — ~20 min.</div>`:'';
+  const dateLbl=formatFull(dp.date)+(isToday(dp.date)?' · today':'')+(isWeekend(dp.date)?' · weekend':'');
+  const wknd=isWeekend(dp.date);
+
+  if(dp.isOut){
+    document.getElementById('day-detail').innerHTML=`
+      <div style="font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">${dateLbl}</div>
+      <div class="day-detail-card"><div class="recipe-link-row" style="cursor:default">
+        <div class="rr-icon out-icon">🍽️</div>
+        <div class="rr-body"><div class="rr-label">Eating out</div><div class="rr-name">No meals planned for this day</div></div>
+        ${editMode.plan?`<button class="edit-save-btn" onclick="toggleDayOut(${idx})">Un-mark</button>`:''}
+      </div></div>
+      ${editMode.plan?`<button onclick="toggleDayOut(${idx})" style="margin-top:8px;width:100%;padding:9px;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;border:1px solid var(--border);background:#fff;color:var(--text2)">Mark as eating out: off</button>`:''}`;
+    return;
+  }
+
+  const rows=[];
+  if(b) rows.push({slot:'b',meal:b,label:'Breakfast',tag:'',extra:''});
+  if(!dp.skipLunch&&l) rows.push({slot:'l',meal:l,label:`Lunch · ${dp.lPrep?'prepped':'cook at lunch'}`,tag:'',extra:''});
+  else if(dp.skipLunch) rows.push(null);
+  if(!dp.skipDinner&&d) rows.push({slot:'d',meal:d,label:`Dinner · ${d.ptype||''}`,tag:'',extra:''});
+
+  if(editMode.plan){
+    const mealRows=rows.filter(Boolean).map(r=>`
+      <div class="edit-meal-row">
+        <div class="rr-icon ${getIconCls(r.meal)}">${getEmoji(r.meal)}</div>
+        <div style="flex:1;min-width:0"><div class="edit-rr-label">${r.label}</div><div style="font-size:13px;color:var(--text)">${r.meal.name}</div></div>
+        <button class="edit-save-btn" onclick="openSwapModal(${idx},'${r.slot}')">Swap</button>
+      </div>`).join('');
+    const weekendCtrls=wknd?`<div style="display:flex;gap:6px;margin-top:8px">
+      <button onclick="toggleSkipLunch(${idx})" style="flex:1;padding:8px;border-radius:var(--r);font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;border:1px solid var(--border);background:${dp.skipLunch?'var(--amber)':'#fff'};color:${dp.skipLunch?'#fff':'var(--text2)'}">
+        ${dp.skipLunch?'Lunch skipped ✓':'Skip lunch'}
+      </button>
+      <button onclick="toggleSkipDinner(${idx})" style="flex:1;padding:8px;border-radius:var(--r);font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;border:1px solid var(--border);background:${dp.skipDinner?'var(--amber)':'#fff'};color:${dp.skipDinner?'#fff':'var(--text2)'}">
+        ${dp.skipDinner?'Dinner skipped ✓':'Skip dinner'}
+      </button>
+    </div>
+    <button onclick="toggleDayOut(${idx})" style="margin-top:6px;width:100%;padding:8px;border-radius:var(--r);font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;border:1px solid var(--border);background:#fff;color:var(--text2)">Mark whole day as eating out</button>`:
+    `<button onclick="toggleDayOut(${idx})" style="margin-top:8px;width:100%;padding:8px;border-radius:var(--r);font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;border:1px solid var(--border);background:#fff;color:var(--text2)">Mark as eating out</button>`;
+    document.getElementById('day-detail').innerHTML=`
+      <div style="font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">${dateLbl}</div>
+      <div class="day-detail-card">${mealRows}</div>${weekendCtrls}${prepBanner}`;
+  } else {
+    const mealRows=rows.filter(Boolean).map(r=>`
+      <div class="recipe-link-row" onclick="openCookMode('${r.meal.id}')">
+        <div class="rr-icon ${getIconCls(r.meal)}">${getEmoji(r.meal)}</div>
+        <div class="rr-body"><div class="rr-label">${r.label}</div><div class="rr-name">${r.meal.name}</div><div class="rr-meta">${r.meal.protein||''} protein${r.meal.fiber?' · '+r.meal.fiber+' fiber':''} · ${r.meal.note||''}</div></div>
+<<<<<<< HEAD
+        <div class="cook-icon">👨‍🍳</div>
+      </div>`).join('');
+=======
+        <div class="rr-arrow">↗</div>
+      </a>`).join('');
+>>>>>>> ec51a0746c7cf2eb2dc73c67f0e9231f284fc46a
+    const skippedNote=(dp.skipLunch||dp.skipDinner)?`<div style="padding:10px 15px;font-size:12px;color:var(--text3)">${[dp.skipLunch?'Lunch skipped':null,dp.skipDinner?'Dinner skipped':null].filter(Boolean).join(' · ')}</div>`:'';
+    document.getElementById('day-detail').innerHTML=`
+      <div style="font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">${dateLbl}</div>
+      <div class="day-detail-card">${mealRows}${skippedNote}</div>${prepBanner}`;
+  }
+}
+
+function toggleDayOut(idx){plan.days[idx].isOut=!plan.days[idx].isOut;save();renderDayDetail(idx);renderHome();renderCalendar();renderGrocery();}
+function toggleSkipLunch(idx){plan.days[idx].skipLunch=!plan.days[idx].skipLunch;save();renderDayDetail(idx);renderHome();renderCalendar();renderGrocery();}
+function toggleSkipDinner(idx){plan.days[idx].skipDinner=!plan.days[idx].skipDinner;save();renderDayDetail(idx);renderHome();renderCalendar();renderGrocery();}
+
+// ─── CALENDAR VIEW ───────────────────────────────────────────────
+function calChangeMonth(dir){calMonth+=dir;if(calMonth>11){calMonth=0;calYear++;}if(calMonth<0){calMonth=11;calYear--;}renderCalendar();}
+
+function renderCalendar(){
+  document.getElementById('cal-month-label').textContent=MONTHS[calMonth]+' '+calYear;
+  const firstDow=new Date(calYear,calMonth,1).getDay();
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  const planMap={};
+  (plan?.days||[]).forEach(day=>{planMap[day.date]=day;});
+
+  let html='';
+  for(let i=0;i<firstDow;i++) html+='<div class="cal-cell empty"></div>';
+  for(let d=1;d<=daysInMonth;d++){
+    const ds=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dow=new Date(calYear,calMonth,d).getDay();
+    const wknd=dow===0||dow===6;
+    const dp=planMap[ds];
+    const isTdy=isToday(ds);
+    const isActive=calActiveDate===ds;
+    let inner=`<div class="cal-num">${d}</div>`;
+    if(dp){
+      if(dp.isOut){
+        inner+=`<div class="cal-out-label">out</div>`;
+      } else {
+        const b=getMeal(dp.b),l=getMeal(dp.l),din=getMeal(dp.d);
+        inner+=`<div class="cal-dots">`;
+        if(b) inner+=`<div class="cal-dot-row"><div class="cal-dot" style="background:${getDotColor(b)}"></div><div class="cal-meal-name">${b.name.split(' ').slice(0,2).join(' ')}</div></div>`;
+        if(!dp.skipLunch&&l) inner+=`<div class="cal-dot-row"><div class="cal-dot" style="background:${getDotColor(l)}"></div><div class="cal-meal-name">${l.name.split(' ').slice(0,2).join(' ')}</div></div>`;
+        if(!dp.skipDinner&&din) inner+=`<div class="cal-dot-row"><div class="cal-dot" style="background:${getDotColor(din)}"></div><div class="cal-meal-name">${din.name.split(' ').slice(0,2).join(' ')}</div></div>`;
+        inner+=`</div>`;
+      }
+    }
+    const cls=['cal-cell',dp?'in-plan':'',wknd?'weekend-cell':'',isTdy?'today':'',isActive?'active-cell':''].filter(Boolean).join(' ');
+    html+=`<div class="${cls}" onclick="calTapDay('${ds}')">${inner}</div>`;
+  }
+  document.getElementById('cal-grid').innerHTML=html;
+  if(calActiveDate) renderCalDetail(calActiveDate);
+}
+
+function calTapDay(ds){
+  calActiveDate=calActiveDate===ds?null:ds;
+  renderCalendar();
+  if(!calActiveDate){document.getElementById('cal-detail-panel').classList.remove('show');return;}
+  renderCalDetail(ds);
+}
+
+function renderCalDetail(ds){
+  const dp=(plan?.days||[]).find(d=>d.date===ds);
+  const panel=document.getElementById('cal-detail-panel');
+  document.getElementById('cal-detail-date').textContent=formatFull(ds);
+  if(!dp){document.getElementById('cal-detail-content').innerHTML=`<div style="font-size:13px;color:var(--text3)">Not in current plan.</div>`;panel.classList.add('show');return;}
+  if(dp.isOut){document.getElementById('cal-detail-content').innerHTML=`<div style="font-size:13px;color:var(--text3)">Eating out — no meals planned.</div>`;panel.classList.add('show');return;}
+  const rows=[];
+  const b=getMeal(dp.b),l=getMeal(dp.l),d=getMeal(dp.d);
+  if(b) rows.push({label:'Breakfast',meal:b});
+  if(!dp.skipLunch&&l) rows.push({label:`Lunch · ${dp.lPrep?'prepped':'cook'}`,meal:l});
+  if(!dp.skipDinner&&d) rows.push({label:`Dinner`,meal:d});
+  document.getElementById('cal-detail-content').innerHTML=rows.map(r=>`
+    <div class="recipe-link-row" onclick="openCookMode('${r.meal.id}')" style="padding:10px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;">
+      <div class="rr-icon ${getIconCls(r.meal)}" style="width:30px;height:30px;font-size:13px">${getEmoji(r.meal)}</div>
+      <div style="flex:1;min-width:0"><div class="rr-label">${r.label}</div><div class="rr-name" style="font-size:13px">${r.meal.name}</div></div>
+      <div class="cook-icon">👨‍🍳</div>
+    </div>`).join('');
+  panel.classList.add('show');
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// ─── GROCERY ────────────────────────────────────────────────────
+function renderGrocery(){
+  initPlanIfNeeded();
+  const s=formatShort(plan.startDate),e=formatShort(plan.endDate);
+  document.getElementById('grocery-sub').textContent=(plan.startDate===plan.endDate?s:s+' – '+e)+' · trimmed to your plan';
+  const sections=derivedGroceryList();
+  const keys=Object.keys(sections);
+  if(!keys.length){document.getElementById('grocery-sections').innerHTML=`<div style="padding:30px 20px;text-align:center;font-size:13px;color:var(--text3);line-height:1.6">No meals planned.<br>Set a window on the home screen.</div>`;return;}
+  let total=0,checked=0;
+  document.getElementById('grocery-sections').innerHTML=keys.map(section=>{
+    const items=sections[section];total+=items.length;
+    const rows=items.map((item,i)=>{
+      const key=currentWeek+'_'+item.item;
+      const isChk=!!checkedItems[key];if(isChk) checked++;
+      if(editMode.grocery){
+        return`<div class="grocery-item ${isChk?'checked-item':''}">
+          <div class="grocery-item-cz" onclick="toggleItem('${key}',this.closest('.grocery-item'))">
+            <div class="grocery-check ${isChk?'checked':''}"><span class="check-mark">✓</span></div>
+            <div class="grocery-item-tw">
+              <input class="grocery-item-name-input" value="${item.item}">
+              <input class="grocery-item-note-input" value="${item.note||''}" placeholder="Note...">
+            </div>
+          </div>
+          <button class="delete-item-btn" onclick="deleteCustomGrocery('${section}',${i})">×</button>
+        </div>`;
+      }
+      return`<div class="grocery-item ${isChk?'checked-item':''}" onclick="toggleItem('${key}',this)">
+        <div class="grocery-item-cz">
+          <div class="grocery-check ${isChk?'checked':''}"><span class="check-mark">✓</span></div>
+          <div class="grocery-item-tw"><div class="grocery-item-text">${item.item}</div>${item.note?`<div class="grocery-item-note">${item.note}</div>`:''}</div>
+        </div>
+      </div>`;
+    }).join('');
+    const addRow=editMode.grocery?`<div class="add-item-row"><input class="add-item-input" placeholder="Add to ${section}..." id="gadd-${section.replace(/\W/g,'_')}"><button class="add-item-submit" onclick="addCustomGrocery('${section}','gadd-${section.replace(/\W/g,'_')}')">Add</button></div>`:'';
+    return`<div class="grocery-section"><div class="grocery-section-hd">${section}</div><div class="grocery-list">${rows}${addRow}</div></div>`;
+  }).join('');
+  const pct=total?Math.round(checked/total*100):0;
+  document.getElementById('progress-bar').style.width=pct+'%';
+  document.getElementById('progress-text').textContent=checked+' of '+total;
+}
+function toggleItem(key,el){
+  checkedItems[key]=!checkedItems[key];if(!checkedItems[key]) delete checkedItems[key];save();
+  el.classList.toggle('checked-item',!!checkedItems[key]);
+  el.querySelector('.grocery-check')?.classList.toggle('checked',!!checkedItems[key]);
+  const sections=derivedGroceryList();let t=0,c=0;
+  Object.values(sections).forEach(items=>items.forEach(({item})=>{t++;if(checkedItems[currentWeek+'_'+item])c++;}));
+  const pct=t?Math.round(c/t*100):0;
+  document.getElementById('progress-bar').style.width=pct+'%';
+  document.getElementById('progress-text').textContent=c+' of '+t;
+}
+function addCustomGrocery(section,inputId){
+  const input=document.getElementById(inputId);const val=input.value.trim();if(!val) return;
+  const k=currentWeek+'_custom';if(!customGrocery[k]) customGrocery[k]=[];
+  customGrocery[k].push({item:val,note:''});input.value='';save();renderGrocery();
+}
+function deleteCustomGrocery(section,idx){
+  if(section==='My additions'){const k=currentWeek+'_custom';if(customGrocery[k]){customGrocery[k].splice(idx,1);save();renderGrocery();}}
+}
+
+// ─── RECIPES SCREEN ──────────────────────────────────────────────
+function setRecipeFilter(f){
+  recipeFilter=f;
+  document.querySelectorAll('.filter-pill').forEach(p=>p.classList.remove('active'));
+  event.target.classList.add('active');
+  renderRecipes();
+}
+
+function toggleAddRecipeForm(){
+  showAddRecipeForm=!showAddRecipeForm;
+  renderAddRecipeForm();
+}
+
+function renderAddRecipeForm(){
+  const el=document.getElementById('add-recipe-form-wrap');
+  if(!showAddRecipeForm){el.innerHTML='';return;}
+  el.innerHTML=`<div class="add-recipe-form">
+    <div class="arf-title">Add a recipe</div>
+    <div class="arf-row"><div class="arf-label">Recipe name</div><input class="arf-input" id="arf-name" placeholder="e.g. Miso glazed chicken thighs"></div>
+    <div class="arf-row"><div class="arf-label">URL (optional)</div><input class="arf-input" id="arf-url" placeholder="https://..."></div>
+    <div class="arf-row arf-row-2">
+      <div><div class="arf-label">Meal type</div>
+        <select class="arf-select" id="arf-type">
+          <option value="breakfast">Breakfast</option>
+          <option value="lunch">Lunch</option>
+          <option value="dinner" selected>Dinner</option>
+        </select>
+      </div>
+      <div><div class="arf-label">Protein type</div>
+        <select class="arf-select" id="arf-ptype">
+          <option value="chicken">Chicken</option>
+          <option value="salmon">Salmon</option>
+          <option value="shrimp">Shrimp</option>
+          <option value="veg">Plant-based</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="arf-row arf-row-2">
+      <div><div class="arf-label">Protein</div><input class="arf-input" id="arf-protein" placeholder="e.g. ~35g"></div>
+      <div><div class="arf-label">Fiber</div><input class="arf-input" id="arf-fiber" placeholder="e.g. ~6g"></div>
+    </div>
+    <div class="arf-row">
+      <div class="arf-label">Notes</div>
+      <input class="arf-input" id="arf-note" placeholder="e.g. 30 min, sheet pan">
+    </div>
+    <div class="arf-row">
+      <div class="arf-label">Lunch type</div>
+      <select class="arf-select" id="arf-prep">
+        <option value="false">Cook at lunch / fresh</option>
+        <option value="true">Prepped ahead (reheats well)</option>
+      </select>
+    </div>
+    <div class="arf-note">💡 Paste a URL and ask Claude in the project chat to fill in ingredients + steps for cook mode — then copy the result back here.</div>
+    <div class="arf-actions">
+      <button class="arf-btn secondary" onclick="toggleAddRecipeForm()">Cancel</button>
+      <button class="arf-btn primary" onclick="saveCustomRecipe()">Save recipe</button>
+    </div>
+  </div>`;
+}
+
+function saveCustomRecipe(){
+  const name=document.getElementById('arf-name').value.trim();
+  if(!name) return;
+  const id='cu_'+Date.now();
+  const recipe={
+    id,name,
+    url:document.getElementById('arf-url').value.trim()||'#',
+    type:document.getElementById('arf-type').value,
+    ptype:document.getElementById('arf-ptype').value,
+    protein:document.getElementById('arf-protein').value.trim()||'—',
+    fiber:document.getElementById('arf-fiber').value.trim()||'—',
+    note:document.getElementById('arf-note').value.trim()||'',
+    prep:document.getElementById('arf-prep').value==='true',
+    isCustom:true,
+    ingredients:[],
+    steps:[],
+    grocery:[]
+  };
+  customRecipes.push(recipe);save();
+  showAddRecipeForm=false;renderAddRecipeForm();
+  renderRecipes();
+}
+
+function deleteCustomRecipe(id){
+  customRecipes=customRecipes.filter(r=>r.id!==id);save();renderRecipes();
+}
+
+function renderRecipes(){
+  renderAddRecipeForm();
+  const allMeals=getAllMeals();
+  const filtered=Object.values(allMeals).filter(m=>{
+    if(recipeFilter==='all') return true;
+    if(recipeFilter==='custom') return m.isCustom;
+    return m.type===recipeFilter;
+  });
+  const typeColors={breakfast:'background:var(--cream2);color:var(--text2)',lunch_prep:'background:var(--green-light);color:var(--green)',lunch_cook:'background:var(--amber-light);color:var(--amber)',dinner_salmon:'background:var(--red-light);color:var(--red)',dinner_shrimp:'background:var(--blue-light);color:var(--blue)',dinner_chicken:'background:var(--amber-light);color:var(--amber)',custom:'background:var(--teal-light);color:var(--teal)'};
+  function getTagStyle(m){
+    if(m.isCustom) return typeColors.custom;
+    if(m.type==='breakfast') return typeColors.breakfast;
+    if(m.type==='lunch') return m.prep?typeColors.lunch_prep:typeColors.lunch_cook;
+    if(m.ptype==='salmon') return typeColors.dinner_salmon;
+    if(m.ptype==='shrimp') return typeColors.dinner_shrimp;
+    return typeColors.dinner_chicken;
+  }
+  function getTagLabel(m){
+    if(m.type==='breakfast') return 'Breakfast';
+    if(m.type==='lunch') return m.prep?'Lunch · prepped':'Lunch · cook';
+    return 'Dinner · '+(m.ptype||'');
+  }
+  document.getElementById('recipe-cards').innerHTML=filtered.map(m=>`
+    <div class="recipe-card">
+      <div class="rc-top">
+        <div class="rc-icon ${getIconCls(m)}">${getEmoji(m)}</div>
+        <div class="rc-body">
+          <div class="rc-name">${m.name}</div>
+          <div class="rc-tags">
+            <span class="rc-tag" style="${getTagStyle(m)}">${getTagLabel(m)}</span>
+            ${m.isCustom?'<span class="rc-tag" style="background:var(--teal-light);color:var(--teal)">my recipe</span>':''}
+          </div>
+          <div class="rc-meta">${m.protein||''} protein${m.fiber?' · '+m.fiber+' fiber':''} · ${m.note||''}</div>
+        </div>
+      </div>
+      <div class="rc-actions">
+        <button class="rc-cook" onclick="openCookMode('${m.id}')">👨‍🍳 Cook mode</button>
+        ${m.url&&m.url!=='#'?`<a class="rc-link" href="${m.url}" target="_blank">Recipe ↗</a>`:''}
+        ${m.isCustom?`<button class="rc-delete" onclick="deleteCustomRecipe('${m.id}')">Remove</button>`:''}
+      </div>
+    </div>`).join('');
+}
+
+// ─── RENDER ALL ──────────────────────────────────────────────────
+function renderAll(){
+  renderHome();
+  renderPlanList();
+  renderCalendar();
+  renderGrocery();
+  renderRecipes();
+}
+initPlanIfNeeded();
+renderAll();
+</script>
+</body>
+</html>
