@@ -436,7 +436,6 @@ body{font-family:'DM Sans',sans-serif;color:var(--text);max-width:430px;margin:0
   </div>
 </div>
 
-<<<<<<< HEAD
 <div class="cook-overlay" id="cook-overlay">
   <div class="cook-header">
     <button class="cook-close-btn" onclick="closeCookMode()">✕</button>
@@ -662,58 +661,12 @@ const WEEK_PATTERNS={
   A:[{b:'b4',l:'l4',lPrep:false,d:'d6'},{b:'b4',l:'l8',lPrep:true,d:'d9'},{b:'b4',l:'l5',lPrep:false,d:'d5'},{b:'b4',l:'l7',lPrep:true,d:'d11'},{b:'b4',l:'l4',lPrep:false,d:'d4'},{b:'b4',l:'l8',lPrep:true,d:'d1'},{b:'b4',l:'l7',lPrep:true,d:'d11'}],
   B:[{b:'b4',l:'l2',lPrep:true,d:'d6'},{b:'b4',l:'l3',lPrep:true,d:'d4'},{b:'b4',l:'l4',lPrep:false,d:'d2'},{b:'b4',l:'l6',lPrep:true,d:'d9'},{b:'b4',l:'l4',lPrep:false,d:'d7'},{b:'b4',l:'l2',lPrep:true,d:'d4'},{b:'b4',l:'l3',lPrep:true,d:'d2'}],
   C:[{b:'b4',l:'l5',lPrep:false,d:'d1'},{b:'b4',l:'l2',lPrep:true,d:'d3'},{b:'b4',l:'l4',lPrep:false,d:'d2'},{b:'b4',l:'l5',lPrep:false,d:'d1'},{b:'b4',l:'l7',lPrep:true,d:'d3'},{b:'b4',l:'l2',lPrep:true,d:'d2'},{b:'b4',l:'l4',lPrep:false,d:'d1'}]
-=======
-<script>
-// ─── BUILT-IN MEALS ───────────────────────────────────────────────
-const BUILTIN_MEALS={
-  b4:{id:'b4',name:'Blackberry raspberry parfait',protein:'~20g',fiber:'~7g',note:'Prep jars ahead',url:'#',type:'breakfast',ptype:'veg',prep:false},
-  l2:{id:'l2',name:'Chicken tzatziki bowls',protein:'~38g',fiber:'~5g',note:'Prepped · no reheat needed',url:'https://www.skinnytaste.com/',type:'lunch',prep:true,ptype:'chicken'},
-  l3:{id:'l3',name:'Soy glazed chicken rice bowl',protein:'~35g',fiber:'~4g',note:'Prepped · reheats well',url:'https://tiffycooks.com/',type:'lunch',prep:true,ptype:'chicken'},
-  l4:{id:'l4',name:'Oyakodon',protein:'~32g',fiber:'~3g',note:'Cook at lunch · 15 min',url:'https://tiffycooks.com/',type:'lunch',prep:false,ptype:'chicken'},
-  l5:{id:'l5',name:'Greek chicken orzo salad',protein:'~30g',fiber:'~6g',note:'Prepped · no olives, no roasted red peppers',url:'https://www.halfbakedharvest.com/',type:'lunch',prep:true,ptype:'chicken'},
-  l6:{id:'l6',name:'Caesar chicken pasta salad',protein:'~34g',fiber:'~4g',note:'Prepped · eats cold or reheats quickly',url:'https://www.healthfulblondie.com/',type:'lunch',prep:true,ptype:'chicken'},
-  l7:{id:'l7',name:'Lemon Tahini Quinoa Salad',protein:'~18g',fiber:'~9g',note:'Prepped · ~15 min · plant-based',url:'https://mariannaspantry.com/',type:'lunch',prep:true,ptype:'veg'},
-  l8:{id:'l8',name:'Smoky Corn & Chicken Salad',protein:'~28g',fiber:'~4g',note:'Cook at lunch or prep ahead · ~40 min (20 min marinate)',url:'https://tiffycooks.com/tex-mex-inspired-creamy-corn-chicken-salad/',type:'lunch',prep:false,ptype:'chicken'},
-  d1:{id:'d1',name:"Marianna's teriyaki salmon bowl",protein:'~52g',fiber:'~6g',note:'Your pick ★',url:'https://mariannaspantry.com/teriyaki-salmon-bowls/',type:'dinner',ptype:'salmon'},
-  d2:{id:'d2',name:'Miso salmon bowl',protein:'~35g',fiber:'~9g',note:'Air fryer or oven',url:'https://www.feastingathome.com/miso-salmon-bowls/',type:'dinner',ptype:'salmon'},
-  d3:{id:'d3',name:'One-pot lemon-dill miso butter salmon rice',protein:'~35g',fiber:'~4g',note:'One pot · 30 min',url:'https://tiffycooks.com/',type:'dinner',ptype:'salmon'},
-  d4:{id:'d4',name:'Teriyaki chicken bowl',protein:'~37g',fiber:'~5g',note:'One pan · 25 min',url:'https://wholesomemadeeasy.com/teriyaki-chicken-and-rice-bowls/',type:'dinner',ptype:'chicken'},
-  d5:{id:'d5',name:'Thai basil chicken',protein:'~38g',fiber:'~5g',note:'Week A — basil only, no cilantro',url:'https://onehappybite.com/thai-basil-chicken-stir-fry-high-protein-asian-recipe/',type:'dinner',ptype:'chicken'},
-  d6:{id:'d6',name:'Sesame teriyaki chicken',protein:'~40g',fiber:'~5g',note:'One pan · 20 min · no bell peppers',url:'https://www.halfbakedharvest.com/sesame-teriyaki-chicken/',type:'dinner',ptype:'chicken'},
-  d8:{id:'d8',name:'Sheet Pan Garlic Parmesan Chicken & Potatoes',protein:'~40g',fiber:'~4g',note:'One pan · 40 min',url:'#',type:'dinner',ptype:'chicken'},
-  d9:{id:'d9',name:'Honey Garlic Glazed Chicken Rice Bowl',protein:'~41g',fiber:'~2g',note:'~30 min (15 min marinate)',url:'https://tiffycooks.com/honey-garlic-glazed-chicken-rice-bowl',type:'dinner',ptype:'chicken'}
-};
-
-const MEAL_INGREDIENTS={
-  l2:[{s:'Proteins',i:'Rotisserie chicken',n:'Tzatziki bowls'},{s:'Produce',i:'Cucumber',n:'Tzatziki bowls + tzatziki sauce'},{s:'Produce',i:'Tomato',n:'Tzatziki bowls'},{s:'Produce',i:'Red onion',n:'Tzatziki bowls'},{s:'Produce',i:'Fresh dill',n:'Tzatziki sauce, if homemade'},{s:'Produce',i:'Lemon',n:'Tzatziki sauce'},{s:'Dairy & oats',i:'Feta cheese',n:'Tzatziki bowls'},{s:'Dairy & oats',i:'Greek yogurt',n:'Tzatziki sauce, if homemade'},{s:'Pantry',i:'Store-bought tzatziki (optional)',n:'Skip if making from scratch'}],
-  l3:[{s:'Proteins',i:'Chicken thigh',n:'Soy glazed chicken rice bowl'},{s:'Produce',i:'Garlic',n:'Pantry staple'},{s:'Produce',i:'Fresh ginger',n:'Freeze it — lasts months'},{s:'Produce',i:'Scallions',n:'Multiple meals'},{s:'Pantry',i:'Soy sauce',n:'Pantry staple'},{s:'Pantry',i:'Sesame oil',n:'Pantry staple'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'}],
-  l4:[{s:'Proteins',i:'Chicken thigh',n:'Oyakodon'},{s:'Produce',i:'Onion',n:'Oyakodon'},{s:'Dairy & oats',i:'Eggs',n:'Oyakodon'},{s:'Pantry',i:'Soy sauce',n:'Pantry staple'},{s:'Pantry',i:'Mirin',n:'Oyakodon'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'}],
-  l5:[{s:'Proteins',i:'Chicken breast',n:'Greek chicken orzo salad'},{s:'Pantry',i:'Orzo pasta',n:'Greek chicken orzo salad'},{s:'Produce',i:'Cucumber',n:'Greek chicken orzo salad'},{s:'Produce',i:'Tomato',n:'Greek chicken orzo salad'},{s:'Produce',i:'Red onion',n:'Greek chicken orzo salad'},{s:'Dairy & oats',i:'Feta cheese',n:'Greek chicken orzo salad'},{s:'Produce',i:'Lemon',n:'Lemon-oregano dressing'},{s:'Pantry',i:'Dried oregano',n:'Lemon-oregano dressing'},{s:'Pantry',i:'Olive oil',n:'Pantry staple'}],
-  l6:[{s:'Proteins',i:'Chicken breast',n:'Caesar chicken pasta salad'},{s:'Pantry',i:'Pasta',n:'Caesar chicken pasta salad'},{s:'Dairy & oats',i:'Parmesan, grated',n:'Caesar chicken pasta salad'},{s:'Pantry',i:'Caesar dressing',n:'Non-vinegary style'}],
-  l7:[{s:'Pantry',i:'Quinoa',n:'Lemon tahini quinoa salad'},{s:'Frozen',i:'Fire-roasted corn',n:'Lemon tahini quinoa salad'},{s:'Frozen',i:'Edamame',n:'Lemon tahini quinoa salad'},{s:'Produce',i:'Cucumber',n:'Lemon tahini quinoa salad'},{s:'Produce',i:'Red onion',n:'Lemon tahini quinoa salad'},{s:'Produce',i:'Peaches (or dried apricots off-season)',n:'Lemon tahini quinoa salad'},{s:'Dairy & oats',i:'Feta cheese',n:'Lemon tahini quinoa salad'},{s:'Pantry',i:'Pistachios',n:'Lemon tahini quinoa salad'},{s:'Pantry',i:'Tahini',n:'Lemon tahini quinoa salad'},{s:'Produce',i:'Lemon',n:'Lemon tahini quinoa salad'},{s:'Pantry',i:'Olive oil',n:'Pantry staple'},{s:'Produce',i:'Garlic',n:'Pantry staple'}],
-  l8:[{s:'Proteins',i:'Chicken breast',n:'Smoky corn & chicken salad'},{s:'Pantry',i:'Mild taco seasoning',n:'For chicken rub and corn, no heat'},{s:'Pantry',i:'Olive oil',n:'Pantry staple'},{s:'Produce',i:'Corn (fresh or canned)',n:'Smoky corn & chicken salad'},{s:'Dairy & oats',i:'Butter',n:'Smoky corn & chicken salad'},{s:'Produce',i:'Cucumber',n:'Smoky corn & chicken salad'},{s:'Produce',i:'Red onion',n:'Smoky corn & chicken salad'},{s:'Produce',i:'Fresh parsley or chives',n:'Cilantro sub'},{s:'Dairy & oats',i:'Greek yogurt',n:'Smoky corn & chicken salad'},{s:'Produce',i:'Lemon',n:'Smoky corn & chicken salad'},{s:'Pantry',i:'Garlic powder',n:'Smoky corn & chicken salad'},{s:'Pantry',i:'Smoked paprika',n:'Smoky, not hot'}],
-  d1:[{s:'Proteins',i:'Salmon fillet',n:"Marianna's teriyaki bowl"},{s:'Produce',i:'Cucumber',n:'Teriyaki salmon bowl'},{s:'Produce',i:'Scallions',n:'All dinners'},{s:'Frozen',i:'Edamame',n:'Teriyaki salmon bowl'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag — all dinners'},{s:'Pantry',i:'Soy sauce',n:'Pantry staple'},{s:'Pantry',i:'Honey',n:'Teriyaki sauce'},{s:'Pantry',i:'Coconut sugar or brown sugar',n:'Teriyaki sauce'},{s:'Pantry',i:'Sesame oil',n:'Pantry staple'}],
-  d2:[{s:'Proteins',i:'Salmon fillet',n:'Miso salmon bowl'},{s:'Produce',i:'Avocado',n:'Buy firm, ripen by dinner'},{s:'Produce',i:'Scallions',n:'All dinners'},{s:'Frozen',i:'Edamame',n:'Miso salmon bowl'},{s:'Produce',i:'Cabbage or coleslaw bag',n:'Miso salmon bowl'},{s:'Produce',i:'Mushrooms (any)',n:'Miso salmon bowl'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'},{s:'Pantry',i:'Miso paste',n:'Miso glaze'},{s:'Pantry',i:'Mirin',n:'Miso marinade'},{s:'Pantry',i:'Soy sauce',n:'Pantry staple'},{s:'Pantry',i:'Sesame oil',n:'Pantry staple'}],
-  d3:[{s:'Proteins',i:'Salmon fillet',n:'Lemon-dill miso butter salmon rice'},{s:'Produce',i:'Fresh dill',n:'Lemon-dill miso butter salmon rice'},{s:'Produce',i:'Lemon',n:'Lemon-dill miso butter salmon rice'},{s:'Dairy & oats',i:'Butter',n:'Miso butter'},{s:'Pantry',i:'Miso paste',n:'Miso butter'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'},{s:'Produce',i:'Scallions',n:'All dinners'}],
-  d4:[{s:'Proteins',i:'Chicken breast',n:'Teriyaki chicken bowl'},{s:'Produce',i:'Broccoli',n:'Teriyaki chicken bowl'},{s:'Produce',i:'Avocado',n:'Teriyaki chicken bowl'},{s:'Produce',i:'Scallions',n:'All dinners'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'},{s:'Pantry',i:'Soy sauce',n:'Pantry staple'},{s:'Pantry',i:'Honey',n:'Teriyaki sauce'},{s:'Pantry',i:'Sesame oil',n:'Pantry staple'},{s:'Pantry',i:'Sesame seeds',n:'Garnish'}],
-  d5:[{s:'Proteins',i:'Ground chicken',n:'Thai basil chicken'},{s:'Produce',i:'Fresh basil',n:'Basil only — no cilantro'},{s:'Produce',i:'Garlic',n:'Pantry staple'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'},{s:'Pantry',i:'Oyster sauce',n:'Thai basil sauce'},{s:'Pantry',i:'Fish sauce',n:'Thai basil sauce'},{s:'Pantry',i:'Soy sauce',n:'Pantry staple'},{s:'Dairy & oats',i:'Egg',n:'Fried egg on top — optional'}],
-  d6:[{s:'Proteins',i:'Chicken breast',n:'Sesame teriyaki chicken'},{s:'Produce',i:'Broccoli',n:'Sesame teriyaki chicken — no bell peppers'},{s:'Produce',i:'Scallions',n:'All dinners'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'},{s:'Pantry',i:'Soy sauce',n:'Pantry staple'},{s:'Pantry',i:'Sesame oil',n:'Pantry staple'},{s:'Pantry',i:'Sesame seeds',n:'Sesame crumbs'},{s:'Produce',i:'Fresh ginger',n:'Freeze it — lasts months'}],
-  d8:[{s:'Proteins',i:'Chicken thighs or breast',n:'Sheet pan garlic parmesan chicken & potatoes'},{s:'Produce',i:'Baby potatoes',n:'Sheet pan garlic parmesan chicken & potatoes'},{s:'Produce',i:'Garlic',n:'Pantry staple'},{s:'Dairy & oats',i:'Parmesan, grated',n:'Sheet pan garlic parmesan chicken & potatoes'},{s:'Pantry',i:'Olive oil',n:'Pantry staple'},{s:'Pantry',i:'Italian seasoning',n:'Sheet pan garlic parmesan chicken & potatoes'}],
-  d9:[{s:'Proteins',i:'Chicken thighs',n:'Honey garlic glazed chicken rice bowl'},{s:'Pantry',i:'Soy sauce',n:'Pantry staple'},{s:'Pantry',i:'Oyster sauce',n:'Honey garlic glazed chicken rice bowl'},{s:'Pantry',i:'Honey',n:'Honey garlic glazed chicken rice bowl'},{s:'Produce',i:'Garlic',n:'Pantry staple'},{s:'Produce',i:'Scallions',n:'All dinners'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'},{s:'Produce',i:'Broccoli or cucumber',n:'Suggested side'}]
-};
-
-const WEEK_PATTERNS={
-  A:[{b:'b4',l:'l3',lPrep:true,d:'d5'},{b:'b4',l:'l4',lPrep:false,d:'d4'},{b:'b4',l:'l3',lPrep:true,d:'d6'},{b:'b4',l:'l4',lPrep:false,d:'d5'},{b:'b4',l:'l7',lPrep:true,d:'d9'},{b:'b4',l:'l4',lPrep:false,d:'d1'},{b:'b4',l:'l3',lPrep:true,d:'d2'}],
-  B:[{b:'b4',l:'l2',lPrep:true,d:'d6'},{b:'b4',l:'l4',lPrep:false,d:'d4'},{b:'b4',l:'l2',lPrep:true,d:'d8'},{b:'b4',l:'l4',lPrep:false,d:'d6'},{b:'b4',l:'l3',lPrep:true,d:'d9'},{b:'b4',l:'l2',lPrep:true,d:'d1'},{b:'b4',l:'l6',lPrep:true,d:'d2'}],
-  C:[{b:'b4',l:'l5',lPrep:true,d:'d1'},{b:'b4',l:'l4',lPrep:false,d:'d3'},{b:'b4',l:'l6',lPrep:true,d:'d2'},{b:'b4',l:'l4',lPrep:false,d:'d1'},{b:'b4',l:'l7',lPrep:true,d:'d3'},{b:'b4',l:'l5',lPrep:true,d:'d2'},{b:'b4',l:'l4',lPrep:false,d:'d1'}]
->>>>>>> ec51a0746c7cf2eb2dc73c67f0e9231f284fc46a
 };
 
 const DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const MONTHS_SHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
-<<<<<<< HEAD
 // ─── BAKED-IN PLAN (Sun Aug 9 – Thu Aug 13, 2026, Week A) ─────────
 const BAKED_PLAN_VERSION='2026-08-08-v2';
 const BAKED_PLAN={
@@ -724,27 +677,10 @@ const BAKED_PLAN={
     {date:'2026-08-11',b:'b4',l:'l8',lPrep:true,d:'d9',isOut:false,skipLunch:false,skipDinner:false},
     {date:'2026-08-12',b:'b4',l:'l5',lPrep:false,d:'d5',isOut:false,skipLunch:false,skipDinner:false},
     {date:'2026-08-13',b:'b4',l:'l4',lPrep:false,d:'d10',isOut:false,skipLunch:false,skipDinner:false}
-=======
-// ─── BAKED-IN PLAN (updates each time Claude regenerates the app) ─
-const BAKED_PLAN_VERSION='v2026-07-21-tue-fri';
-const BAKED_PLAN={
-  version:BAKED_PLAN_VERSION,
-  startDate:'2026-07-21',
-  endDate:'2026-07-26',
-  weekType:'B',
-  days:[
-    {date:'2026-07-21',b:'b4',l:'l4',lPrep:false,d:'d4',isOut:false,skipBreakfast:true,skipLunch:false,skipDinner:false},
-    {date:'2026-07-22',b:'b4',l:'l2',lPrep:true,d:'d8',isOut:false,skipLunch:false,skipDinner:false},
-    {date:'2026-07-23',b:'b4',l:'l4',lPrep:false,d:'d6',isOut:false,skipLunch:false,skipDinner:false},
-    {date:'2026-07-24',b:'b4',l:'l4',lPrep:true,d:'d6',isOut:false,skipLunch:false,skipDinner:true},
-    {date:'2026-07-25',b:'b4',l:'l4',lPrep:false,d:'d6',isOut:false,skipBreakfast:true,skipLunch:true,skipDinner:false},
-    {date:'2026-07-26',b:'b4',l:'l4',lPrep:false,d:'d6',isOut:false,skipBreakfast:true,skipLunch:true,skipDinner:false}
->>>>>>> ec51a0746c7cf2eb2dc73c67f0e9231f284fc46a
   ]
 };
 
 // ─── STATE ───────────────────────────────────────────────────────
-<<<<<<< HEAD
 let weekTypes=JSON.parse(localStorage.getItem('mealWeekTypes')||'null')||{A:{label:'Week A',sub:'Ground chicken focus'},B:{label:'Week B',sub:'Rotisserie chicken focus'},C:{label:'Week C',sub:'Salmon focus'}};
 let currentWeek=localStorage.getItem('mealPlanWeek')||BAKED_PLAN.weekType;
 let checkedItems=JSON.parse(localStorage.getItem('mealChecked')||'{}');
@@ -760,14 +696,6 @@ if(!plan){
   checkedItems={};
   customGrocery={};
 }
-=======
-let weekTypes=JSON.parse(localStorage.getItem('mealWeekTypes')||'null')||{A:{label:'Week A',sub:'Ground chicken + fresh herbs'},B:{label:'Week B',sub:'Rotisserie chicken + cabbage'},C:{label:'Week C',sub:'Salmon focus'}};
-let savedPlan=JSON.parse(localStorage.getItem('mealPlan')||'null');
-let plan=(savedPlan&&savedPlan.version===BAKED_PLAN_VERSION)?savedPlan:JSON.parse(JSON.stringify(BAKED_PLAN));
-let currentWeek=(plan&&plan.weekType)?plan.weekType:(localStorage.getItem('mealPlanWeek')||'A');
-let checkedItems=JSON.parse(localStorage.getItem('mealChecked')||'{}');
-let customGrocery=JSON.parse(localStorage.getItem('mealCustomGrocery')||'{}');
->>>>>>> ec51a0746c7cf2eb2dc73c67f0e9231f284fc46a
 let customRecipes=JSON.parse(localStorage.getItem('mealCustomRecipes')||'[]');
 let activeDay=0;
 let editMode={home:false,plan:false,grocery:false};
@@ -1184,13 +1112,8 @@ function renderDayDetail(idx){
       <div class="recipe-link-row" onclick="openCookMode('${r.meal.id}')">
         <div class="rr-icon ${getIconCls(r.meal)}">${getEmoji(r.meal)}</div>
         <div class="rr-body"><div class="rr-label">${r.label}</div><div class="rr-name">${r.meal.name}</div><div class="rr-meta">${r.meal.protein||''} protein${r.meal.fiber?' · '+r.meal.fiber+' fiber':''} · ${r.meal.note||''}</div></div>
-<<<<<<< HEAD
         <div class="cook-icon">👨‍🍳</div>
       </div>`).join('');
-=======
-        <div class="rr-arrow">↗</div>
-      </a>`).join('');
->>>>>>> ec51a0746c7cf2eb2dc73c67f0e9231f284fc46a
     const skippedNote=(dp.skipLunch||dp.skipDinner)?`<div style="padding:10px 15px;font-size:12px;color:var(--text3)">${[dp.skipLunch?'Lunch skipped':null,dp.skipDinner?'Dinner skipped':null].filter(Boolean).join(' · ')}</div>`:'';
     document.getElementById('day-detail').innerHTML=`
       <div style="font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">${dateLbl}</div>
