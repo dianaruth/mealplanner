@@ -469,6 +469,33 @@ const BUILTIN_MEALS={
     ],
     grocery:[{s:'Dairy & oats',i:'Greek yogurt',n:'Breakfast'},{s:'Produce',i:'Blackberries',n:'Breakfast'},{s:'Produce',i:'Raspberries',n:'Breakfast'},{s:'Pantry',i:'Granola',n:'Breakfast topping'}]},
 
+  b5:{id:'b5',name:'High-Fiber Overnight Oats',protein:'~15g',fiber:'~10g',note:'Cold breakfast · 5 min · flax + chia boost',url:'https://www.laurafuentes.com/high-fiber-overnight-oats/',type:'breakfast',ptype:'veg',prep:false,
+    ingredients:[{amt:'1/2 cup',name:'rolled oats'},{amt:'1/2 cup',name:'milk of choice'},{amt:'1/4 cup',name:'Greek yogurt'},{amt:'1 tbsp',name:'ground flaxmeal'},{amt:'1 tbsp',name:'chia seeds'},{amt:'1/4 tsp',name:'vanilla extract'},{amt:'to taste',name:'berries or fruit, for topping'}],
+    steps:[
+      {title:'Combine the base',content:'In a jar, combine oats, milk, Greek yogurt, flaxmeal, chia seeds, and vanilla. Stir well until evenly mixed.'},
+      {title:'Chill',content:'Cover and refrigerate at least 4 hours, ideally overnight.',timerSeconds:14400},
+      {title:'Serve',content:'Stir again in the morning and top with berries or fruit of choice. Eat cold, or warm 30 seconds in the microwave if you prefer it that way.'}
+    ],
+    grocery:[{s:'Dairy & oats',i:'Rolled oats',n:'Breakfast'},{s:'Dairy & oats',i:'Greek yogurt (large tub)',n:'Breakfast'},{s:'Dairy & oats',i:'Milk of choice',n:'Breakfast'},{s:'Pantry',i:'Ground flaxmeal',n:'High-fiber oats'},{s:'Pantry',i:'Chia seeds',n:'Breakfast'}]},
+
+  b6:{id:'b6',name:'Sourdough with Cottage Cheese & Jam',protein:'~20g',fiber:'~2g',note:'Cold-ish breakfast · 5 min · toast + top',url:'#',type:'breakfast',ptype:'veg',prep:false,
+    ingredients:[{amt:'2 slices',name:'sourdough bread'},{amt:'3/4 cup',name:'cottage cheese'},{amt:'2 tbsp',name:'sugar-free jam'}],
+    steps:[
+      {title:'Toast the bread',content:'Toast the sourdough slices to your preferred level of crisp.',timerSeconds:180},
+      {title:'Top with cottage cheese',content:'Spread the cottage cheese generously over each slice.'},
+      {title:'Finish with jam',content:'Spoon sugar-free jam over the top and serve right away.'}
+    ],
+    grocery:[{s:'Dairy & oats',i:'Cottage cheese',n:'Breakfast'},{s:'Pantry',i:'Sourdough bread',n:'Breakfast'},{s:'Pantry',i:'Sugar-free jam',n:'Breakfast'}]},
+
+  b7:{id:'b7',name:'Protein Smoothie',protein:'~30g',fiber:'~3g',note:'Cold breakfast · 5 min · blend and go',url:'#',type:'breakfast',ptype:'veg',prep:false,
+    ingredients:[{amt:'1 serving (~1 cup)',name:'frozen fruit'},{amt:'1 serving (~3/4 cup)',name:'Greek yogurt'},{amt:'1 serving',name:'protein powder'},{amt:'1 cup',name:'almond milk'}],
+    steps:[
+      {title:'Combine',content:'Add frozen fruit, Greek yogurt, protein powder, and almond milk to a blender.'},
+      {title:'Blend',content:'Blend until smooth, adding a splash more almond milk if it\u2019s too thick.',timerSeconds:60},
+      {title:'Serve',content:'Pour into a glass and drink right away.'}
+    ],
+    grocery:[{s:'Dairy & oats',i:'Greek yogurt (large tub)',n:'Smoothie'},{s:'Frozen',i:'Frozen fruit',n:'Smoothie'},{s:'Pantry',i:'Protein powder',n:'Smoothie'},{s:'Pantry',i:'Almond milk',n:'Smoothie'}]},
+
   l2:{id:'l2',name:'Chicken Tzatziki Bowls',protein:'~34g',fiber:'~6g',note:'Prepped ahead · Skinnytaste',url:'https://www.skinnytaste.com/chicken-tzatziki-bowls/',type:'lunch',prep:true,ptype:'chicken',
     adapt:'Olives and red pepper flakes removed from the original recipe.',
     ingredients:[{amt:'1 lb',name:'chicken thighs, boneless skinless'},{amt:'1/4 cup',name:'Greek yogurt (for marinade)'},{amt:'1 tbsp',name:'olive oil'},{amt:'1/2 tbsp',name:'red wine vinegar'},{amt:'2 cloves',name:'garlic, minced'},{amt:'1/2 tsp',name:'dried oregano'},{amt:'1/2 tsp',name:'ground turmeric'},{amt:'3/4 tsp',name:'kosher salt'},{amt:'1 cup',name:'quinoa, dry'},{amt:'1 cup',name:'cherry tomatoes, halved'},{amt:'3',name:'Persian cucumbers'},{amt:'1/4',name:'red onion, thinly sliced'},{amt:'1 cup',name:'Greek yogurt (for tzatziki)'},{amt:'1/3 cup',name:'feta, crumbled'},{amt:'1 tbsp',name:'fresh dill (for tzatziki)'}],
@@ -667,16 +694,16 @@ const DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const MONTHS_SHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
-// ─── BAKED-IN PLAN (Sun Aug 9 – Thu Aug 13, 2026, Week A) ─────────
-const BAKED_PLAN_VERSION='2026-08-08-v2';
+// ─── BAKED-IN PLAN (Sat Aug 29 – Wed Sep 2, 2026, Week A) ─────────
+const BAKED_PLAN_VERSION='2026-08-28-v1';
 const BAKED_PLAN={
-  startDate:'2026-08-09',endDate:'2026-08-13',weekType:'A',
+  startDate:'2026-08-29',endDate:'2026-09-02',weekType:'A',
   days:[
-    {date:'2026-08-09',b:'b4',l:'l7',lPrep:true,d:'d11',isOut:false,skipLunch:false,skipDinner:false},
-    {date:'2026-08-10',b:'b4',l:'l4',lPrep:false,d:'d6',isOut:false,skipLunch:false,skipDinner:false},
-    {date:'2026-08-11',b:'b4',l:'l8',lPrep:true,d:'d9',isOut:false,skipLunch:false,skipDinner:false},
-    {date:'2026-08-12',b:'b4',l:'l5',lPrep:false,d:'d5',isOut:false,skipLunch:false,skipDinner:false},
-    {date:'2026-08-13',b:'b4',l:'l4',lPrep:false,d:'d10',isOut:false,skipLunch:false,skipDinner:false}
+    {date:'2026-08-29',b:'b5',l:'l3',lPrep:false,d:'d11',isOut:false,skipBreakfast:true,skipLunch:true,skipDinner:false},
+    {date:'2026-08-30',b:'b5',l:'l8',lPrep:false,d:'d1',isOut:false,skipBreakfast:false,skipLunch:false,skipDinner:true},
+    {date:'2026-08-31',b:'b4',l:'l3',lPrep:true,d:'d9',isOut:false,skipBreakfast:false,skipLunch:false,skipDinner:false},
+    {date:'2026-09-01',b:'b5',l:'l4',lPrep:false,d:'d6',isOut:false,skipBreakfast:false,skipLunch:false,skipDinner:false},
+    {date:'2026-09-02',b:'b4',l:'l7',lPrep:true,d:'d1',isOut:false,skipBreakfast:false,skipLunch:false,skipDinner:false}
   ]
 };
 
@@ -785,7 +812,7 @@ function buildPlan(startStr,endStr,weekType){
     const pi=((dow-1)+7)%7;
     const pat=WEEK_PATTERNS[weekType][pi];
     const wknd=dow===0||dow===6;
-    days.push({date:ds,b:pat.b,l:pat.l,lPrep:pat.lPrep,d:pat.d,isOut:false,skipLunch:wknd,skipDinner:false});
+    days.push({date:ds,b:pat.b,l:pat.l,lPrep:pat.lPrep,d:pat.d,isOut:false,skipBreakfast:false,skipLunch:wknd,skipDinner:false});
     cur=addDays(cur,1);
   }
   return{startDate:startStr,endDate:endStr,weekType,days};
@@ -803,7 +830,7 @@ function derivedGroceryList(){
   const mealIds=new Set();
   (plan?.days||[]).forEach(day=>{
     if(day.isOut) return;
-    mealIds.add(day.b);
+    if(!day.skipBreakfast) mealIds.add(day.b);
     if(!day.skipLunch) mealIds.add(day.l);
     if(!day.skipDinner) mealIds.add(day.d);
   });
@@ -985,7 +1012,7 @@ function renderHome(){
         <div class="pw-pill-num">${d.getDate()}</div>
         ${day.isOut?'<div class="pw-pill-out">out</div>':
           `<div class="pw-pill-dots">
-            <div class="pw-dot" style="background:${getDotColor(b)}"></div>
+            ${!day.skipBreakfast?`<div class="pw-dot" style="background:${getDotColor(b)}"></div>`:''}
             ${!day.skipLunch?`<div class="pw-dot" style="background:${getDotColor(l)}"></div>`:''}
             ${!day.skipDinner?`<div class="pw-dot" style="background:${getDotColor(din)}"></div>`:''}
           </div>`}
@@ -1008,7 +1035,7 @@ function renderHome(){
       todaySec.innerHTML=`<div class="section-label">${lbl}</div><div class="today-card"><div class="today-day-label" style="padding-bottom:14px">${formatFull(dp.date)} · <span style="color:var(--text3);font-weight:400">eating out</span></div></div>`;
     } else {
       const rows=[];
-      if(b) rows.push({slot:'b',meal:b,tag:'',isPrep:false});
+      if(!dp.skipBreakfast&&b) rows.push({slot:'b',meal:b,tag:'',isPrep:false});
       if(!dp.skipLunch&&l) rows.push({slot:'l',meal:l,tag:lunchTag(dp.lPrep),isPrep:dp.lPrep});
       if(!dp.skipDinner&&d) rows.push({slot:'d',meal:d,tag:dinnerTag(d)});
       if(editMode.home){
@@ -1082,7 +1109,7 @@ function renderDayDetail(idx){
   }
 
   const rows=[];
-  if(b) rows.push({slot:'b',meal:b,label:'Breakfast',tag:'',extra:''});
+  if(!dp.skipBreakfast&&b) rows.push({slot:'b',meal:b,label:'Breakfast',tag:'',extra:''});
   if(!dp.skipLunch&&l) rows.push({slot:'l',meal:l,label:`Lunch · ${dp.lPrep?'prepped':'cook at lunch'}`,tag:'',extra:''});
   else if(dp.skipLunch) rows.push(null);
   if(!dp.skipDinner&&d) rows.push({slot:'d',meal:d,label:`Dinner · ${d.ptype||''}`,tag:'',extra:''});
@@ -1095,6 +1122,9 @@ function renderDayDetail(idx){
         <button class="edit-save-btn" onclick="openSwapModal(${idx},'${r.slot}')">Swap</button>
       </div>`).join('');
     const weekendCtrls=wknd?`<div style="display:flex;gap:6px;margin-top:8px">
+      <button onclick="toggleSkipBreakfast(${idx})" style="flex:1;padding:8px;border-radius:var(--r);font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;border:1px solid var(--border);background:${dp.skipBreakfast?'var(--amber)':'#fff'};color:${dp.skipBreakfast?'#fff':'var(--text2)'}">
+        ${dp.skipBreakfast?'Breakfast skipped ✓':'Skip breakfast'}
+      </button>
       <button onclick="toggleSkipLunch(${idx})" style="flex:1;padding:8px;border-radius:var(--r);font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;border:1px solid var(--border);background:${dp.skipLunch?'var(--amber)':'#fff'};color:${dp.skipLunch?'#fff':'var(--text2)'}">
         ${dp.skipLunch?'Lunch skipped ✓':'Skip lunch'}
       </button>
@@ -1114,7 +1144,7 @@ function renderDayDetail(idx){
         <div class="rr-body"><div class="rr-label">${r.label}</div><div class="rr-name">${r.meal.name}</div><div class="rr-meta">${r.meal.protein||''} protein${r.meal.fiber?' · '+r.meal.fiber+' fiber':''} · ${r.meal.note||''}</div></div>
         <div class="cook-icon">👨‍🍳</div>
       </div>`).join('');
-    const skippedNote=(dp.skipLunch||dp.skipDinner)?`<div style="padding:10px 15px;font-size:12px;color:var(--text3)">${[dp.skipLunch?'Lunch skipped':null,dp.skipDinner?'Dinner skipped':null].filter(Boolean).join(' · ')}</div>`:'';
+    const skippedNote=(dp.skipBreakfast||dp.skipLunch||dp.skipDinner)?`<div style="padding:10px 15px;font-size:12px;color:var(--text3)">${[dp.skipBreakfast?'Breakfast skipped':null,dp.skipLunch?'Lunch skipped':null,dp.skipDinner?'Dinner skipped':null].filter(Boolean).join(' · ')}</div>`:'';
     document.getElementById('day-detail').innerHTML=`
       <div style="font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">${dateLbl}</div>
       <div class="day-detail-card">${mealRows}${skippedNote}</div>${prepBanner}`;
@@ -1122,6 +1152,7 @@ function renderDayDetail(idx){
 }
 
 function toggleDayOut(idx){plan.days[idx].isOut=!plan.days[idx].isOut;save();renderDayDetail(idx);renderHome();renderCalendar();renderGrocery();}
+function toggleSkipBreakfast(idx){plan.days[idx].skipBreakfast=!plan.days[idx].skipBreakfast;save();renderDayDetail(idx);renderHome();renderCalendar();renderGrocery();}
 function toggleSkipLunch(idx){plan.days[idx].skipLunch=!plan.days[idx].skipLunch;save();renderDayDetail(idx);renderHome();renderCalendar();renderGrocery();}
 function toggleSkipDinner(idx){plan.days[idx].skipDinner=!plan.days[idx].skipDinner;save();renderDayDetail(idx);renderHome();renderCalendar();renderGrocery();}
 
@@ -1151,7 +1182,7 @@ function renderCalendar(){
       } else {
         const b=getMeal(dp.b),l=getMeal(dp.l),din=getMeal(dp.d);
         inner+=`<div class="cal-dots">`;
-        if(b) inner+=`<div class="cal-dot-row"><div class="cal-dot" style="background:${getDotColor(b)}"></div><div class="cal-meal-name">${b.name.split(' ').slice(0,2).join(' ')}</div></div>`;
+        if(!dp.skipBreakfast&&b) inner+=`<div class="cal-dot-row"><div class="cal-dot" style="background:${getDotColor(b)}"></div><div class="cal-meal-name">${b.name.split(' ').slice(0,2).join(' ')}</div></div>`;
         if(!dp.skipLunch&&l) inner+=`<div class="cal-dot-row"><div class="cal-dot" style="background:${getDotColor(l)}"></div><div class="cal-meal-name">${l.name.split(' ').slice(0,2).join(' ')}</div></div>`;
         if(!dp.skipDinner&&din) inner+=`<div class="cal-dot-row"><div class="cal-dot" style="background:${getDotColor(din)}"></div><div class="cal-meal-name">${din.name.split(' ').slice(0,2).join(' ')}</div></div>`;
         inner+=`</div>`;
@@ -1179,7 +1210,7 @@ function renderCalDetail(ds){
   if(dp.isOut){document.getElementById('cal-detail-content').innerHTML=`<div style="font-size:13px;color:var(--text3)">Eating out — no meals planned.</div>`;panel.classList.add('show');return;}
   const rows=[];
   const b=getMeal(dp.b),l=getMeal(dp.l),d=getMeal(dp.d);
-  if(b) rows.push({label:'Breakfast',meal:b});
+  if(!dp.skipBreakfast&&b) rows.push({label:'Breakfast',meal:b});
   if(!dp.skipLunch&&l) rows.push({label:`Lunch · ${dp.lPrep?'prepped':'cook'}`,meal:l});
   if(!dp.skipDinner&&d) rows.push({label:`Dinner`,meal:d});
   document.getElementById('cal-detail-content').innerHTML=rows.map(r=>`
