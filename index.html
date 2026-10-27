@@ -476,7 +476,7 @@ const BUILTIN_MEALS={
       {title:'Chill',content:'Cover and refrigerate at least 4 hours, ideally overnight.',timerSeconds:14400},
       {title:'Serve',content:'Stir again in the morning and top with berries or fruit of choice. Eat cold, or warm 30 seconds in the microwave if you prefer it that way.'}
     ],
-    grocery:[{s:'Dairy & oats',i:'Rolled oats',n:'Breakfast'},{s:'Dairy & oats',i:'Greek yogurt (large tub)',n:'Breakfast'},{s:'Dairy & oats',i:'Milk of choice',n:'Breakfast'},{s:'Pantry',i:'Ground flaxmeal',n:'High-fiber oats'},{s:'Pantry',i:'Chia seeds',n:'Breakfast'}]},
+    grocery:[{s:'Dairy & oats',i:'Rolled oats',n:'Breakfast'},{s:'Dairy & oats',i:'Greek yogurt (large tub)',n:'Breakfast'},{s:'Dairy & oats',i:'Milk of choice',n:'Breakfast'},{s:'Pantry',i:'Ground flaxmeal',n:'High-fiber oats'},{s:'Pantry',i:'Chia seeds',n:'Breakfast'},{s:'Pantry',i:'Vanilla extract',n:'Breakfast'}]},
 
   b6:{id:'b6',name:'Sourdough with Cottage Cheese & Jam',protein:'~20g',fiber:'~2g',note:'Cold-ish breakfast · 5 min · toast + top',url:'#',type:'breakfast',ptype:'veg',prep:false,
     ingredients:[{amt:'2 slices',name:'sourdough bread'},{amt:'3/4 cup',name:'cottage cheese'},{amt:'2 tbsp',name:'sugar-free jam'}],
@@ -496,17 +496,16 @@ const BUILTIN_MEALS={
     ],
     grocery:[{s:'Dairy & oats',i:'Greek yogurt (large tub)',n:'Smoothie'},{s:'Frozen',i:'Frozen fruit',n:'Smoothie'},{s:'Pantry',i:'Protein powder',n:'Smoothie'},{s:'Pantry',i:'Almond milk',n:'Smoothie'}]},
 
-  l2:{id:'l2',name:'Chicken Tzatziki Bowls',protein:'~34g',fiber:'~6g',note:'Prepped ahead · Skinnytaste',url:'https://www.skinnytaste.com/chicken-tzatziki-bowls/',type:'lunch',prep:true,ptype:'chicken',
-    adapt:'Olives and red pepper flakes removed from the original recipe.',
-    ingredients:[{amt:'1 lb',name:'chicken thighs, boneless skinless'},{amt:'1/4 cup',name:'Greek yogurt (for marinade)'},{amt:'1 tbsp',name:'olive oil'},{amt:'1/2 tbsp',name:'red wine vinegar'},{amt:'2 cloves',name:'garlic, minced'},{amt:'1/2 tsp',name:'dried oregano'},{amt:'1/2 tsp',name:'ground turmeric'},{amt:'3/4 tsp',name:'kosher salt'},{amt:'1 cup',name:'quinoa, dry'},{amt:'1 cup',name:'cherry tomatoes, halved'},{amt:'3',name:'Persian cucumbers'},{amt:'1/4',name:'red onion, thinly sliced'},{amt:'1 cup',name:'Greek yogurt (for tzatziki)'},{amt:'1/3 cup',name:'feta, crumbled'},{amt:'1 tbsp',name:'fresh dill (for tzatziki)'}],
+  l2:{id:'l2',name:'Chicken Tzatziki Bowls',protein:'~34g',fiber:'~5g',note:'Prepped ahead · ~10 min assembly, no stove · Skinnytaste',url:'https://www.skinnytaste.com/chicken-tzatziki-bowls/',type:'lunch',prep:true,ptype:'chicken',
+    adapt:'Shortcut version: rotisserie or pre-cooked chicken, store-bought tzatziki, and microwave rice pouches, so it is assembly only. Olives and red pepper flakes removed; regular tomato instead of cherry tomatoes.',
+    ingredients:[{amt:'~1.5 cups',name:'rotisserie or pre-cooked chicken, sliced or shredded'},{amt:'2 pouches',name:'microwave rice (or quinoa)'},{amt:'1',name:'cucumber, chopped'},{amt:'1',name:'tomato, diced'},{amt:'1/4',name:'red onion, thinly sliced'},{amt:'1/2 cup',name:'store-bought tzatziki'},{amt:'1/3 cup',name:'feta, crumbled'},{amt:'1/2',name:'lemon'}],
     steps:[
-      {title:'Marinate the chicken',content:'Whisk 1/4 cup yogurt, olive oil, vinegar, garlic, oregano, turmeric, and salt. Add chicken and coat well. Marinate 20 min–2 hrs in the fridge.',timerSeconds:1200},
-      {title:'Cook the quinoa',content:'Cook quinoa according to package directions, then set aside to cool slightly.',timerSeconds:900},
-      {title:'Make the tzatziki',content:'Grate one cucumber, squeeze out excess liquid, and mix with 1 cup yogurt, a pinch of garlic, dill, and a little salt.'},
-      {title:'Cook the chicken',content:'Pan-sear or grill the marinated chicken over medium-high heat, about 6–7 minutes per side, until cooked through and lightly charred.',timerSeconds:780},
-      {title:'Assemble bowls',content:'Divide quinoa between bowls. Top with sliced chicken, tomatoes, remaining cucumber (chopped), red onion, tzatziki, and feta.'}
+      {title:'Heat the rice',content:'Microwave the rice pouches per package directions and let them cool a few minutes.',timerSeconds:90},
+      {title:'Chop the veg',content:'Chop the cucumber, dice the tomato, and thinly slice the red onion.'},
+      {title:'Build the bowls',content:'Divide rice between 2 containers. Top with chicken, cucumber, tomato, red onion, and feta, and squeeze lemon over the top.'},
+      {title:'Pack the tzatziki',content:'Keep the tzatziki in a small separate container so the bowls stay crisp. Add it right before eating. These eat cold.'}
     ],
-    grocery:[{s:'Proteins',i:'Chicken thighs',n:'Tzatziki bowls'},{s:'Produce',i:'Persian cucumbers',n:'Tzatziki + topping'},{s:'Produce',i:'Cherry tomatoes',n:'Tzatziki bowls'},{s:'Produce',i:'Red onion',n:'Tzatziki bowls'},{s:'Produce',i:'Fresh dill',n:'Tzatziki'},{s:'Dairy & oats',i:'Greek yogurt (large tub)',n:'Marinade + tzatziki'},{s:'Dairy & oats',i:'Feta cheese',n:'Tzatziki bowls'},{s:'Pantry',i:'Quinoa',n:'Tzatziki bowls'}]},
+    grocery:[{s:'Proteins',i:'Rotisserie chicken or pre-cooked chicken strips',n:'Tzatziki bowls (strips = less waste)'},{s:'Produce',i:'Cucumber',n:'Tzatziki bowls + salmon bowl'},{s:'Produce',i:'Tomato',n:'Tzatziki bowls (regular, not cherry)'},{s:'Produce',i:'Red onion',n:'Tzatziki bowls'},{s:'Produce',i:'Lemon',n:'Multiple meals'},{s:'Dairy & oats',i:'Store-bought tzatziki',n:'Tzatziki bowls'},{s:'Dairy & oats',i:'Feta cheese',n:'Tzatziki bowls'},{s:'Pantry',i:'Microwave rice pouches',n:'Tzatziki bowls'}]},
 
   l3:{id:'l3',name:'Soy Glazed Chicken Rice Bowl',protein:'~38g',fiber:'~3g',note:'Prepped ahead · Tiffy Cooks · 20 min',url:'https://tiffycooks.com/soy-glazed-chicken-20-minutes-only/',type:'lunch',prep:true,ptype:'chicken',
     ingredients:[{amt:'1 lb',name:'chicken thighs, boneless skin-on'},{amt:'2 tbsp',name:'cornstarch'},{amt:'3 tbsp',name:'soy sauce'},{amt:'1/2 tsp',name:'five-spice powder'},{amt:'2 cloves',name:'garlic, minced'},{amt:'1 tbsp',name:'honey'},{amt:'2 cups',name:'cooked rice'},{amt:'2',name:'scallions, sliced'}],
@@ -527,18 +526,18 @@ const BUILTIN_MEALS={
       {title:'Add the egg',content:'Pour the beaten eggs evenly over the chicken and onion. Cover and cook until just set but still a little soft, 1–2 minutes.',timerSeconds:90},
       {title:'Serve',content:'Slide the chicken-and-egg mixture on top of a bowl of hot rice. Garnish with scallion.'}
     ],
-    grocery:[{s:'Proteins',i:'Chicken thigh',n:'Oyakodon'},{s:'Produce',i:'Onion',n:'Oyakodon'},{s:'Produce',i:'Scallions',n:'Multiple meals'},{s:'Dairy & oats',i:'Eggs',n:'Oyakodon'},{s:'Pantry',i:'Mirin',n:'Oyakodon'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'}]},
+    grocery:[{s:'Proteins',i:'Chicken thighs',n:'Oyakodon + honey garlic chicken'},{s:'Produce',i:'Yellow onion',n:'Oyakodon'},{s:'Produce',i:'Scallions',n:'Multiple meals'},{s:'Dairy & oats',i:'Eggs',n:'Oyakodon'},{s:'Pantry',i:'Mirin',n:'Oyakodon'},{s:'Pantry',i:'Dashi powder',n:'Oyakodon (or use chicken stock)'},{s:'Pantry',i:'Soy sauce',n:'Multiple meals'},{s:'Pantry',i:'Sugar',n:'Oyakodon'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'}]},
 
   l5:{id:'l5',name:'Greek Chicken Orzo Salad',protein:'~36g',fiber:'~4g',note:'Cook fresh · Half Baked Harvest · 25 min',url:'https://www.halfbakedharvest.com/',type:'lunch',prep:false,ptype:'chicken',
     adapt:'No olives, no roasted red peppers.',
-    ingredients:[{amt:'1 cup',name:'orzo, dry'},{amt:'1 lb',name:'chicken breast'},{amt:'1 cup',name:'cherry tomatoes, halved'},{amt:'1',name:'cucumber, diced'},{amt:'1/4',name:'red onion, thinly sliced'},{amt:'1/2 cup',name:'feta, crumbled'},{amt:'1',name:'lemon, juiced'},{amt:'3 tbsp',name:'olive oil'},{amt:'1 tsp',name:'dried oregano'},{amt:'1 clove',name:'garlic, minced'}],
+    ingredients:[{amt:'1 cup',name:'orzo, dry'},{amt:'1 lb',name:'chicken breast'},{amt:'1',name:'tomato, diced'},{amt:'1',name:'cucumber, diced'},{amt:'1/4',name:'red onion, thinly sliced'},{amt:'1/2 cup',name:'feta, crumbled'},{amt:'1',name:'lemon, juiced'},{amt:'3 tbsp',name:'olive oil'},{amt:'1 tsp',name:'dried oregano'},{amt:'1 clove',name:'garlic, minced'}],
     steps:[
       {title:'Cook the orzo',content:'Boil orzo according to package directions, drain, and let cool.',timerSeconds:600},
       {title:'Cook the chicken',content:'Season chicken breast with salt, pepper, and a little oregano. Pan-sear in olive oil over medium-high heat, about 6 min per side, until cooked through, then slice.',timerSeconds:720},
       {title:'Make the dressing',content:'Whisk lemon juice, olive oil, garlic, and remaining oregano with a pinch of salt and pepper.'},
       {title:'Toss the salad',content:'Combine orzo, chicken, tomatoes, cucumber, red onion, and feta in a bowl. Pour dressing over and toss well.'}
     ],
-    grocery:[{s:'Proteins',i:'Chicken breast',n:'Greek orzo salad'},{s:'Produce',i:'Cherry tomatoes',n:'Greek orzo salad'},{s:'Produce',i:'Cucumber',n:'Greek orzo salad'},{s:'Produce',i:'Red onion',n:'Greek orzo salad'},{s:'Produce',i:'Lemon',n:'Greek orzo salad'},{s:'Dairy & oats',i:'Feta cheese',n:'Greek orzo salad'},{s:'Pantry',i:'Orzo pasta',n:'Greek orzo salad'}]},
+    grocery:[{s:'Proteins',i:'Chicken breast',n:'Greek orzo salad'},{s:'Produce',i:'Tomato',n:'Greek orzo salad'},{s:'Produce',i:'Cucumber',n:'Greek orzo salad'},{s:'Produce',i:'Red onion',n:'Greek orzo salad'},{s:'Produce',i:'Lemon',n:'Greek orzo salad'},{s:'Dairy & oats',i:'Feta cheese',n:'Greek orzo salad'},{s:'Pantry',i:'Orzo pasta',n:'Greek orzo salad'}]},
 
   l6:{id:'l6',name:'Caesar Chicken Pasta Salad',protein:'~32g',fiber:'~3g',note:'Prepped ahead · Healthful Blondie',url:'https://healthfulblondie.com/',type:'lunch',prep:true,ptype:'chicken',
     ingredients:[{amt:'8 oz',name:'short pasta (rotini or penne)'},{amt:'1 lb',name:'chicken breast, cooked and diced'},{amt:'3 cups',name:'romaine, chopped'},{amt:'1/3 cup',name:'parmesan, grated'},{amt:'1/3 cup',name:'mayonnaise'},{amt:'1',name:'lemon, juiced'},{amt:'1 clove',name:'garlic, minced'},{amt:'1/2 tsp',name:'dijon mustard'},{amt:'1/2 cup',name:'croutons'}],
@@ -572,16 +571,16 @@ const BUILTIN_MEALS={
     ],
     grocery:[{s:'Proteins',i:'Chicken breast',n:'Smoky corn salad'},{s:'Produce',i:'Corn (fresh or frozen)',n:'Smoky corn salad'},{s:'Produce',i:'Cucumber',n:'Smoky corn salad'},{s:'Produce',i:'Red onion',n:'Smoky corn salad'},{s:'Produce',i:'Lemon',n:'Smoky corn salad'},{s:'Pantry',i:'Mild taco seasoning',n:'Smoky corn salad'},{s:'Pantry',i:'Mayonnaise',n:'Smoky corn salad'}]},
 
-  d1:{id:'d1',name:'Teriyaki Salmon Bowl',protein:'~40g',fiber:'~6g',note:"Your pick ★ · Marianna's Pantry",url:'https://mariannaspantry.com/teriyaki-salmon-bowls/',type:'dinner',ptype:'salmon',
-    ingredients:[{amt:'1',name:'salmon fillet (~1 lb)'},{amt:'3 tbsp',name:'soy sauce'},{amt:'2 tbsp',name:'honey'},{amt:'2 cloves',name:'garlic, minced'},{amt:'1 tsp',name:'fresh ginger, grated'},{amt:'1 tsp',name:'sesame oil'},{amt:'2 cups',name:'cooked rice'},{amt:'1',name:'cucumber, sliced'},{amt:'1 cup',name:'edamame, shelled'},{amt:'2',name:'scallions, sliced'},{amt:'1 tsp',name:'sesame seeds'}],
+  d1:{id:'d1',name:'Teriyaki Salmon Bowl',protein:'~40g',fiber:'~6g',note:"Your pick ★ · Marianna's Pantry · ~20 min",url:'https://mariannaspantry.com/teriyaki-salmon-bowls/',type:'dinner',ptype:'salmon',
+    adapt:'Store-bought teriyaki sauce instead of making it from scratch.',
+    ingredients:[{amt:'1',name:'salmon fillet'},{amt:'1/4 cup',name:'store-bought teriyaki sauce'},{amt:'1 cup',name:'cooked rice'},{amt:'1/2',name:'cucumber, sliced'},{amt:'1/2 cup',name:'edamame, shelled'},{amt:'1/2',name:'avocado, sliced'},{amt:'1',name:'scallion, sliced'},{amt:'1 tsp',name:'sesame seeds'}],
     steps:[
-      {title:'Make the sauce',content:'Whisk soy sauce, honey, garlic, ginger, and sesame oil together.'},
-      {title:'Marinate the salmon',content:'Pour half the sauce over the salmon and let it sit for 10 minutes.',timerSeconds:600},
-      {title:'Cook the salmon',content:'Bake at 400°F for 12–15 minutes, or pan-sear about 4 minutes per side, basting with marinade, until flaky.',timerSeconds:780},
-      {title:'Reduce remaining sauce',content:'Simmer the reserved sauce in a small pot for 1–2 minutes until slightly thickened.',timerSeconds:90},
-      {title:'Assemble',content:'Build bowls with rice, salmon, cucumber, and edamame. Drizzle with sauce and garnish with scallions and sesame seeds.'}
+      {title:'Marinate the salmon',content:'Brush half the teriyaki sauce over the salmon and let it sit 10 minutes.',timerSeconds:600},
+      {title:'Cook the salmon',content:'Bake at 400°F for 12–15 minutes, or pan-sear about 4 minutes per side, until flaky.',timerSeconds:780},
+      {title:'Warm the edamame',content:'Microwave or boil the edamame until hot, about 2 minutes.',timerSeconds:120},
+      {title:'Assemble',content:'Build the bowl with rice, salmon, cucumber, edamame, and avocado. Drizzle with the remaining teriyaki sauce and finish with scallions and sesame seeds.'}
     ],
-    grocery:[{s:'Proteins',i:'Salmon fillet',n:'Teriyaki salmon bowl'},{s:'Produce',i:'Cucumber',n:'Teriyaki salmon bowl'},{s:'Produce',i:'Scallions',n:'Multiple meals'},{s:'Frozen',i:'Edamame',n:'Teriyaki salmon bowl'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'},{s:'Pantry',i:'Honey',n:'Teriyaki sauce'}]},
+    grocery:[{s:'Proteins',i:'Salmon fillet',n:'Buy 2 — one for each salmon dinner, freeze one'},{s:'Produce',i:'Cucumber',n:'Tzatziki bowls + salmon bowl'},{s:'Produce',i:'Avocado',n:'Buy firm, ripens by Friday'},{s:'Produce',i:'Scallions',n:'Multiple meals'},{s:'Frozen',i:'Edamame',n:'Teriyaki salmon bowl'},{s:'Pantry',i:'Store-bought teriyaki sauce',n:'Teriyaki salmon bowl'},{s:'Pantry',i:'Sesame seeds',n:'Garnish'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'}]},
 
   d2:{id:'d2',name:'Miso Salmon Bowl',protein:'~35g',fiber:'~7g',note:'Oven or broiler · feastingathome',url:'https://www.feastingathome.com/miso-salmon-bowls/',type:'dinner',ptype:'salmon',
     ingredients:[{amt:'1',name:'salmon fillet (~1 lb)'},{amt:'2 tbsp',name:'miso paste'},{amt:'1 tbsp',name:'mirin'},{amt:'1 tbsp',name:'soy sauce'},{amt:'2 cups',name:'cooked rice'},{amt:'1',name:'avocado, sliced'},{amt:'1 cup',name:'edamame, shelled'},{amt:'1 cup',name:'red cabbage, shredded'},{amt:'1 cup',name:'mushrooms, sliced'},{amt:'2',name:'scallions, sliced'}],
@@ -601,7 +600,7 @@ const BUILTIN_MEALS={
       {title:'Add the salmon',content:'Nestle the salmon fillet on top of the rice. Cover and cook on low until rice is tender and salmon is cooked through, about 18 minutes.',timerSeconds:1080},
       {title:'Finish',content:'Remove from heat. Stir in butter and lemon juice, gently flaking the salmon into the rice. Sprinkle with fresh dill before serving.'}
     ],
-    grocery:[{s:'Proteins',i:'Salmon fillet',n:'One-pot miso butter salmon rice'},{s:'Produce',i:'Lemon',n:'One-pot miso butter salmon rice'},{s:'Produce',i:'Fresh dill',n:'One-pot miso butter salmon rice'},{s:'Pantry',i:'Miso paste',n:'One-pot miso butter salmon rice'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'}]},
+    grocery:[{s:'Proteins',i:'Salmon fillet',n:'Buy 2 — one for each salmon dinner, freeze one'},{s:'Produce',i:'Lemon',n:'Multiple meals'},{s:'Produce',i:'Fresh dill',n:'Buy closer to the day, or use dried'},{s:'Produce',i:'Garlic',n:'Multiple meals'},{s:'Dairy & oats',i:'Butter',n:'Miso butter salmon rice'},{s:'Pantry',i:'Miso paste',n:'Miso butter salmon rice'},{s:'Pantry',i:'Chicken stock',n:'Multiple meals'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'}]},
 
   d4:{id:'d4',name:'Teriyaki Chicken Bowl',protein:'~37g',fiber:'~5g',note:'One pan · 25 min',url:'https://wholesomemadeeasy.com/teriyaki-chicken-and-rice-bowls/',type:'dinner',ptype:'chicken',
     ingredients:[{amt:'1 lb',name:'chicken breast, cubed'},{amt:'3 tbsp',name:'soy sauce'},{amt:'2 tbsp',name:'honey'},{amt:'2 cloves',name:'garlic, minced'},{amt:'1 tsp',name:'fresh ginger, grated'},{amt:'1 tsp',name:'cornstarch (optional, to thicken)'},{amt:'2 cups',name:'broccoli florets'},{amt:'2 cups',name:'cooked rice'},{amt:'1',name:'avocado, sliced'},{amt:'1 tsp',name:'sesame seeds'}],
@@ -645,18 +644,20 @@ const BUILTIN_MEALS={
       {title:'Add the chicken',content:'Season the chicken with remaining oil, garlic, and herbs. Add to the sheet pan and roast another 20–25 minutes until chicken is cooked through and potatoes are tender.',timerSeconds:1350},
       {title:'Finish',content:'Sprinkle parmesan over everything in the last 5 minutes of roasting.',timerSeconds:300}
     ],
-    grocery:[{s:'Proteins',i:'Chicken thighs or breast',n:'Sheet pan chicken & potatoes'},{s:'Produce',i:'Baby potatoes',n:'Sheet pan chicken & potatoes'},{s:'Dairy & oats',i:'Parmesan',n:'Sheet pan chicken & potatoes'}]},
+    grocery:[{s:'Proteins',i:'Chicken breast',n:'Sheet pan chicken (freeze until Fri night)'},{s:'Produce',i:'Baby potatoes',n:'Sheet pan chicken & potatoes'},{s:'Produce',i:'Garlic',n:'Multiple meals'},{s:'Produce',i:'Fresh parsley',n:'Optional garnish'},{s:'Dairy & oats',i:'Parmesan',n:'Sheet pan chicken & potatoes'},{s:'Pantry',i:'Olive oil',n:'Cooking'}]},
 
-  d9:{id:'d9',name:'Honey Garlic Glazed Chicken Rice Bowl',protein:'~41g',fiber:'~2g',note:'Quick · ~30 min · Tiffy Cooks',url:'https://tiffycooks.com/honey-garlic-glazed-chicken-rice-bowl/',type:'dinner',ptype:'chicken',
-    ingredients:[{amt:'1 lb',name:'chicken thighs'},{amt:'3 tbsp',name:'soy sauce'},{amt:'2 tbsp',name:'chicken stock'},{amt:'2 tbsp',name:'honey'},{amt:'1/2 tsp',name:'black pepper'},{amt:'2 cloves',name:'garlic, minced'},{amt:'1 tsp',name:'cornstarch'},{amt:'2',name:'scallions, sliced (whites and greens separated)'},{amt:'2 cups',name:'cooked rice'}],
+  d9:{id:'d9',name:'Honey Garlic Glazed Chicken Rice Bowl',protein:'~41g',fiber:'~4g with broccoli',note:'Quick · ~30 min · Tiffy Cooks · reheats well',url:'https://tiffycooks.com/honey-garlic-glazed-chicken-rice-bowl/',type:'dinner',ptype:'chicken',
+    adapt:'Broccoli added as the side to round out the fiber. Reheats well, so it works as a cook-once, eat-twice dinner.',
+    ingredients:[{amt:'1 lb',name:'chicken thighs'},{amt:'3 tbsp',name:'soy sauce'},{amt:'2 tbsp',name:'chicken stock'},{amt:'2 tbsp',name:'honey'},{amt:'1/2 tsp',name:'black pepper'},{amt:'2 cloves',name:'garlic, minced'},{amt:'1 tsp',name:'cornstarch'},{amt:'2',name:'scallions, sliced (whites and greens separated)'},{amt:'2 cups',name:'cooked rice'},{amt:'1 crown',name:'broccoli, cut into florets'}],
     steps:[
       {title:'Make the sauce',content:'Whisk soy sauce, chicken stock, honey, black pepper, garlic, and cornstarch until smooth. Set aside.'},
       {title:'Infuse the oil',content:'Heat oil in a skillet over medium heat. Add the white parts of the scallion and cook 1–2 minutes until fragrant, then remove and discard.',timerSeconds:90},
       {title:'Cook the chicken',content:'Add chicken to the pan in a single layer and sear 5–7 minutes, stirring occasionally, until golden and cooked through.',timerSeconds:360},
       {title:'Glaze',content:'Stir the sauce again and pour into the pan. Simmer on high 2 minutes, stirring, until thickened and coating the chicken.',timerSeconds:120},
-      {title:'Serve',content:'Spoon over rice and top with the scallion greens. Good with a side of broccoli or cucumber salad.'}
+      {title:'Steam the broccoli',content:'Steam or microwave the broccoli until just tender, about 4 minutes.',timerSeconds:240},
+      {title:'Serve or pack',content:'Spoon over rice with broccoli and top with scallion greens. If making ahead, divide into containers and reheat 2 minutes.'}
     ],
-    grocery:[{s:'Proteins',i:'Chicken thighs',n:'Honey garlic chicken bowl'},{s:'Produce',i:'Scallions',n:'Multiple meals'},{s:'Pantry',i:'Honey',n:'Honey garlic chicken bowl'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'}]},
+    grocery:[{s:'Proteins',i:'Chicken thighs',n:'Honey garlic chicken + oyakodon'},{s:'Produce',i:'Broccoli',n:'Honey garlic chicken side'},{s:'Produce',i:'Scallions',n:'Multiple meals'},{s:'Produce',i:'Garlic',n:'Multiple meals'},{s:'Pantry',i:'Honey',n:'Honey garlic chicken bowl'},{s:'Pantry',i:'Soy sauce',n:'Multiple meals'},{s:'Pantry',i:'Cornstarch',n:'Honey garlic glaze'},{s:'Pantry',i:'Chicken stock',n:'Multiple meals'},{s:'Pantry',i:'Black pepper',n:'Honey garlic glaze'},{s:'Pantry',i:'Neutral oil',n:'Cooking'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'}]},
 
   d10:{id:'d10',name:'Crispy Rice Salmon Sushi Salad',protein:'~27g',fiber:'~3g',note:'~38 min · also works as prepped lunch, keeps ~4 days · adapted from avocadoskillet.com',url:'https://avocadoskillet.com/crispy-rice-salmon-sushi-salad-with-spicy-mayo-dressing/',type:'dinner',ptype:'salmon',
     adapt:'Cilantro removed. Dressing kept mild — no sriracha or chili crunch, just seasoned mayo.',
@@ -694,16 +695,16 @@ const DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const MONTHS_SHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
-// ─── BAKED-IN PLAN (Sat Aug 29 – Wed Sep 2, 2026, Week A) ─────────
-const BAKED_PLAN_VERSION='2026-08-28-v1';
+// ─── BAKED-IN PLAN (Wed Oct 28 – Sun Nov 1, 2026, hybrid) ─────────
+const BAKED_PLAN_VERSION='2026-10-27-v1';
 const BAKED_PLAN={
-  startDate:'2026-08-29',endDate:'2026-09-02',weekType:'A',
+  startDate:'2026-10-28',endDate:'2026-11-01',weekType:'B',
   days:[
-    {date:'2026-08-29',b:'b5',l:'l3',lPrep:false,d:'d11',isOut:false,skipBreakfast:true,skipLunch:true,skipDinner:false},
-    {date:'2026-08-30',b:'b5',l:'l8',lPrep:false,d:'d1',isOut:false,skipBreakfast:false,skipLunch:false,skipDinner:true},
-    {date:'2026-08-31',b:'b4',l:'l3',lPrep:true,d:'d9',isOut:false,skipBreakfast:false,skipLunch:false,skipDinner:false},
-    {date:'2026-09-01',b:'b5',l:'l4',lPrep:false,d:'d6',isOut:false,skipBreakfast:false,skipLunch:false,skipDinner:false},
-    {date:'2026-09-02',b:'b4',l:'l7',lPrep:true,d:'d1',isOut:false,skipBreakfast:false,skipLunch:false,skipDinner:false}
+    {date:'2026-10-28',b:'b5',l:'l4',lPrep:false,d:'d9',isOut:false,skipBreakfast:false,skipLunch:false,skipDinner:false},
+    {date:'2026-10-29',b:'b5',l:'l2',lPrep:true,d:'d9',isOut:false,skipBreakfast:false,skipLunch:false,skipDinner:false},
+    {date:'2026-10-30',b:'b5',l:'l2',lPrep:true,d:'d1',isOut:false,skipBreakfast:false,skipLunch:false,skipDinner:false},
+    {date:'2026-10-31',b:'b5',l:'l4',lPrep:false,d:'d7',isOut:false,skipBreakfast:true,skipLunch:true,skipDinner:false},
+    {date:'2026-11-01',b:'b5',l:'l4',lPrep:false,d:'d3',isOut:false,skipBreakfast:true,skipLunch:true,skipDinner:false}
   ]
 };
 
@@ -792,7 +793,7 @@ function dinnerTag(meal){
 }
 
 // ─── DATE HELPERS ────────────────────────────────────────────────
-function dateStr(d){return d.toISOString().slice(0,10);}
+function dateStr(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function parseDate(s){const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);}
 function addDays(d,n){const r=new Date(d);r.setDate(r.getDate()+n);return r;}
 function today(){return dateStr(new Date());}
@@ -1060,7 +1061,9 @@ function renderHome(){
   const prepEl=document.getElementById('prep-reminder');
   const ti=plan.days.findIndex(d=>isToday(d.date));
   const nxt=ti>=0?plan.days[ti+1]:null;
-  if(nxt&&nxt.lPrep&&!nxt.isOut&&!nxt.skipLunch){
+  const cur=ti>=0?plan.days[ti]:null;
+  const sameBatch=cur&&nxt&&cur.l===nxt.l&&cur.lPrep&&!cur.skipLunch&&!cur.isOut;
+  if(nxt&&nxt.lPrep&&!nxt.isOut&&!nxt.skipLunch&&!sameBatch){
     prepEl.classList.add('show');
     document.getElementById('prep-text').innerHTML=`<strong>Prep tonight:</strong> Make 2 portions of ${getMeal(nxt.l)?.name||'tomorrow\'s lunch'} — ~20 min.`;
   } else {prepEl.classList.remove('show');}
@@ -1091,7 +1094,8 @@ function renderDayDetail(idx){
   const dp=plan.days[idx];
   const b=getMeal(dp.b),l=getMeal(dp.l),d=getMeal(dp.d);
   const nxt=plan.days[idx+1];
-  const prepBanner=nxt&&nxt.lPrep&&!nxt.isOut&&!nxt.skipLunch?
+  const sameBatch=nxt&&dp.l===nxt.l&&dp.lPrep&&!dp.skipLunch&&!dp.isOut;
+  const prepBanner=nxt&&nxt.lPrep&&!nxt.isOut&&!nxt.skipLunch&&!sameBatch?
     `<div class="prep-night-banner">🌙 <strong>Prep tonight:</strong> Make 2 portions of ${getMeal(nxt.l)?.name||"tomorrow's lunch"} — ~20 min.</div>`:'';
   const dateLbl=formatFull(dp.date)+(isToday(dp.date)?' · today':'')+(isWeekend(dp.date)?' · weekend':'');
   const wknd=isWeekend(dp.date);
