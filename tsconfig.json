@@ -1,0 +1,1 @@
+{"compilerOptions":{"target":"ES2022","lib":["ES2022","DOM"],"strict":true,"noUncheckedIndexedAccess":true,"noUnusedLocals":true,"noUnusedParameters":true,"noEmitOnError":true,"rootDir":"src","outDir":"assets","module":"es2022"},"include":["src/kitchen.ts"]}

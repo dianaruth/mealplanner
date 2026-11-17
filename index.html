@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#f7f3ee">
 <title>Meal Planner</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2218%22 fill=%22%23e3ddec%22/%3E%3Cpath d=%22M20 14v18m-6-18v12q0 8 6 8t6-8V14m-6 20v17m22-37v37m0-37q-12 10 0 23%22 stroke=%22%23595477%22 fill=%22none%22 stroke-width=%224%22 stroke-linecap=%22round%22/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -320,6 +321,7 @@ body{font-family:'DM Sans',sans-serif;color:var(--text);max-width:430px;margin:0
 .cook-step-timer{display:inline-block;margin-top:6px;font-size:11px;font-weight:500;color:var(--amber);background:var(--amber-light);padding:2px 8px;border-radius:10px;}
 .cook-original-link{display:block;text-align:center;margin-top:20px;font-size:12px;font-weight:500;color:var(--blue);text-decoration:none;padding:10px;}
 </style>
+<link rel="stylesheet" href="assets/kitchen.css">
 </head>
 <body>
 
@@ -359,8 +361,8 @@ body{font-family:'DM Sans',sans-serif;color:var(--text);max-width:430px;margin:0
     <button class="edit-toggle" id="edit-toggle-plan" onclick="toggleEdit('plan')"><div class="toggle-dot"></div> Edit</button>
   </div>
   <div class="view-toggle">
-    <button class="vt-btn active" id="vt-list" onclick="setPlanView('list')">📋 List</button>
-    <button class="vt-btn" id="vt-cal" onclick="setPlanView('cal')">📅 Calendar</button>
+    <button class="vt-btn active" id="vt-list" onclick="setPlanView('list')">List</button>
+    <button class="vt-btn" id="vt-cal" onclick="setPlanView('cal')">Calendar</button>
   </div>
   <div id="plan-list-view">
     <div class="day-tabs" id="day-tabs"></div>
@@ -459,7 +461,7 @@ body{font-family:'DM Sans',sans-serif;color:var(--text);max-width:430px;margin:0
 // ─── BUILT-IN MEALS (all screened against hard-nos: no peanut, cilantro, bell pepper,
 // olives, honey mustard, spicy ingredients; dressings are not vinegar-forward) ─────
 const BUILTIN_MEALS={
-  b4:{id:'b4',name:'Blackberry Raspberry Parfait',protein:'~22g',fiber:'~7g',note:'Cold breakfast · 5 min',url:'#',type:'breakfast',ptype:'veg',prep:false,
+  b4:{id:'b4',servings:1,name:'Blackberry Raspberry Parfait',protein:'~22g',fiber:'~7g',note:'Cold breakfast · 5 min',url:'#',type:'breakfast',ptype:'veg',prep:false,
     ingredients:[{amt:'1 cup',name:'Greek yogurt'},{amt:'1/2 cup',name:'blackberries'},{amt:'1/2 cup',name:'raspberries'},{amt:'1/4 cup',name:'granola'},{amt:'1 tsp',name:'honey (optional drizzle)'}],
     steps:[
       {title:'Layer the base',content:'Spoon a third of the Greek yogurt into a jar or bowl.'},
@@ -469,16 +471,17 @@ const BUILTIN_MEALS={
     ],
     grocery:[{s:'Dairy & oats',i:'Greek yogurt',n:'Breakfast'},{s:'Produce',i:'Blackberries',n:'Breakfast'},{s:'Produce',i:'Raspberries',n:'Breakfast'},{s:'Pantry',i:'Granola',n:'Breakfast topping'}]},
 
-  b5:{id:'b5',name:'High-Fiber Overnight Oats',protein:'~15g',fiber:'~10g',note:'Cold breakfast · 5 min · flax + chia boost',url:'https://www.laurafuentes.com/high-fiber-overnight-oats/',type:'breakfast',ptype:'veg',prep:false,
-    ingredients:[{amt:'1/2 cup',name:'rolled oats'},{amt:'1/2 cup',name:'milk of choice'},{amt:'1/4 cup',name:'Greek yogurt'},{amt:'1 tbsp',name:'ground flaxmeal'},{amt:'1 tbsp',name:'chia seeds'},{amt:'1/4 tsp',name:'vanilla extract'},{amt:'to taste',name:'berries or fruit, for topping'}],
+  b5:{id:'b5',servings:1,revision:'chia-v1',name:'Chia Overnight Oats',protein:'~15g',fiber:'',note:'Cold breakfast · 5 min · chia seeds',url:'https://www.laurafuentes.com/high-fiber-overnight-oats/',type:'breakfast',ptype:'veg',prep:false,
+    adapt:'Flaxseed replaced with extra chia seeds at your request. Uses 2 tablespoons of chia and no flaxseed.',
+    ingredients:[{amt:'1/2 cup',name:'rolled oats'},{amt:'1/2 cup',name:'milk of choice'},{amt:'1/4 cup',name:'Greek yogurt'},{amt:'2 tbsp',name:'chia seeds'},{amt:'1/4 tsp',name:'vanilla extract'},{amt:'to taste',name:'berries or fruit, for topping'}],
     steps:[
-      {title:'Combine the base',content:'In a jar, combine oats, milk, Greek yogurt, flaxmeal, chia seeds, and vanilla. Stir well until evenly mixed.'},
+      {title:'Combine the base',content:'In a jar, combine oats, milk, Greek yogurt, chia seeds, and vanilla. Stir well until evenly mixed.'},
       {title:'Chill',content:'Cover and refrigerate at least 4 hours, ideally overnight.',timerSeconds:14400},
-      {title:'Serve',content:'Stir again in the morning and top with berries or fruit of choice. Eat cold, or warm 30 seconds in the microwave if you prefer it that way.'}
+      {title:'Serve',content:'Stir again in the morning, adding a splash of milk if too thick, and top with berries or fruit of choice. Eat cold, or warm 30 seconds in the microwave if you prefer it that way.'}
     ],
-    grocery:[{s:'Dairy & oats',i:'Rolled oats',n:'Breakfast'},{s:'Dairy & oats',i:'Greek yogurt (large tub)',n:'Breakfast'},{s:'Dairy & oats',i:'Milk of choice',n:'Breakfast'},{s:'Pantry',i:'Ground flaxmeal',n:'High-fiber oats'},{s:'Pantry',i:'Chia seeds',n:'Breakfast'},{s:'Pantry',i:'Vanilla extract',n:'Breakfast'}]},
+    grocery:[{s:'Dairy & oats',i:'Rolled oats',n:'Breakfast'},{s:'Dairy & oats',i:'Greek yogurt (large tub)',n:'Breakfast'},{s:'Dairy & oats',i:'Milk of choice',n:'Breakfast'},{s:'Pantry',i:'Chia seeds',n:'Breakfast'},{s:'Pantry',i:'Vanilla extract',n:'Breakfast'},{s:'Produce',i:'Berries',n:'Chia overnight oats topping'}]},
 
-  b6:{id:'b6',name:'Sourdough with Cottage Cheese & Jam',protein:'~20g',fiber:'~2g',note:'Cold-ish breakfast · 5 min · toast + top',url:'#',type:'breakfast',ptype:'veg',prep:false,
+  b6:{id:'b6',servings:1,name:'Sourdough with Cottage Cheese & Jam',protein:'~20g',fiber:'~2g',note:'Cold-ish breakfast · 5 min · toast + top',url:'#',type:'breakfast',ptype:'veg',prep:false,
     ingredients:[{amt:'2 slices',name:'sourdough bread'},{amt:'3/4 cup',name:'cottage cheese'},{amt:'2 tbsp',name:'sugar-free jam'}],
     steps:[
       {title:'Toast the bread',content:'Toast the sourdough slices to your preferred level of crisp.',timerSeconds:180},
@@ -487,7 +490,7 @@ const BUILTIN_MEALS={
     ],
     grocery:[{s:'Dairy & oats',i:'Cottage cheese',n:'Breakfast'},{s:'Pantry',i:'Sourdough bread',n:'Breakfast'},{s:'Pantry',i:'Sugar-free jam',n:'Breakfast'}]},
 
-  b7:{id:'b7',name:'Protein Smoothie',protein:'~30g',fiber:'~3g',note:'Cold breakfast · 5 min · blend and go',url:'#',type:'breakfast',ptype:'veg',prep:false,
+  b7:{id:'b7',servings:1,name:'Protein Smoothie',protein:'~30g',fiber:'~3g',note:'Cold breakfast · 5 min · blend and go',url:'#',type:'breakfast',ptype:'veg',prep:false,
     ingredients:[{amt:'1 serving (~1 cup)',name:'frozen fruit'},{amt:'1 serving (~3/4 cup)',name:'Greek yogurt'},{amt:'1 serving',name:'protein powder'},{amt:'1 cup',name:'almond milk'}],
     steps:[
       {title:'Combine',content:'Add frozen fruit, Greek yogurt, protein powder, and almond milk to a blender.'},
@@ -496,7 +499,14 @@ const BUILTIN_MEALS={
     ],
     grocery:[{s:'Dairy & oats',i:'Greek yogurt (large tub)',n:'Smoothie'},{s:'Frozen',i:'Frozen fruit',n:'Smoothie'},{s:'Pantry',i:'Protein powder',n:'Smoothie'},{s:'Pantry',i:'Almond milk',n:'Smoothie'}]},
 
-  l2:{id:'l2',name:'Chicken Tzatziki Bowls',protein:'~34g',fiber:'~5g',note:'Prepped ahead · ~10 min assembly, no stove · Skinnytaste',url:'https://www.skinnytaste.com/chicken-tzatziki-bowls/',type:'lunch',prep:true,ptype:'chicken',
+  b8:{id:'b8',servings:1,name:'Yogurt & Granola',protein:'',fiber:'',note:'Cold breakfast · 2 min · keep granola separate until serving',url:'#',type:'breakfast',ptype:'veg',prep:true,
+    ingredients:[{amt:'1 cup',name:'Greek yogurt'},{amt:'1/3 cup',name:'granola (peanut-free)'}],
+    steps:[
+      {title:'Add the yogurt',content:'Spoon the Greek yogurt into a bowl or a container for later.'},
+      {title:'Add granola and serve',content:'Top with granola just before eating. If preparing ahead, pack the granola separately so it stays crunchy.'}
+    ],
+    grocery:[{s:'Dairy & oats',i:'Greek yogurt',n:'Yogurt and granola breakfast'},{s:'Pantry',i:'Granola',n:'Choose a peanut-free version'}]},
+  l2:{id:'l2',servings:2,name:'Chicken Tzatziki Bowls',protein:'~34g',fiber:'~5g',note:'Prepped ahead · ~10 min assembly, no stove · Skinnytaste',url:'https://www.skinnytaste.com/chicken-tzatziki-bowls/',type:'lunch',prep:true,ptype:'chicken',
     adapt:'Shortcut version: rotisserie or pre-cooked chicken, store-bought tzatziki, and microwave rice pouches, so it is assembly only. Olives and red pepper flakes removed; regular tomato instead of cherry tomatoes.',
     ingredients:[{amt:'~1.5 cups',name:'rotisserie or pre-cooked chicken, sliced or shredded'},{amt:'2 pouches',name:'microwave rice (or quinoa)'},{amt:'1',name:'cucumber, chopped'},{amt:'1',name:'tomato, diced'},{amt:'1/4',name:'red onion, thinly sliced'},{amt:'1/2 cup',name:'store-bought tzatziki'},{amt:'1/3 cup',name:'feta, crumbled'},{amt:'1/2',name:'lemon'}],
     steps:[
@@ -505,7 +515,7 @@ const BUILTIN_MEALS={
       {title:'Build the bowls',content:'Divide rice between 2 containers. Top with chicken, cucumber, tomato, red onion, and feta, and squeeze lemon over the top.'},
       {title:'Pack the tzatziki',content:'Keep the tzatziki in a small separate container so the bowls stay crisp. Add it right before eating. These eat cold.'}
     ],
-    grocery:[{s:'Proteins',i:'Rotisserie chicken or pre-cooked chicken strips',n:'Tzatziki bowls (strips = less waste)'},{s:'Produce',i:'Cucumber',n:'Tzatziki bowls + salmon bowl'},{s:'Produce',i:'Tomato',n:'Tzatziki bowls (regular, not cherry)'},{s:'Produce',i:'Red onion',n:'Tzatziki bowls'},{s:'Produce',i:'Lemon',n:'Multiple meals'},{s:'Dairy & oats',i:'Store-bought tzatziki',n:'Tzatziki bowls'},{s:'Dairy & oats',i:'Feta cheese',n:'Tzatziki bowls'},{s:'Pantry',i:'Microwave rice pouches',n:'Tzatziki bowls'}]},
+    grocery:[{s:'Proteins',i:'Rotisserie chicken or pre-cooked chicken strips',n:'Tzatziki bowls (strips = less waste)'},{s:'Produce',i:'Cucumber',n:'Bowls; use remaining cucumber alongside lunch'},{s:'Produce',i:'Tomato',n:'Tzatziki bowls (regular, not cherry)'},{s:'Produce',i:'Red onion',n:'Tzatziki bowls'},{s:'Produce',i:'Lemon',n:'Multiple meals'},{s:'Dairy & oats',i:'Store-bought tzatziki',n:'Tzatziki bowls'},{s:'Dairy & oats',i:'Feta cheese',n:'Tzatziki bowls'},{s:'Pantry',i:'Microwave rice pouches',n:'Tzatziki bowls'}]},
 
   l3:{id:'l3',name:'Soy Glazed Chicken Rice Bowl',protein:'~38g',fiber:'~3g',note:'Prepped ahead · Tiffy Cooks · 20 min',url:'https://tiffycooks.com/soy-glazed-chicken-20-minutes-only/',type:'lunch',prep:true,ptype:'chicken',
     ingredients:[{amt:'1 lb',name:'chicken thighs, boneless skin-on'},{amt:'2 tbsp',name:'cornstarch'},{amt:'3 tbsp',name:'soy sauce'},{amt:'1/2 tsp',name:'five-spice powder'},{amt:'2 cloves',name:'garlic, minced'},{amt:'1 tbsp',name:'honey'},{amt:'2 cups',name:'cooked rice'},{amt:'2',name:'scallions, sliced'}],
@@ -571,7 +581,10 @@ const BUILTIN_MEALS={
     ],
     grocery:[{s:'Proteins',i:'Chicken breast',n:'Smoky corn salad'},{s:'Produce',i:'Corn (fresh or frozen)',n:'Smoky corn salad'},{s:'Produce',i:'Cucumber',n:'Smoky corn salad'},{s:'Produce',i:'Red onion',n:'Smoky corn salad'},{s:'Produce',i:'Lemon',n:'Smoky corn salad'},{s:'Pantry',i:'Mild taco seasoning',n:'Smoky corn salad'},{s:'Pantry',i:'Mayonnaise',n:'Smoky corn salad'}]},
 
-  d1:{id:'d1',name:'Teriyaki Salmon Bowl',protein:'~40g',fiber:'~6g',note:"Your pick ★ · Marianna's Pantry · ~20 min",url:'https://mariannaspantry.com/teriyaki-salmon-bowls/',type:'dinner',ptype:'salmon',
+  l9:{id:'l9',servings:1,name:'Prepared Shrimp Salad',protein:'',fiber:'',note:'Already prepared · use one of your two ready-made lunches',url:'#',type:'lunch',ptype:'shrimp',prep:true,
+    adapt:'Your existing prepared shrimp salad. Ingredients and dressing were not supplied, so no recipe or shopping ingredients have been invented.',
+    ingredients:[],steps:[{title:'Serve your prepared lunch',content:'Use one of your already-prepared shrimp salads. Keep any crunchy components separate until eating.'}],grocery:[]},
+  d1:{id:'d1',servings:1,name:'Teriyaki Salmon Bowl',protein:'~40g',fiber:'~6g',note:"Your pick ★ · Marianna's Pantry · ~20 min",url:'https://mariannaspantry.com/teriyaki-salmon-bowls/',type:'dinner',ptype:'salmon',
     adapt:'Store-bought teriyaki sauce instead of making it from scratch.',
     ingredients:[{amt:'1',name:'salmon fillet'},{amt:'1/4 cup',name:'store-bought teriyaki sauce'},{amt:'1 cup',name:'cooked rice'},{amt:'1/2',name:'cucumber, sliced'},{amt:'1/2 cup',name:'edamame, shelled'},{amt:'1/2',name:'avocado, sliced'},{amt:'1',name:'scallion, sliced'},{amt:'1 tsp',name:'sesame seeds'}],
     steps:[
@@ -580,7 +593,7 @@ const BUILTIN_MEALS={
       {title:'Warm the edamame',content:'Microwave or boil the edamame until hot, about 2 minutes.',timerSeconds:120},
       {title:'Assemble',content:'Build the bowl with rice, salmon, cucumber, edamame, and avocado. Drizzle with the remaining teriyaki sauce and finish with scallions and sesame seeds.'}
     ],
-    grocery:[{s:'Proteins',i:'Salmon fillet',n:'Buy 2 — one for each salmon dinner, freeze one'},{s:'Produce',i:'Cucumber',n:'Tzatziki bowls + salmon bowl'},{s:'Produce',i:'Avocado',n:'Buy firm, ripens by Friday'},{s:'Produce',i:'Scallions',n:'Multiple meals'},{s:'Frozen',i:'Edamame',n:'Teriyaki salmon bowl'},{s:'Pantry',i:'Store-bought teriyaki sauce',n:'Teriyaki salmon bowl'},{s:'Pantry',i:'Sesame seeds',n:'Garnish'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'}]},
+    grocery:[{s:'Proteins',i:'Salmon fillet',n:'Buy 2 — one for each salmon dinner, freeze one'},{s:'Produce',i:'Cucumber',n:'Bowls; use remaining cucumber alongside lunch'},{s:'Produce',i:'Avocado',n:'Buy firm, ripens by Friday'},{s:'Produce',i:'Scallions',n:'Multiple meals'},{s:'Frozen',i:'Edamame',n:'Teriyaki salmon bowl'},{s:'Pantry',i:'Store-bought teriyaki sauce',n:'Teriyaki salmon bowl'},{s:'Pantry',i:'Sesame seeds',n:'Garnish'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'}]},
 
   d2:{id:'d2',name:'Miso Salmon Bowl',protein:'~35g',fiber:'~7g',note:'Oven or broiler · feastingathome',url:'https://www.feastingathome.com/miso-salmon-bowls/',type:'dinner',ptype:'salmon',
     ingredients:[{amt:'1',name:'salmon fillet (~1 lb)'},{amt:'2 tbsp',name:'miso paste'},{amt:'1 tbsp',name:'mirin'},{amt:'1 tbsp',name:'soy sauce'},{amt:'2 cups',name:'cooked rice'},{amt:'1',name:'avocado, sliced'},{amt:'1 cup',name:'edamame, shelled'},{amt:'1 cup',name:'red cabbage, shredded'},{amt:'1 cup',name:'mushrooms, sliced'},{amt:'2',name:'scallions, sliced'}],
@@ -646,7 +659,7 @@ const BUILTIN_MEALS={
     ],
     grocery:[{s:'Proteins',i:'Chicken breast',n:'Sheet pan chicken (freeze until Fri night)'},{s:'Produce',i:'Baby potatoes',n:'Sheet pan chicken & potatoes'},{s:'Produce',i:'Garlic',n:'Multiple meals'},{s:'Produce',i:'Fresh parsley',n:'Optional garnish'},{s:'Dairy & oats',i:'Parmesan',n:'Sheet pan chicken & potatoes'},{s:'Pantry',i:'Olive oil',n:'Cooking'}]},
 
-  d9:{id:'d9',name:'Honey Garlic Glazed Chicken Rice Bowl',protein:'~41g',fiber:'~4g with broccoli',note:'Quick · ~30 min · Tiffy Cooks · reheats well',url:'https://tiffycooks.com/honey-garlic-glazed-chicken-rice-bowl/',type:'dinner',ptype:'chicken',
+  d9:{id:'d9',servings:2,name:'Honey Garlic Glazed Chicken Rice Bowl',protein:'~41g',fiber:'~4g with broccoli',note:'Quick · ~30 min · Tiffy Cooks · reheats well',url:'https://tiffycooks.com/honey-garlic-glazed-chicken-rice-bowl/',type:'dinner',ptype:'chicken',
     adapt:'Broccoli added as the side to round out the fiber. Reheats well, so it works as a cook-once, eat-twice dinner.',
     ingredients:[{amt:'1 lb',name:'chicken thighs'},{amt:'3 tbsp',name:'soy sauce'},{amt:'2 tbsp',name:'chicken stock'},{amt:'2 tbsp',name:'honey'},{amt:'1/2 tsp',name:'black pepper'},{amt:'2 cloves',name:'garlic, minced'},{amt:'1 tsp',name:'cornstarch'},{amt:'2',name:'scallions, sliced (whites and greens separated)'},{amt:'2 cups',name:'cooked rice'},{amt:'1 crown',name:'broccoli, cut into florets'}],
     steps:[
@@ -657,7 +670,7 @@ const BUILTIN_MEALS={
       {title:'Steam the broccoli',content:'Steam or microwave the broccoli until just tender, about 4 minutes.',timerSeconds:240},
       {title:'Serve or pack',content:'Spoon over rice with broccoli and top with scallion greens. If making ahead, divide into containers and reheat 2 minutes.'}
     ],
-    grocery:[{s:'Proteins',i:'Chicken thighs',n:'Honey garlic chicken + oyakodon'},{s:'Produce',i:'Broccoli',n:'Honey garlic chicken side'},{s:'Produce',i:'Scallions',n:'Multiple meals'},{s:'Produce',i:'Garlic',n:'Multiple meals'},{s:'Pantry',i:'Honey',n:'Honey garlic chicken bowl'},{s:'Pantry',i:'Soy sauce',n:'Multiple meals'},{s:'Pantry',i:'Cornstarch',n:'Honey garlic glaze'},{s:'Pantry',i:'Chicken stock',n:'Multiple meals'},{s:'Pantry',i:'Black pepper',n:'Honey garlic glaze'},{s:'Pantry',i:'Neutral oil',n:'Cooking'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'}]},
+    grocery:[{s:'Proteins',i:'Chicken thighs',n:'Honey garlic chicken and barbecue chicken bowls'},{s:'Produce',i:'Broccoli',n:'Honey garlic chicken side'},{s:'Produce',i:'Scallions',n:'Multiple meals'},{s:'Produce',i:'Garlic',n:'Multiple meals'},{s:'Pantry',i:'Honey',n:'Honey garlic chicken bowl'},{s:'Pantry',i:'Soy sauce',n:'Multiple meals'},{s:'Pantry',i:'Cornstarch',n:'Honey garlic glaze'},{s:'Pantry',i:'Chicken stock',n:'Multiple meals'},{s:'Pantry',i:'Black pepper',n:'Honey garlic glaze'},{s:'Pantry',i:'Neutral oil',n:'Cooking'},{s:'Pantry',i:'Jasmine rice',n:'Bulk bag'}]},
 
   d10:{id:'d10',name:'Crispy Rice Salmon Sushi Salad',protein:'~27g',fiber:'~3g',note:'~38 min · also works as prepped lunch, keeps ~4 days · adapted from avocadoskillet.com',url:'https://avocadoskillet.com/crispy-rice-salmon-sushi-salad-with-spicy-mayo-dressing/',type:'dinner',ptype:'salmon',
     adapt:'Cilantro removed. Dressing kept mild — no sriracha or chili crunch, just seasoned mayo.',
@@ -695,19 +708,26 @@ const DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const MONTHS_SHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
-// ─── BAKED-IN PLAN (Wed Oct 28 – Sun Nov 1, 2026, hybrid) ─────────
-const BAKED_PLAN_VERSION='2026-10-27-v1';
+// ─── BAKED-IN PLAN (Tue Nov 17 – Fri Nov 20, 2026) ─────────
+const BAKED_PLAN_VERSION='2026-11-16-v1';
 const BAKED_PLAN={
-  startDate:'2026-10-28',endDate:'2026-11-01',weekType:'B',
+  startDate:'2026-11-17',endDate:'2026-11-20',weekType:'B',
+  preparedMeals:{b8:2,l9:2},stockedItems:['Salmon fillet'],bowlVegetable:'Broccoli',chickenCut:'Chicken thighs',bowlServings:{go_salmon:1,go_chicken:2},
+  prepByDate:{
+    '2026-11-16':'Move one frozen salmon serving to the refrigerator for Tuesday. Keep the Friday serving frozen.',
+    '2026-11-17':'Wednesday breakfast and shrimp-salad lunch are already prepared. Freeze the chicken for Thursday; reserve the other chicken for Wednesday.',
+    '2026-11-18':'Make honey-garlic chicken for dinner and Thursday lunch. Make two jars of chia oats for Thursday and Friday. Move Thursday chicken to the refrigerator to thaw.',
+    '2026-11-19':'Make barbecue chicken for dinner and Friday lunch. Move the remaining salmon serving to the refrigerator for Friday.',
+    '2026-11-20':'Breakfast and lunch are ready. Cook teriyaki salmon for dinner; use remaining cucumber and avocado alongside lunch or dinner.'
+  },
+  notes:'Already prepared: two yogurt-and-granola breakfasts and two shrimp salads. Both salmon servings are already on hand. Wednesday and Thursday dinners each cover next-day lunch.',
   days:[
-    {date:'2026-10-28',b:'b5',l:'l4',lPrep:false,d:'d9',isOut:false,skipBreakfast:false,skipLunch:false,skipDinner:false},
-    {date:'2026-10-29',b:'b5',l:'l2',lPrep:true,d:'d9',isOut:false,skipBreakfast:false,skipLunch:false,skipDinner:false},
-    {date:'2026-10-30',b:'b5',l:'l2',lPrep:true,d:'d1',isOut:false,skipBreakfast:false,skipLunch:false,skipDinner:false},
-    {date:'2026-10-31',b:'b5',l:'l4',lPrep:false,d:'d7',isOut:false,skipBreakfast:true,skipLunch:true,skipDinner:false},
-    {date:'2026-11-01',b:'b5',l:'l4',lPrep:false,d:'d3',isOut:false,skipBreakfast:true,skipLunch:true,skipDinner:false}
+    {date:'2026-11-17',b:'b8',l:'l9',lPrep:true,d:'go_salmon',isOut:false,skipBreakfast:false,skipLunch:false,skipDinner:false},
+    {date:'2026-11-18',b:'b8',l:'l9',lPrep:true,d:'d9',isOut:false,skipBreakfast:false,skipLunch:false,skipDinner:false},
+    {date:'2026-11-19',b:'b5',l:'d9',lPrep:true,d:'go_chicken',isOut:false,skipBreakfast:false,skipLunch:false,skipDinner:false},
+    {date:'2026-11-20',b:'b5',l:'go_chicken',lPrep:true,d:'d1',isOut:false,skipBreakfast:false,skipLunch:false,skipDinner:false}
   ]
 };
-
 // ─── STATE ───────────────────────────────────────────────────────
 let weekTypes=JSON.parse(localStorage.getItem('mealWeekTypes')||'null')||{A:{label:'Week A',sub:'Ground chicken focus'},B:{label:'Week B',sub:'Rotisserie chicken focus'},C:{label:'Week C',sub:'Salmon focus'}};
 let currentWeek=localStorage.getItem('mealPlanWeek')||BAKED_PLAN.weekType;
@@ -1013,16 +1033,16 @@ function renderHome(){
         <div class="pw-pill-num">${d.getDate()}</div>
         ${day.isOut?'<div class="pw-pill-out">out</div>':
           `<div class="pw-pill-dots">
-            ${!day.skipBreakfast?`<div class="pw-dot" style="background:${getDotColor(b)}"></div>`:''}
-            ${!day.skipLunch?`<div class="pw-dot" style="background:${getDotColor(l)}"></div>`:''}
-            ${!day.skipDinner?`<div class="pw-dot" style="background:${getDotColor(din)}"></div>`:''}
+            ${!day.skipBreakfast?`<span class="k-meal-marker k-meal-breakfast" aria-label="Breakfast planned" title="Breakfast">B</span>`:''}
+            ${!day.skipLunch?`<span class="k-meal-marker k-meal-lunch" aria-label="Lunch planned" title="Lunch">L</span>`:''}
+            ${!day.skipDinner?`<span class="k-meal-marker k-meal-dinner" aria-label="Dinner planned" title="Dinner">D</span>`:''}
           </div>`}
       </div>`;
     }).join('');
     pwEl.innerHTML=`<div class="plan-window-card">
       <div class="pw-top"><div><div class="pw-title">${rng}</div><div class="pw-range">${plan.days.length} day${plan.days.length!==1?'s':''} planned</div></div>
       <button class="pw-edit-btn" onclick="openDateEditor()">Change →</button></div>
-      <div class="pw-days-row">${pills}</div>
+      <div class="pw-days-row">${pills}</div><p class="k-meal-key"><span class="k-meal-breakfast">B: breakfast</span> · <span class="k-meal-lunch">L: lunch</span> · <span class="k-meal-dinner">D: dinner</span></p>
     </div>`;
   } else if(!showDateEditor) {pwEl.innerHTML='';}
   const todaySec=document.getElementById('today-section');
@@ -1043,7 +1063,7 @@ function renderHome(){
         todaySec.innerHTML=`<div class="section-label">${lbl} <span style="font-size:11px;color:var(--amber);font-weight:500">· tap ✎ to swap</span></div>
         <div class="today-card"><div class="today-day-label">${formatFull(dp.date)}</div>
         ${rows.map(r=>`<div class="meal-row" onclick="openSwapModal(${sidx},'${r.slot}')">
-          <div class="meal-type-dot" style="background:${getDotColor(r.meal)}"></div>
+
           <div class="meal-row-content"><div class="meal-row-type">${r.slot==='b'?'Breakfast':r.slot==='l'?'Lunch':'Dinner'}</div><div class="meal-row-name">${r.meal.name}</div></div>
           ${r.tag}<div class="edit-icon">✎</div></div>`).join('')}
         </div>`;
@@ -1051,7 +1071,7 @@ function renderHome(){
         todaySec.innerHTML=`<div class="section-label">${lbl}</div>
         <div class="today-card"><div class="today-day-label">${formatFull(dp.date)}</div>
         ${rows.map(r=>`<div class="meal-row" onclick="openCookMode('${r.meal.id}')">
-          <div class="meal-type-dot" style="background:${getDotColor(r.meal)}"></div>
+
           <div class="meal-row-content"><div class="meal-row-type">${r.slot==='b'?'Breakfast':r.slot==='l'?'Lunch':'Dinner'}</div><div class="meal-row-name">${r.meal.name}</div></div>
           ${r.tag}<div class="cook-icon">👨‍🍳</div></div>`).join('')}
         </div>`;
@@ -1186,9 +1206,9 @@ function renderCalendar(){
       } else {
         const b=getMeal(dp.b),l=getMeal(dp.l),din=getMeal(dp.d);
         inner+=`<div class="cal-dots">`;
-        if(!dp.skipBreakfast&&b) inner+=`<div class="cal-dot-row"><div class="cal-dot" style="background:${getDotColor(b)}"></div><div class="cal-meal-name">${b.name.split(' ').slice(0,2).join(' ')}</div></div>`;
-        if(!dp.skipLunch&&l) inner+=`<div class="cal-dot-row"><div class="cal-dot" style="background:${getDotColor(l)}"></div><div class="cal-meal-name">${l.name.split(' ').slice(0,2).join(' ')}</div></div>`;
-        if(!dp.skipDinner&&din) inner+=`<div class="cal-dot-row"><div class="cal-dot" style="background:${getDotColor(din)}"></div><div class="cal-meal-name">${din.name.split(' ').slice(0,2).join(' ')}</div></div>`;
+        if(!dp.skipBreakfast&&b) inner+=`<div class="cal-dot-row"><span class="k-cal-meal k-meal-breakfast" aria-label="Breakfast" title="Breakfast">B</span><div class="cal-meal-name">${b.name.split(' ').slice(0,2).join(' ')}</div></div>`;
+        if(!dp.skipLunch&&l) inner+=`<div class="cal-dot-row"><span class="k-cal-meal k-meal-lunch" aria-label="Lunch" title="Lunch">L</span><div class="cal-meal-name">${l.name.split(' ').slice(0,2).join(' ')}</div></div>`;
+        if(!dp.skipDinner&&din) inner+=`<div class="cal-dot-row"><span class="k-cal-meal k-meal-dinner" aria-label="Dinner" title="Dinner">D</span><div class="cal-meal-name">${din.name.split(' ').slice(0,2).join(' ')}</div></div>`;
         inner+=`</div>`;
       }
     }
@@ -1397,7 +1417,7 @@ function renderRecipes(){
     return 'Dinner · '+(m.ptype||'');
   }
   document.getElementById('recipe-cards').innerHTML=filtered.map(m=>`
-    <div class="recipe-card">
+    <div class="recipe-card" data-meal-id="${m.id}">
       <div class="rc-top">
         <div class="rc-icon ${getIconCls(m)}">${getEmoji(m)}</div>
         <div class="rc-body">
@@ -1410,7 +1430,7 @@ function renderRecipes(){
         </div>
       </div>
       <div class="rc-actions">
-        <button class="rc-cook" onclick="openCookMode('${m.id}')">👨‍🍳 Cook mode</button>
+        <button class="rc-cook" onclick="openCookMode('${m.id}')">Start cooking</button>
         ${m.url&&m.url!=='#'?`<a class="rc-link" href="${m.url}" target="_blank">Recipe ↗</a>`:''}
         ${m.isCustom?`<button class="rc-delete" onclick="deleteCustomRecipe('${m.id}')">Remove</button>`:''}
       </div>
@@ -1428,5 +1448,6 @@ function renderAll(){
 initPlanIfNeeded();
 renderAll();
 </script>
+<script src="assets/kitchen.js"></script>
 </body>
 </html>
